@@ -19,7 +19,7 @@
             android:name="com.bnotya.bnotyaapp.SplashActivity"
             android:label="@string/app_name" >
             <intent-filter>
-                <action android:name="android.intent.action.SPLASH" />
+                <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -33,7 +33,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.bnotya.bnotyaapp.SplashActivity" /> 
              <intent-filter>
-                <action android:name="android.intent.action.MainActivity" />
+                   <action android:name="com.bnotya.bnotyaapp.MainActivity" />
+                <!-- <action android:name="android.intent.action.MainActivity" /> -->
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
