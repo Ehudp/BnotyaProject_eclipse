@@ -241,8 +241,8 @@ int id action_context_bar 0x7f05001d
 int id action_menu_divider 0x7f050016
 int id action_menu_presenter 0x7f050017
 int id action_mode_close_button 0x7f050024
-int id action_open_search 0x7f05003e
-int id action_settings 0x7f05003d
+int id action_open_search 0x7f05003f
+int id action_settings 0x7f05003e
 int id activity_chooser_view_content 0x7f050025
 int id always 0x7f05000b
 int id beginning 0x7f050011
@@ -267,6 +267,7 @@ int id middle 0x7f050012
 int id never 0x7f050009
 int id none 0x7f050010
 int id normal 0x7f050000
+int id openWomenMenuButton 0x7f05003c
 int id progress_circular 0x7f050018
 int id progress_horizontal 0x7f050019
 int id radio 0x7f05002f
@@ -292,7 +293,7 @@ int id top_action_bar 0x7f050020
 int id up 0x7f050021
 int id useLogo 0x7f050003
 int id withText 0x7f05000c
-int id womenlist 0x7f05003c
+int id womenlist 0x7f05003d
 int integer abc_max_action_buttons 0x7f090000
 int layout abc_action_bar_decor 0x7f030000
 int layout abc_action_bar_decor_include 0x7f030001
