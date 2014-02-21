@@ -1,0 +1,7 @@
+INDEX VERSION 1.126+C:\Users\Amos\Documents\GitHub\BnotyaProject\.metadata\.plugins\org.eclipse.jdt.core
+2143625166.index
+657850957.index
+3515282563.index
+4144675614.index
+4141374826.index
+1945609499.index

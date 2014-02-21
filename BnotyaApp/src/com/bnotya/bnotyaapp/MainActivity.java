@@ -1,13 +1,13 @@
 package com.bnotya.bnotyaapp;
 
 import android.os.Bundle;
-import android.app.Activity;
 import android.content.Intent;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-public class MainActivity extends Activity {
+public class MainActivity extends ActionBarActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -26,12 +26,12 @@ public class MainActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle presses on the action bar items
 		switch (item.getItemId()) {		
-		case R.id.action_open_tehilot:
+		/*case R.id.action_open_tehilot:
 			openTehilotPage(null);
 			return true;
 		case R.id.action_open_women_menu:
 			openWomenPage(null);
-			return true;
+			return true;*/
 		default:
 			return super.onOptionsItemSelected(item);
 		}

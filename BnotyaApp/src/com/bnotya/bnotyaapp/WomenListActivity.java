@@ -1,7 +1,7 @@
 package com.bnotya.bnotyaapp;
 
 import android.app.ListActivity;
-import android.content.Intent;
+//import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,7 +19,7 @@ public class WomenListActivity extends ListActivity
 		super.onCreate(savedInstanceState);		
 		setListAdapter(new ArrayAdapter<String>(
 				this, android.R.layout.simple_list_item_1, womenNames));
-		getActionBar().setDisplayHomeAsUpEnabled(true);
+		//getActionBar().setDisplayHomeAsUpEnabled(true);
 	}
 	
 	@Override
@@ -27,7 +27,7 @@ public class WomenListActivity extends ListActivity
 			ListView listView, View view, int position, long id)
 	{
 		super.onListItemClick(listView, view, position, id);
-		String selectedWoman = womenNames[position];
+		//String selectedWoman = womenNames[position];
 		/* TODO: create activities for women
 		try
 		{

@@ -1,20 +1,27 @@
 package com.bnotya.bnotyaapp;
 
-
-import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-public class MainWomenActivity extends Activity {
+public class MainWomenActivity extends ActionBarActivity {
 
 	protected void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main_women);
-		getActionBar().setDisplayHomeAsUpEnabled(true);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) 
+		{
+			getActionBar().setDisplayHomeAsUpEnabled(true);
+		}
+		else
+		{
+			getSupportActionBar().setDisplayHomeAsUpEnabled(true);			
+		}
 	}
 	
 	@Override
@@ -28,7 +35,7 @@ public class MainWomenActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle presses on the action bar items
 		switch (item.getItemId()) {		
-		case R.id.action_open_random_card:
+		/*case R.id.action_open_random_card:
 			openRandomCard(null);
 			return true;
 		case R.id.action_open_women_list:
@@ -36,7 +43,7 @@ public class MainWomenActivity extends Activity {
 			return true;
 		case R.id.action_open_trivia_page:
 			openTriviaPage(null);
-			return true;
+			return true;*/
 		default:
 			return super.onOptionsItemSelected(item);
 		}
