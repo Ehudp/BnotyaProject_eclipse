@@ -12,7 +12,7 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/CustomActionBarTheme" >
+        android:theme="@style/Theme.AppCompat.Light" >
 
         <!-- Splash activity -->
         <activity
@@ -30,8 +30,7 @@
         <activity
             android:name="com.bnotya.bnotyaapp.MainActivity"
             android:label="@string/app_name"
-            android:parentActivityName="com.bnotya.bnotyaapp.SplashActivity"
-            android:theme="@style/Theme.AppCompat.Light" >
+            android:parentActivityName="com.bnotya.bnotyaapp.SplashActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.bnotya.bnotyaapp.SplashActivity" />
@@ -63,8 +62,7 @@
         <activity
             android:name="com.bnotya.bnotyaapp.MainWomenActivity"
             android:label="@string/app_name"
-            android:parentActivityName="com.bnotya.bnotyaapp.MainActivity"
-            android:theme="@style/Theme.AppCompat.Light" >
+            android:parentActivityName="com.bnotya.bnotyaapp.MainActivity" >
             <intent-filter>
                 <action android:name="com.bnotya.bnotyaapp.MainWomenActivity" />
 
@@ -106,7 +104,9 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.bnotya.bnotyaapp.MainWomenActivity" />
-        </activity>
-    </application>
+        </activity>       
+        
+    </application>   
+    
 
 </manifest>

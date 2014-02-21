@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bnotyaapp="http://schemas.android.com/apk/res-auto" >
+    
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        bnotyaapp:showAsAction="never"
+        android:title="@string/action_settings"/>
     
 
     <item android:id="@+id/action_open_search"
-          android:icon="@drawable/ic_launcher"
+          android:icon="@drawable/ic_action_search"
           android:title="@string/action_search"
-          android:showAsAction="ifRoom" />
+          android:showAsAction="ifRoom" 
+          bnotyaapp:showAsAction="ifRoom"/>
     
 </menu>
