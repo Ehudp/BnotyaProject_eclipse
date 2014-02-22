@@ -12,6 +12,7 @@ import android.view.View;
 public class MainWomenActivity extends ActionBarActivity {
 
 	@SuppressLint("NewApi")
+	@Override
 	protected void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
@@ -53,7 +54,7 @@ public class MainWomenActivity extends ActionBarActivity {
 	
 	public void openRandomCard(View view) 
     {    		
-    	
+    	startActivity(new Intent(this, CardFlipActivity.class));
     } 
     
     public void openWomenList(View view) 
