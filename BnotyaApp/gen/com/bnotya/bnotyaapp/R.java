@@ -993,6 +993,7 @@ containing a value of this type.
         public static final int logo_01=0x7f020059;
     }
     public static final class id {
+        public static final int action_about=0x7f060042;
         public static final int action_bar=0x7f06001e;
         public static final int action_bar_activity_content=0x7f060015;
         public static final int action_bar_container=0x7f06001d;
@@ -1014,7 +1015,7 @@ containing a value of this type.
     
          */
         public static final int action_next=0x7f06001a;
-        public static final int action_open_search=0x7f060042;
+        public static final int action_open_search=0x7f060043;
         public static final int action_settings=0x7f060041;
         public static final int activity_chooser_view_content=0x7f060027;
         public static final int always=0x7f06000b;
@@ -1177,27 +1178,28 @@ containing a value of this type.
         /**  Description of a share target (both in the list of such or the default share button) in a ShareActionProvider (share UI). [CHAR LIMIT=NONE] 
          */
         public static final int abc_shareactionprovider_share_with_application=0x7f0b000b;
-        public static final int about_main_menu=0x7f0b0010;
-        public static final int about_main_tehilot=0x7f0b0011;
-        public static final int about_main_women=0x7f0b0012;
-        public static final int action_card_back=0x7f0b0019;
-        public static final int action_card_front=0x7f0b001a;
-        public static final int action_search=0x7f0b000f;
+        public static final int about_main_menu=0x7f0b0011;
+        public static final int about_main_tehilot=0x7f0b0012;
+        public static final int about_main_women=0x7f0b0013;
+        public static final int action_about=0x7f0b000f;
+        public static final int action_card_back=0x7f0b001a;
+        public static final int action_card_front=0x7f0b001b;
+        public static final int action_search=0x7f0b0010;
         public static final int action_settings=0x7f0b000e;
         public static final int app_name=0x7f0b000d;
-        public static final int card_back_description=0x7f0b001d;
+        public static final int card_back_description=0x7f0b001e;
         /**  Other strings 
          */
-        public static final int card_back_title=0x7f0b001c;
-        public static final int description_image_1=0x7f0b001f;
-        public static final int lorem_ipsum=0x7f0b001e;
-        public static final int open_random_card=0x7f0b0017;
-        public static final int open_self_improvement_page=0x7f0b0015;
-        public static final int open_tehilot=0x7f0b0013;
-        public static final int open_trivia_page=0x7f0b0016;
-        public static final int open_women_list=0x7f0b0018;
-        public static final int open_women_menu=0x7f0b0014;
-        public static final int title_card_flip=0x7f0b001b;
+        public static final int card_back_title=0x7f0b001d;
+        public static final int description_image_1=0x7f0b0020;
+        public static final int lorem_ipsum=0x7f0b001f;
+        public static final int open_random_card=0x7f0b0018;
+        public static final int open_self_improvement_page=0x7f0b0016;
+        public static final int open_tehilot=0x7f0b0014;
+        public static final int open_trivia_page=0x7f0b0017;
+        public static final int open_women_list=0x7f0b0019;
+        public static final int open_women_menu=0x7f0b0015;
+        public static final int title_card_flip=0x7f0b001c;
     }
     public static final class style {
         /** 
