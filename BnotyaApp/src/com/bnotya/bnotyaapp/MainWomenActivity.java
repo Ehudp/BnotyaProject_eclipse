@@ -20,37 +20,53 @@ public class MainWomenActivity extends ActionBarActivity {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) 
 		{
 			getActionBar().setDisplayHomeAsUpEnabled(true);
+			getActionBar().setHomeButtonEnabled(true);
 		}
 		else
-		{
-			getSupportActionBar().setDisplayHomeAsUpEnabled(true);			
+		{			
+			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+			getSupportActionBar().setHomeButtonEnabled(true);
 		}
 	}
 	
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main_women_menu, menu);
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		getMenuInflater().inflate(R.menu.main_menu, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 
+	/* Called whenever we call invalidateOptionsMenu() */
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle presses on the action bar items
-		switch (item.getItemId()) {		
-		/*case R.id.action_open_random_card:
-			openRandomCard(null);
-			return true;
-		case R.id.action_open_women_list:
-			openWomenList(null);
-			return true;
-		case R.id.action_open_trivia_page:
-			openTriviaPage(null);
-			return true;*/
-		default:
-			return super.onOptionsItemSelected(item);
-		}
+	public boolean onPrepareOptionsMenu(Menu menu)
+	{
+		// If the nav drawer is open, hide action items related to the content view
+		/*boolean drawerOpen = _drawerLayout.isDrawerOpen(_drawerList);
+		menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
+		menu.findItem(R.id.action_about).setVisible(!drawerOpen);*/
+		return super.onPrepareOptionsMenu(menu);
 	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		/*if (_drawerToggle.onOptionsItemSelected(item))
+		{
+			return true;
+		}*/
+		// Handle action buttons
+		switch (item.getItemId())
+		{
+			case R.id.action_settings:
+				// TODO
+				return true;
+			case R.id.action_about:
+				// TODO
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+		}
+	}	
 	
 	public void openRandomCard(View view) 
     {    		

@@ -18,11 +18,8 @@ import android.view.ViewGroup;
 public class CardFlipActivity extends FragmentActivity implements
 		FragmentManager.OnBackStackChangedListener
 {
-	/**
-	 * A handler object, used for deferring UI operations.
-	 */
+	/* A handler object, used for deferring UI operations. */
 	private Handler _handler = new Handler();
-
 	/**
 	 * Whether or not we're showing the back of the card (otherwise showing the
 	 * front).
@@ -39,10 +36,11 @@ public class CardFlipActivity extends FragmentActivity implements
 		if (savedInstanceState == null)
 		{
 			// If there is no saved instance state, add a fragment representing
-			// the front of the card to this activity. 
+			// the front of the card to this activity.
 			// If there is saved instance state,
 			// this fragment will have already been added to the activity.
-			getSupportFragmentManager().beginTransaction().add(R.id.container, new CardFrontFragment()).commit();
+			getSupportFragmentManager().beginTransaction()
+					.add(R.id.container, new CardFrontFragment()).commit();
 		}
 		else
 		{
@@ -65,8 +63,8 @@ public class CardFlipActivity extends FragmentActivity implements
 				_showingBack ? R.string.action_card_front
 						: R.string.action_card_back);
 		item.setIcon(_showingBack ? R.drawable.ic_action_search
-				: R.drawable.ic_launcher);	
-		
+				: R.drawable.ic_launcher);
+
 		return true;
 	}
 
@@ -75,9 +73,10 @@ public class CardFlipActivity extends FragmentActivity implements
 	{
 		switch (item.getItemId())
 		{
-			// TODO
-			case android.R.id.home:				
-				NavUtils.navigateUpTo(this, new Intent(this, MainActivity.class));
+		// TODO
+			case android.R.id.home:
+				NavUtils.navigateUpTo(this,
+						new Intent(this, MainActivity.class));
 				return true;
 
 			case R.id.action_flip:
@@ -91,7 +90,7 @@ public class CardFlipActivity extends FragmentActivity implements
 	private void flipCard()
 	{
 		if (_showingBack)
-		{			
+		{
 			getSupportFragmentManager().popBackStack();
 			return;
 		}
@@ -101,17 +100,18 @@ public class CardFlipActivity extends FragmentActivity implements
 		_showingBack = true;
 
 		// Create and commit a new fragment transaction that adds the fragment
-		// for the back of the card, uses custom animations, and is part of the fragment
-		// manager's back stack.		
+		// for the back of the card, uses custom animations, and is part of the
+		// fragment
+		// manager's back stack.
 		getSupportFragmentManager().beginTransaction()
 
 		// Replace the default fragment animations with animator resources
-		// representing rotations when switching to the back of the card, 
-		// as well as animator resources representing rotations when flipping back to the front
+		// representing rotations when switching to the back of the card,
+		// as well as animator resources representing rotations when flipping
+		// back to the front
 		// (e.g. when the system Back button is pressed).
 				.setCustomAnimations(R.anim.card_flip_right_in,
-						R.anim.card_flip_right_out,
-						R.anim.card_flip_left_in,
+						R.anim.card_flip_right_out, R.anim.card_flip_left_in,
 						R.anim.card_flip_left_out)
 
 				// Replace any fragments currently in the container view with a
@@ -141,7 +141,7 @@ public class CardFlipActivity extends FragmentActivity implements
 			@Override
 			public void run()
 			{
-				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) 
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
 				{
 					invalidateOptionsMenu();
 				}
@@ -159,7 +159,7 @@ public class CardFlipActivity extends FragmentActivity implements
 	{
 		_showingBack = (getSupportFragmentManager().getBackStackEntryCount() > 0);
 
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) 
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
 		{
 			invalidateOptionsMenu();
 		}
@@ -169,9 +169,6 @@ public class CardFlipActivity extends FragmentActivity implements
 		}
 	}
 
-	/**
-	 * A fragment representing the front of the card.
-	 */
 	public static class CardFrontFragment extends Fragment
 	{
 		public CardFrontFragment()
@@ -187,9 +184,6 @@ public class CardFlipActivity extends FragmentActivity implements
 		}
 	}
 
-	/**
-	 * A fragment representing the back of the card.
-	 */
 	public static class CardBackFragment extends Fragment
 	{
 		public CardBackFragment()

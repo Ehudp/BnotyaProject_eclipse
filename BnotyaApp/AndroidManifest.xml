@@ -94,7 +94,8 @@
         <activity
             android:name="com.bnotya.bnotyaapp.WomenListActivity"
             android:label="@string/app_name"
-            android:parentActivityName="com.bnotya.bnotyaapp.MainWomenActivity" >
+            android:parentActivityName="com.bnotya.bnotyaapp.MainWomenActivity" 
+            android:configChanges="keyboardHidden|orientation|screenSize">
             <intent-filter>
                 <action android:name="com.bnotya.bnotyaapp.WomenListActivity" />
 

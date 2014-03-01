@@ -28,7 +28,7 @@ import android.widget.Toast;
 
 @SuppressLint("NewApi")
 public class MainActivity extends ActionBarActivity
-{
+{	
 	private ExpandableListView _drawerList;
 	private List<String> _listDataHeaders;
 	private HashMap<String, List<String>> _listDataChildren;
@@ -59,8 +59,7 @@ public class MainActivity extends ActionBarActivity
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu)
 	{
-		// If the nav drawer is open, hide action items related to the content
-		// view
+		// If the nav drawer is open, hide action items related to the content view
 		boolean drawerOpen = _drawerLayout.isDrawerOpen(_drawerList);
 		menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
 		menu.findItem(R.id.action_about).setVisible(!drawerOpen);
@@ -74,7 +73,7 @@ public class MainActivity extends ActionBarActivity
 		{
 			return true;
 		}
-		// Handle action buttons
+		
 		switch (item.getItemId())
 		{
 			case R.id.action_settings:

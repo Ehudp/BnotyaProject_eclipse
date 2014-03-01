@@ -9,6 +9,12 @@
         bnotyaapp:showAsAction="never"
         android:title="@string/action_settings"/>
     
+    <item
+        android:id="@+id/action_about"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        bnotyaapp:showAsAction="never"
+        android:title="@string/action_about"/>    
 
     <item android:id="@+id/action_open_search"
           android:icon="@drawable/ic_action_search"
