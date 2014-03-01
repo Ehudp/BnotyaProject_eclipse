@@ -1,5 +1,10 @@
 package com.bnotya.bnotyaapp;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import com.bnotya.bnotyaapp.adapters.ExpandableListAdapter;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -16,62 +21,31 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnGroupCollapseListener;
+import android.widget.ExpandableListView.OnGroupExpandListener;
+import android.widget.Toast;
 
+@SuppressLint("NewApi")
 public class MainActivity extends ActionBarActivity
 {
+	private ExpandableListView _drawerList;
+	private List<String> _listDataHeaders;
+	private HashMap<String, List<String>> _listDataChildren;
 	private DrawerLayout _drawerLayout;
-	private ListView _drawerList;
 	private ActionBarDrawerToggle _drawerToggle;
 	private CharSequence _drawerTitle;
 	private CharSequence _title;
-	private String[] _navigationTitles;
-
-	@SuppressLint("NewApi")
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+		initDrawerList();
 		_title = _drawerTitle = getTitle();
-		_navigationTitles = getResources().getStringArray(R.array.views_array);
-		_drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-		_drawerList = (ListView) findViewById(R.id.left_drawer);
-
-		// set a custom shadow that overlays the main content when the drawer
-		// opens
-		_drawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
-				GravityCompat.START);
-		// set up the drawer's list view with items and click listener
-		_drawerList.setAdapter(new ArrayAdapter<String>(this,
-				R.layout.drawer_list_item, _navigationTitles));
-		_drawerList.setOnItemClickListener(new DrawerItemClickListener());
-
-		// enable ActionBar app icon to behave as action to toggle nav drawer
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-		{
-			getActionBar().setDisplayHomeAsUpEnabled(true);
-			getActionBar().setHomeButtonEnabled(true);
-		}
-		else
-		{
-			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-			getSupportActionBar().setHomeButtonEnabled(true);
-		}
-
-		// ActionBarDrawerToggle ties together the the proper interactions
-		// between the sliding drawer and the action bar app icon
-		_drawerToggle = initActionBarDrawerToggle();
-		
-		_drawerLayout.setDrawerListener(_drawerToggle);
-
-		if (savedInstanceState == null)
-		{
-			selectItem(0);
-		}
+		initDrawerLayout(savedInstanceState);
 	}
 
 	@Override
@@ -113,102 +87,283 @@ public class MainActivity extends ActionBarActivity
 				return super.onOptionsItemSelected(item);
 		}
 	}
+	
+	private void initDrawerList()
+	{
+		// get the listview
+				_drawerList = (ExpandableListView) findViewById(R.id.left_drawer);
 
-	/* The click listener for ListView in the navigation drawer */
-	private class DrawerItemClickListener implements
-			ListView.OnItemClickListener
+				// preparing list data
+				prepareListData();
+
+				// setting list adapter
+				_drawerList.setAdapter(new ExpandableListAdapter(this,
+						_listDataHeaders, _listDataChildren));
+
+				// Listview Group click listener
+				_drawerList.setOnGroupClickListener(new DrawerGroupClickListener());
+
+				// Listview on child click listener
+				_drawerList.setOnChildClickListener(new DrawerChildClickListener());
+
+				// Listview Group expanded listener
+				_drawerList.setOnGroupExpandListener(new OnGroupExpandListener()
+				{
+					@Override
+					public void onGroupExpand(int groupPosition)
+					{
+
+					}
+				});
+
+				// Listview Group collasped listener
+				_drawerList.setOnGroupCollapseListener(new OnGroupCollapseListener()
+				{
+					@Override
+					public void onGroupCollapse(int groupPosition)
+					{
+
+					}
+				});
+	}
+		
+	private void initDrawerLayout(Bundle savedInstanceState)
+	{
+		_drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+		// set a custom shadow that overlays the main content when the drawer
+		// opens
+		_drawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
+				GravityCompat.START);
+
+		// enable ActionBar app icon to behave as action to toggle nav drawer
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+		{
+			getActionBar().setDisplayHomeAsUpEnabled(true);
+			getActionBar().setHomeButtonEnabled(true);
+		}
+		else
+		{
+			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+			getSupportActionBar().setHomeButtonEnabled(true);
+		}
+
+		// ActionBarDrawerToggle ties together the the proper interactions
+		// between the sliding drawer and the action bar app icon
+		_drawerToggle = initActionBarDrawerToggle();
+
+		_drawerLayout.setDrawerListener(_drawerToggle);
+
+		if (savedInstanceState == null)
+		{
+			selectGroup(0);
+		}
+	}
+
+	/* The click listener for ExpandableListView in the navigation drawer */
+	private class DrawerChildClickListener implements
+			ExpandableListView.OnChildClickListener
 	{
 		@Override
-		public void onItemClick(AdapterView<?> parent, View view, int position,
-				long id)
+		public boolean onChildClick(ExpandableListView parent, View v,
+				int groupPosition, int childPosition, long id)
 		{
-			selectItem(position);
+			String key = _listDataHeaders.get(groupPosition);
+			// TODO Auto-generated method stub
+			Toast.makeText(
+					getApplicationContext(),
+					key + " : " + _listDataChildren.get(key).get(childPosition),
+					Toast.LENGTH_SHORT).show();
+			selectChild(groupPosition, childPosition);
+			return false;
+		}
+	}
+
+	/* The click listener for ExpandableListView in the navigation drawer */
+	private class DrawerGroupClickListener implements
+			ExpandableListView.OnGroupClickListener
+	{
+
+		@Override
+		public boolean onGroupClick(ExpandableListView parent, View v,
+				int groupPosition, long id)
+		{
+			String key = _listDataHeaders.get(groupPosition);
+			List<String> children = _listDataChildren.get(key);
+			if (children.size() == 0) selectGroup(groupPosition);
+			return false;
 		}
 	}
 	
-	@SuppressLint("NewApi")
 	private ActionBarDrawerToggle initActionBarDrawerToggle()
 	{
 		return new ActionBarDrawerToggle(this, /* host Activity */
-				_drawerLayout, /* DrawerLayout object */
-				R.drawable.ic_drawer, /* nav drawer image to replace 'Up' caret */
-				R.string.drawer_open, /* "open drawer" description for accessibility */
-				R.string.drawer_close /* "close drawer" description for accessibility */
-				)
-				{					
-					public void onDrawerClosed(View view)
-					{
-						if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-						{
-							getActionBar().setTitle(_title);
-							invalidateOptionsMenu(); // creates call to
-														// onPrepareOptionsMenu()
-						}
-						else
-						{
-							getSupportActionBar().setTitle(_title);
-							supportInvalidateOptionsMenu();
-						}
-					}
+		_drawerLayout, /* DrawerLayout object */
+		R.drawable.ic_drawer, /* nav drawer image to replace 'Up' caret */
+		R.string.drawer_open, /* "open drawer" description for accessibility */
+		R.string.drawer_close /* "close drawer" description for accessibility */
+		)
+		{
+			public void onDrawerClosed(View view)
+			{
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+				{
+					getActionBar().setTitle(_title);
+					invalidateOptionsMenu(); // creates call to
+												// onPrepareOptionsMenu()
+				}
+				else
+				{
+					getSupportActionBar().setTitle(_title);
+					supportInvalidateOptionsMenu();
+				}
+			}
 
-					public void onDrawerOpened(View drawerView)
-					{
-						if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-						{
-							getActionBar().setTitle(_drawerTitle);
-							invalidateOptionsMenu(); // creates call to
-														// onPrepareOptionsMenu()
-						}
-						else
-						{
-							getSupportActionBar().setTitle(_drawerTitle);
-							supportInvalidateOptionsMenu();
-						}
-					}
-				};
+			public void onDrawerOpened(View drawerView)
+			{
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+				{
+					getActionBar().setTitle(_drawerTitle);
+					invalidateOptionsMenu(); // creates call to
+												// onPrepareOptionsMenu()
+				}
+				else
+				{
+					getSupportActionBar().setTitle(_drawerTitle);
+					supportInvalidateOptionsMenu();
+				}
+			}
+		};
 	}
 
-	private void selectItem(int position)
-	{	
-		Bundle args = new Bundle();		
+	private void prepareListData()
+	{
+		// Setting group headers
+		_listDataHeaders = Arrays.asList(getResources().getStringArray(
+				R.array.views_array));
+		// Initiating _listDataChildren
+		_listDataChildren = new HashMap<String, List<String>>();
+		// Adding child data
+		List<String> womenChildrenList = Arrays.asList(getResources()
+				.getStringArray(R.array.women_views_array));
+
+		_listDataChildren.put(_listDataHeaders.get(0), new ArrayList<String>());
+		_listDataChildren.put(_listDataHeaders.get(1), womenChildrenList);
+		_listDataChildren.put(_listDataHeaders.get(2), new ArrayList<String>());
+		_listDataChildren.put(_listDataHeaders.get(3), womenChildrenList);
+	}
+
+	private void selectGroup(int position)
+	{
+		Bundle args = new Bundle();
 		FragmentManager fragmentManager = getSupportFragmentManager();
-		
-		switch(position)
+
+		switch (position)
 		{
 			case 0:
 			{
 				MainTehilotFragment fragment = new MainTehilotFragment();
 				args.putInt(MainTehilotFragment.ARG_VIEW_NUMBER, position);
 				fragment.setArguments(args);
-				
+
 				fragmentManager.beginTransaction()
 						.replace(R.id.content_frame, fragment).commit();
 				break;
-			}				
+			}
 			case 1:
 			{
 				MainWomenFragment fragment = new MainWomenFragment();
 				args.putInt(MainWomenFragment.ARG_VIEW_NUMBER, position);
 				fragment.setArguments(args);
-				
+
 				fragmentManager.beginTransaction()
 						.replace(R.id.content_frame, fragment).commit();
-				
+
 				break;
-			}			
+			}
 			case 2:
 			{
 				startActivity(new Intent(this, MainTehilotActivity.class));
+				break;
 			}
 			case 3:
 			{
 				startActivity(new Intent(this, MainWomenActivity.class));
+				break;
 			}
 		}
 
 		// update selected item and title, then close the drawer
 		_drawerList.setItemChecked(position, true);
-		setTitle(_navigationTitles[position]);
+		setTitle(_listDataHeaders.get(position));
+		_drawerLayout.closeDrawer(_drawerList);
+	}
+
+	private void selectChild(int groupPosition, int childPosition)
+	{
+		String key = _listDataHeaders.get(groupPosition);
+
+		switch (groupPosition)
+		{
+			case 0:
+			{
+				break;
+			}
+			case 1:
+			{
+				switch (childPosition)
+				{
+					case 0:
+					{
+						startActivity(new Intent(this, CardFlipActivity.class));
+						break;
+					}
+					case 1:
+					{
+						startActivity(new Intent(this, WomenListActivity.class));
+						break;
+					}
+					case 2:
+					{
+						startActivity(new Intent(this, TriviaActivity.class));
+						break;
+					}
+				}
+
+				break;
+			}
+			case 2:
+			{
+				break;
+			}
+			case 3:
+			{
+				switch (childPosition)
+				{
+					case 0:
+					{
+						startActivity(new Intent(this, CardFlipActivity.class));
+						break;
+					}
+					case 1:
+					{
+						startActivity(new Intent(this, WomenListActivity.class));
+						break;
+					}
+					case 2:
+					{
+						startActivity(new Intent(this, TriviaActivity.class));
+						break;
+					}
+				}
+
+				break;
+			}
+		}
+
+		// update selected item and title, then close the drawer
+		_drawerList.setItemChecked(groupPosition, true);
+		setTitle(_listDataChildren.get(key).get(childPosition));
 		_drawerLayout.closeDrawer(_drawerList);
 	}
 
@@ -246,7 +401,7 @@ public class MainActivity extends ActionBarActivity
 		super.onConfigurationChanged(newConfig);
 		// Pass any configuration change to the drawer toggles
 		_drawerToggle.onConfigurationChanged(newConfig);
-	}	
+	}
 
 	/**
 	 * Fragment that appears in the "content_frame"
@@ -265,22 +420,23 @@ public class MainActivity extends ActionBarActivity
 				Bundle savedInstanceState)
 		{
 			View rootView = inflater.inflate(R.layout.activity_main_tehilot,
-					container, false);	
-			
+					container, false);
+
 			int i = getArguments().getInt(ARG_VIEW_NUMBER);
 			String view = getResources().getStringArray(R.array.views_array)[i];
-			
-			/*int imageId = getResources().getIdentifier(
-					view.toLowerCase(Locale.getDefault()), "drawable",
-					getActivity().getPackageName());
-			((ImageView) rootView.findViewById(R.id.image))
-					.setImageResource(imageId);*/
-			
+
+			/*
+			 * int imageId = getResources().getIdentifier(
+			 * view.toLowerCase(Locale.getDefault()), "drawable",
+			 * getActivity().getPackageName()); ((ImageView)
+			 * rootView.findViewById(R.id.image)) .setImageResource(imageId);
+			 */
+
 			getActivity().setTitle(view);
 			return rootView;
 		}
 	}
-	
+
 	/**
 	 * Fragment that appears in the "content_frame"
 	 */
@@ -298,29 +454,29 @@ public class MainActivity extends ActionBarActivity
 				Bundle savedInstanceState)
 		{
 			View rootView = inflater.inflate(R.layout.activity_main_women,
-					container, false);			
-			
+					container, false);
+
 			int i = getArguments().getInt(ARG_VIEW_NUMBER);
 			String view = getResources().getStringArray(R.array.views_array)[i];
-			
+
 			getActivity().setTitle(view);
 			return rootView;
-		}	
-		
+		}
+
 	}
-	
-	public void openRandomCard(View view) 
-    {    		
-    	startActivity(new Intent(this,CardFlipActivity.class));
-    } 
-    
-    public void openWomenList(View view) 
-    {    		
-    	startActivity(new Intent(this, WomenListActivity.class));
-    } 
-    
-    public void openTriviaPage(View view) 
-    {    		
-    	startActivity(new Intent(this, TriviaActivity.class));
-    } 
+
+	public void openRandomCard(View view)
+	{
+		startActivity(new Intent(this, CardFlipActivity.class));
+	}
+
+	public void openWomenList(View view)
+	{
+		startActivity(new Intent(this, WomenListActivity.class));
+	}
+
+	public void openTriviaPage(View view)
+	{
+		startActivity(new Intent(this, TriviaActivity.class));
+	}
 }

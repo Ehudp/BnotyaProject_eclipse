@@ -31,6 +31,12 @@
         <item>Tehilot Activity</item>
         <item>Women Activity</item>             
     </string-array>
+    <string-array name="women_views_array">        
+        <item>Show Random Card</item>
+        <item>Open Women List</item>
+        <item>Open Trivia Page</item>               
+    </string-array>
+    
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>    
     <string name="app_not_available">Sorry, there\'s no web browser available</string>
