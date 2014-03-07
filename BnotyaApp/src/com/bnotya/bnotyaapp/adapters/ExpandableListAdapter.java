@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
+import com.bnotya.bnotyaapp.R;
 
 public class ExpandableListAdapter extends BaseExpandableListAdapter
 {
@@ -50,10 +51,10 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter
 		{
 			LayoutInflater infalInflater = (LayoutInflater) this._context
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			convertView = infalInflater.inflate(com.bnotya.bnotyaapp.R.layout.drawer_list_item, null);
+			convertView = infalInflater.inflate(R.layout.drawer_list_item, null);
 		}
 
-		TextView txtListChild = (TextView) convertView.findViewById(com.bnotya.bnotyaapp.R.id.lblListItem);
+		TextView txtListChild = (TextView) convertView.findViewById(R.id.lblListItem);
 
 		txtListChild.setText(childText);
 		return convertView;
@@ -93,11 +94,11 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter
 		{
 			LayoutInflater infalInflater = (LayoutInflater) this._context
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			convertView = infalInflater.inflate(com.bnotya.bnotyaapp.R.layout.drawer_list_group, null);
+			convertView = infalInflater.inflate(R.layout.drawer_list_group, null);
 		}
 
 		TextView lblListHeader = (TextView) convertView
-				.findViewById(com.bnotya.bnotyaapp.R.id.lblListHeader);
+				.findViewById(R.id.lblListHeader);
 		lblListHeader.setTypeface(null, Typeface.BOLD);
 		lblListHeader.setText(headerTitle);
 

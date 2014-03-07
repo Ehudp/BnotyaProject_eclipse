@@ -111,7 +111,8 @@
         <activity
             android:name="com.bnotya.bnotyaapp.CardFlipActivity"
             android:label="@string/title_card_flip"
-            android:parentActivityName="com.bnotya.bnotyaapp.MainActivity" >
+            android:parentActivityName="com.bnotya.bnotyaapp.MainActivity" 
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="com.bnotya.bnotyaapp.CardFlipActivity" />
 

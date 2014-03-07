@@ -22,4 +22,11 @@
           android:showAsAction="ifRoom" 
           bnotyaapp:showAsAction="ifRoom"/>
     
+    <item
+        android:id="@+id/action_home"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        bnotyaapp:showAsAction="never"
+        android:title="@string/action_home"/>
+    
 </menu>

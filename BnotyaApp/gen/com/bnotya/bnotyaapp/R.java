@@ -999,14 +999,38 @@ containing a value of this type.
         public static final int abc_textfield_searchview_right_holo_dark=0x7f020055;
         public static final int abc_textfield_searchview_right_holo_light=0x7f020056;
         public static final int background=0x7f020057;
-        public static final int drawer_shadow=0x7f020058;
-        public static final int ic_action_search=0x7f020059;
-        public static final int ic_drawer=0x7f02005a;
-        public static final int ic_launcher=0x7f02005b;
-        public static final int logo_01=0x7f02005c;
+        public static final int card1=0x7f020058;
+        public static final int card10=0x7f020059;
+        public static final int card10_10=0x7f02005a;
+        public static final int card11=0x7f02005b;
+        public static final int card11_11=0x7f02005c;
+        public static final int card12=0x7f02005d;
+        public static final int card12_12=0x7f02005e;
+        public static final int card1_1=0x7f02005f;
+        public static final int card2=0x7f020060;
+        public static final int card2_2=0x7f020061;
+        public static final int card3=0x7f020062;
+        public static final int card3_3=0x7f020063;
+        public static final int card4=0x7f020064;
+        public static final int card4_4=0x7f020065;
+        public static final int card5=0x7f020066;
+        public static final int card5_5=0x7f020067;
+        public static final int card6=0x7f020068;
+        public static final int card6_6=0x7f020069;
+        public static final int card7=0x7f02006a;
+        public static final int card7_7=0x7f02006b;
+        public static final int card8=0x7f02006c;
+        public static final int card8_8=0x7f02006d;
+        public static final int card9=0x7f02006e;
+        public static final int card9_9=0x7f02006f;
+        public static final int drawer_shadow=0x7f020070;
+        public static final int ic_action_search=0x7f020071;
+        public static final int ic_drawer=0x7f020072;
+        public static final int ic_launcher=0x7f020073;
+        public static final int logo_01=0x7f020074;
     }
     public static final class id {
-        public static final int action_about=0x7f060046;
+        public static final int action_about=0x7f060048;
         public static final int action_bar=0x7f06001e;
         public static final int action_bar_activity_content=0x7f060015;
         public static final int action_bar_container=0x7f06001d;
@@ -1016,6 +1040,7 @@ containing a value of this type.
         public static final int action_bar_title=0x7f060024;
         public static final int action_context_bar=0x7f06001f;
         public static final int action_flip=0x7f06001b;
+        public static final int action_home=0x7f060049;
         public static final int action_menu_divider=0x7f060016;
         public static final int action_menu_presenter=0x7f060017;
         public static final int action_mode_close_button=0x7f060026;
@@ -1028,11 +1053,13 @@ containing a value of this type.
     
          */
         public static final int action_next=0x7f06001a;
-        public static final int action_open_search=0x7f060047;
-        public static final int action_settings=0x7f060045;
+        public static final int action_open_search=0x7f06004a;
+        public static final int action_settings=0x7f060047;
         public static final int activity_chooser_view_content=0x7f060027;
         public static final int always=0x7f06000b;
         public static final int beginning=0x7f060011;
+        public static final int card_back=0x7f060045;
+        public static final int card_front=0x7f060046;
         public static final int checkbox=0x7f06002f;
         public static final int collapseActionView=0x7f06000d;
         public static final int container=0x7f06003e;
@@ -1113,6 +1140,7 @@ containing a value of this type.
         public static final int abc_max_action_buttons=0x7f0a0000;
         public static final int card_flip_time_full=0x7f0a0001;
         public static final int card_flip_time_half=0x7f0a0002;
+        public static final int number_of_cards=0x7f0a0003;
     }
     public static final class layout {
         public static final int abc_action_bar_decor=0x7f030000;
@@ -1153,7 +1181,8 @@ containing a value of this type.
     }
     public static final class menu {
         public static final int main_menu=0x7f0e0000;
-        public static final int search_menu=0x7f0e0001;
+        public static final int page_menu=0x7f0e0001;
+        public static final int search_menu=0x7f0e0002;
     }
     public static final class string {
         /**  Content description for the action bar "home" affordance. [CHAR LIMIT=NONE] 
@@ -1196,31 +1225,28 @@ containing a value of this type.
         /**  Description of a share target (both in the list of such or the default share button) in a ShareActionProvider (share UI). [CHAR LIMIT=NONE] 
          */
         public static final int abc_shareactionprovider_share_with_application=0x7f0b000b;
-        public static final int about_main_menu=0x7f0b0011;
-        public static final int about_main_tehilot=0x7f0b0012;
-        public static final int about_main_women=0x7f0b0013;
+        public static final int about_main_menu=0x7f0b0012;
+        public static final int about_main_tehilot=0x7f0b0013;
+        public static final int about_main_women=0x7f0b0014;
         public static final int action_about=0x7f0b000f;
-        public static final int action_card_back=0x7f0b001a;
-        public static final int action_card_front=0x7f0b001b;
+        public static final int action_card_back=0x7f0b001b;
+        public static final int action_card_front=0x7f0b001c;
+        public static final int action_home=0x7f0b0011;
         public static final int action_search=0x7f0b0010;
         public static final int action_settings=0x7f0b000e;
         public static final int app_name=0x7f0b000d;
-        public static final int app_not_available=0x7f0b0023;
-        public static final int card_back_description=0x7f0b001e;
-        /**  Other strings 
-         */
-        public static final int card_back_title=0x7f0b001d;
-        public static final int description_image_1=0x7f0b0020;
-        public static final int drawer_close=0x7f0b0022;
-        public static final int drawer_open=0x7f0b0021;
-        public static final int lorem_ipsum=0x7f0b001f;
-        public static final int open_random_card=0x7f0b0018;
-        public static final int open_self_improvement_page=0x7f0b0016;
-        public static final int open_tehilot=0x7f0b0014;
-        public static final int open_trivia_page=0x7f0b0017;
-        public static final int open_women_list=0x7f0b0019;
-        public static final int open_women_menu=0x7f0b0015;
-        public static final int title_card_flip=0x7f0b001c;
+        public static final int app_not_available=0x7f0b0022;
+        public static final int description_card_back=0x7f0b001f;
+        public static final int description_card_front=0x7f0b001e;
+        public static final int drawer_close=0x7f0b0021;
+        public static final int drawer_open=0x7f0b0020;
+        public static final int open_random_card=0x7f0b0019;
+        public static final int open_self_improvement_page=0x7f0b0017;
+        public static final int open_tehilot=0x7f0b0015;
+        public static final int open_trivia_page=0x7f0b0018;
+        public static final int open_women_list=0x7f0b001a;
+        public static final int open_women_menu=0x7f0b0016;
+        public static final int title_card_flip=0x7f0b001d;
     }
     public static final class style {
         /** 

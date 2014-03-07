@@ -1,9 +1,11 @@
 package com.bnotya.bnotyaapp;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,7 +14,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 @SuppressLint("NewApi")
 public class WomenListActivity extends ActionBarActivity
@@ -59,6 +60,10 @@ public class WomenListActivity extends ActionBarActivity
 		// Handle presses on the action bar items
 		switch (item.getItemId())
 		{
+			case android.R.id.home:
+				NavUtils.navigateUpTo(this,
+						new Intent(this, MainActivity.class));
+				return true;
 			case R.id.action_settings:
 				// TODO
 				return true;
@@ -123,13 +128,15 @@ public class WomenListActivity extends ActionBarActivity
 				// }
 
 				// ListView Clicked item value
-				String itemValue = (String) listView
-						.getItemAtPosition(position);
+				//String itemValue = (String) listView.getItemAtPosition(position);
 
 				// Show Alert
-				Toast.makeText(getApplicationContext(),
-						"Position :" + position + "  ListItem : " + itemValue,
-						Toast.LENGTH_LONG).show();
+				//Toast.makeText(getApplicationContext(),	"Position :" + position + "  ListItem : " + itemValue, Toast.LENGTH_LONG).show();
+				
+				Intent intent = new Intent(getBaseContext(), CardFlipActivity.class);
+				intent.putExtra("EXTRA_SESSION_ID", position);
+				intent.putExtra("EXTRA_SESSION_ISRANDOM", false);
+				startActivity(intent);
 			}
 		});
 	}

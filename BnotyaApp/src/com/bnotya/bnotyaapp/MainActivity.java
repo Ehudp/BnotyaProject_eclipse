@@ -182,7 +182,6 @@ public class MainActivity extends ActionBarActivity
 	private class DrawerGroupClickListener implements
 			ExpandableListView.OnGroupClickListener
 	{
-
 		@Override
 		public boolean onGroupClick(ExpandableListView parent, View v,
 				int groupPosition, long id)
@@ -314,17 +313,17 @@ public class MainActivity extends ActionBarActivity
 				{
 					case 0:
 					{
-						startActivity(new Intent(this, CardFlipActivity.class));
+						openRandomCard(null);  
 						break;
 					}
 					case 1:
 					{
-						startActivity(new Intent(this, WomenListActivity.class));
+						openWomenList(null);
 						break;
 					}
 					case 2:
 					{
-						startActivity(new Intent(this, TriviaActivity.class));
+						openTriviaPage(null);
 						break;
 					}
 				}
@@ -341,17 +340,17 @@ public class MainActivity extends ActionBarActivity
 				{
 					case 0:
 					{
-						startActivity(new Intent(this, CardFlipActivity.class));
+						openRandomCard(null); 
 						break;
 					}
 					case 1:
 					{
-						startActivity(new Intent(this, WomenListActivity.class));
+						openWomenList(null);
 						break;
 					}
 					case 2:
 					{
-						startActivity(new Intent(this, TriviaActivity.class));
+						openTriviaPage(null);
 						break;
 					}
 				}
@@ -466,7 +465,9 @@ public class MainActivity extends ActionBarActivity
 
 	public void openRandomCard(View view)
 	{
-		startActivity(new Intent(this, CardFlipActivity.class));
+		Intent intent = new Intent(this, CardFlipActivity.class);		
+		intent.putExtra("EXTRA_SESSION_ISRANDOM", true);
+		startActivity(intent);    
 	}
 
 	public void openWomenList(View view)

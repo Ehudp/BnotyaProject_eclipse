@@ -1,8 +1,10 @@
 package com.bnotya.bnotyaapp;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,7 +33,7 @@ public class TriviaActivity extends ActionBarActivity{
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main_menu, menu);
+		getMenuInflater().inflate(R.menu.page_menu, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -40,15 +42,19 @@ public class TriviaActivity extends ActionBarActivity{
 	{
 		// Handle presses on the action bar items
 		switch (item.getItemId())
-		{
+		{		
+			case android.R.id.home:
+				NavUtils.navigateUpTo(this,
+						new Intent(this, MainActivity.class));
+				return true;
 			case R.id.action_settings:
 				// TODO
 				return true;
 			case R.id.action_about:
 				// TODO
-				return true;			
+				return true;
 			default:
 				return super.onOptionsItemSelected(item);
-		}
+		}	
 	}
 }
