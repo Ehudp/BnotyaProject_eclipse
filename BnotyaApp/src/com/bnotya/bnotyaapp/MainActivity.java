@@ -28,7 +28,7 @@ import android.widget.Toast;
 
 @SuppressLint("NewApi")
 public class MainActivity extends ActionBarActivity
-{	
+{
 	private ExpandableListView _drawerList;
 	private List<String> _listDataHeaders;
 	private HashMap<String, List<String>> _listDataChildren;
@@ -36,7 +36,7 @@ public class MainActivity extends ActionBarActivity
 	private ActionBarDrawerToggle _drawerToggle;
 	private CharSequence _drawerTitle;
 	private CharSequence _title;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -59,7 +59,8 @@ public class MainActivity extends ActionBarActivity
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu)
 	{
-		// If the nav drawer is open, hide action items related to the content view
+		// If the nav drawer is open, 
+		// hide action items related to the content view
 		boolean drawerOpen = _drawerLayout.isDrawerOpen(_drawerList);
 		menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
 		menu.findItem(R.id.action_about).setVisible(!drawerOpen);
@@ -73,7 +74,7 @@ public class MainActivity extends ActionBarActivity
 		{
 			return true;
 		}
-		
+
 		switch (item.getItemId())
 		{
 			case R.id.action_settings:
@@ -86,46 +87,46 @@ public class MainActivity extends ActionBarActivity
 				return super.onOptionsItemSelected(item);
 		}
 	}
-	
+
 	private void initDrawerList()
 	{
 		// get the listview
-				_drawerList = (ExpandableListView) findViewById(R.id.left_drawer);
+		_drawerList = (ExpandableListView) findViewById(R.id.left_drawer);
 
-				// preparing list data
-				prepareListData();
+		// preparing list data
+		prepareListData();
 
-				// setting list adapter
-				_drawerList.setAdapter(new ExpandableListAdapter(this,
-						_listDataHeaders, _listDataChildren));
+		// setting list adapter
+		_drawerList.setAdapter(new ExpandableListAdapter(this,
+				_listDataHeaders, _listDataChildren));
 
-				// Listview Group click listener
-				_drawerList.setOnGroupClickListener(new DrawerGroupClickListener());
+		// Listview Group click listener
+		_drawerList.setOnGroupClickListener(new DrawerGroupClickListener());
 
-				// Listview on child click listener
-				_drawerList.setOnChildClickListener(new DrawerChildClickListener());
+		// Listview on child click listener
+		_drawerList.setOnChildClickListener(new DrawerChildClickListener());
 
-				// Listview Group expanded listener
-				_drawerList.setOnGroupExpandListener(new OnGroupExpandListener()
-				{
-					@Override
-					public void onGroupExpand(int groupPosition)
-					{
+		// Listview Group expanded listener
+		_drawerList.setOnGroupExpandListener(new OnGroupExpandListener()
+		{
+			@Override
+			public void onGroupExpand(int groupPosition)
+			{
 
-					}
-				});
+			}
+		});
 
-				// Listview Group collasped listener
-				_drawerList.setOnGroupCollapseListener(new OnGroupCollapseListener()
-				{
-					@Override
-					public void onGroupCollapse(int groupPosition)
-					{
+		// Listview Group collasped listener
+		_drawerList.setOnGroupCollapseListener(new OnGroupCollapseListener()
+		{
+			@Override
+			public void onGroupCollapse(int groupPosition)
+			{
 
-					}
-				});
+			}
+		});
 	}
-		
+
 	private void initDrawerLayout(Bundle savedInstanceState)
 	{
 		_drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -168,7 +169,7 @@ public class MainActivity extends ActionBarActivity
 				int groupPosition, int childPosition, long id)
 		{
 			String key = _listDataHeaders.get(groupPosition);
-			// TODO Auto-generated method stub
+
 			Toast.makeText(
 					getApplicationContext(),
 					key + " : " + _listDataChildren.get(key).get(childPosition),
@@ -188,11 +189,14 @@ public class MainActivity extends ActionBarActivity
 		{
 			String key = _listDataHeaders.get(groupPosition);
 			List<String> children = _listDataChildren.get(key);
-			if (children.size() == 0) selectGroup(groupPosition);
+			if (children.size() == 0)
+			{
+				selectGroup(groupPosition);
+			}
 			return false;
 		}
 	}
-	
+
 	private ActionBarDrawerToggle initActionBarDrawerToggle()
 	{
 		return new ActionBarDrawerToggle(this, /* host Activity */
@@ -207,8 +211,8 @@ public class MainActivity extends ActionBarActivity
 				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
 				{
 					getActionBar().setTitle(_title);
-					invalidateOptionsMenu(); // creates call to
-												// onPrepareOptionsMenu()
+					// creates call to onPrepareOptionsMenu()
+					invalidateOptionsMenu();
 				}
 				else
 				{
@@ -222,8 +226,8 @@ public class MainActivity extends ActionBarActivity
 				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
 				{
 					getActionBar().setTitle(_drawerTitle);
-					invalidateOptionsMenu(); // creates call to
-												// onPrepareOptionsMenu()
+					// creates call to onPrepareOptionsMenu()
+					invalidateOptionsMenu();
 				}
 				else
 				{
@@ -246,45 +250,37 @@ public class MainActivity extends ActionBarActivity
 				.getStringArray(R.array.women_views_array));
 
 		_listDataChildren.put(_listDataHeaders.get(0), new ArrayList<String>());
-		_listDataChildren.put(_listDataHeaders.get(1), womenChildrenList);
-		_listDataChildren.put(_listDataHeaders.get(2), new ArrayList<String>());
-		_listDataChildren.put(_listDataHeaders.get(3), womenChildrenList);
+		_listDataChildren.put(_listDataHeaders.get(1), new ArrayList<String>());
+		_listDataChildren.put(_listDataHeaders.get(2), womenChildrenList);
+		_listDataChildren.put(_listDataHeaders.get(3), new ArrayList<String>());
+		_listDataChildren.put(_listDataHeaders.get(4), womenChildrenList);
 	}
 
 	private void selectGroup(int position)
 	{
-		Bundle args = new Bundle();
-		FragmentManager fragmentManager = getSupportFragmentManager();
-
 		switch (position)
 		{
 			case 0:
 			{
-				MainTehilotFragment fragment = new MainTehilotFragment();
-				args.putInt(MainTehilotFragment.ARG_VIEW_NUMBER, position);
-				fragment.setArguments(args);
-
-				fragmentManager.beginTransaction()
-						.replace(R.id.content_frame, fragment).commit();
+				replaceFragment(new MainDefaultFragment(), position);
 				break;
 			}
 			case 1:
 			{
-				MainWomenFragment fragment = new MainWomenFragment();
-				args.putInt(MainWomenFragment.ARG_VIEW_NUMBER, position);
-				fragment.setArguments(args);
-
-				fragmentManager.beginTransaction()
-						.replace(R.id.content_frame, fragment).commit();
-
+				replaceFragment(new MainTehilotFragment(), position);
 				break;
 			}
 			case 2:
 			{
-				startActivity(new Intent(this, MainTehilotActivity.class));
+				replaceFragment(new MainWomenFragment(), position);
 				break;
 			}
 			case 3:
+			{
+				startActivity(new Intent(this, MainTehilotActivity.class));
+				break;
+			}
+			case 4:
 			{
 				startActivity(new Intent(this, MainWomenActivity.class));
 				break;
@@ -309,11 +305,15 @@ public class MainActivity extends ActionBarActivity
 			}
 			case 1:
 			{
+				break;
+			}
+			case 2:
+			{
 				switch (childPosition)
 				{
 					case 0:
 					{
-						openRandomCard(null);  
+						openRandomCard(null);
 						break;
 					}
 					case 1:
@@ -330,17 +330,17 @@ public class MainActivity extends ActionBarActivity
 
 				break;
 			}
-			case 2:
+			case 3:
 			{
 				break;
 			}
-			case 3:
+			case 4:
 			{
 				switch (childPosition)
 				{
 					case 0:
 					{
-						openRandomCard(null); 
+						openRandomCard(null);
 						break;
 					}
 					case 1:
@@ -401,8 +401,46 @@ public class MainActivity extends ActionBarActivity
 		_drawerToggle.onConfigurationChanged(newConfig);
 	}
 
+	public void openRandomCard(View view)
+	{
+		Intent intent = new Intent(this, CardFlipActivity.class);
+		intent.putExtra("EXTRA_SESSION_ISRANDOM", true);
+		startActivity(intent);
+	}
+
+	public void openWomenList(View view)
+	{
+		startActivity(new Intent(this, WomenListActivity.class));
+	}
+
+	public void openTriviaPage(View view)
+	{
+		startActivity(new Intent(this, TriviaActivity.class));
+	}
+
+	public void openTehilotPage(View view)
+	{
+		replaceFragment(new MainTehilotFragment(), 1);
+	}
+
+	public void openWomenPage(View view)
+	{
+		replaceFragment(new MainWomenFragment(), 2);
+	}
+
+	public void replaceFragment(Fragment fragment, int position)
+	{
+		Bundle args = new Bundle();
+		FragmentManager fragmentManager = getSupportFragmentManager();
+		args.putInt(MainDefaultFragment.ARG_VIEW_NUMBER, position);
+		fragment.setArguments(args);
+
+		fragmentManager.beginTransaction()
+				.replace(R.id.content_frame, fragment).commit();
+	}
+	
 	/**
-	 * Fragment that appears in the "content_frame"
+	 * Tehilot fragment that appears in the "content_frame"
 	 */
 	public static class MainTehilotFragment extends Fragment
 	{
@@ -436,7 +474,7 @@ public class MainActivity extends ActionBarActivity
 	}
 
 	/**
-	 * Fragment that appears in the "content_frame"
+	 * Women fragment that appears in the "content_frame"
 	 */
 	public static class MainWomenFragment extends Fragment
 	{
@@ -460,23 +498,32 @@ public class MainActivity extends ActionBarActivity
 			getActivity().setTitle(view);
 			return rootView;
 		}
-
 	}
 
-	public void openRandomCard(View view)
+	/**
+	 * Default fragment that appears in the "content_frame"
+	 */
+	public static class MainDefaultFragment extends Fragment
 	{
-		Intent intent = new Intent(this, CardFlipActivity.class);		
-		intent.putExtra("EXTRA_SESSION_ISRANDOM", true);
-		startActivity(intent);    
-	}
+		public static final String ARG_VIEW_NUMBER = "view_number";
 
-	public void openWomenList(View view)
-	{
-		startActivity(new Intent(this, WomenListActivity.class));
-	}
+		public MainDefaultFragment()
+		{
+			// Empty constructor required for fragment subclasses
+		}
 
-	public void openTriviaPage(View view)
-	{
-		startActivity(new Intent(this, TriviaActivity.class));
-	}
+		@Override
+		public View onCreateView(LayoutInflater inflater, ViewGroup container,
+				Bundle savedInstanceState)
+		{
+			View rootView = inflater.inflate(R.layout.fragment_main_default,
+					container, false);
+
+			int i = getArguments().getInt(ARG_VIEW_NUMBER);
+			String view = getResources().getStringArray(R.array.views_array)[i];
+
+			getActivity().setTitle(view);
+			return rootView;
+		}
+	}	
 }

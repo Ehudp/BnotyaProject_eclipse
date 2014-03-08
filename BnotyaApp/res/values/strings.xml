@@ -20,9 +20,26 @@
     <string name="title_card_flip">Card Flip</string>    
     <string name="description_card_front">Image</string>
     <string name="description_card_back">Image</string>
+    
+    <!-- Women list -->
+	<string-array name="women_names_array">        
+        <item>Hava</item>
+        <item>Rivka</item>
+        <item>Rahel</item>
+        <item>Bnot Lot</item>  
+        <item>Hamesh Ahayot</item>
+        <item>Bnot Leven</item>
+        <item>Dvora</item>
+        <item>Avishag</item>   
+        <item>Nehama</item>
+        <item>Achsah</item>
+        <item>Ruth</item>
+        <item>Tamar</item>              
+    </string-array>
 
     <!-- Navigation drawer -->
-    <string-array name="views_array">        
+    <string-array name="views_array">
+        <item>Default Fragment</item>        
         <item>Tehilot Fragment</item>
         <item>Women Fragment</item>
         <item>Tehilot Activity</item>

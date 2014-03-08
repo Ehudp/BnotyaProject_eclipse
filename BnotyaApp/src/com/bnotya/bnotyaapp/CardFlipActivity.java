@@ -48,7 +48,7 @@ public class CardFlipActivity extends FragmentActivity implements
 		}
 		else
 		{
-			_showingBack = (getFragmentManager().getBackStackEntryCount() > 0);
+			_showingBack = (getSupportFragmentManager().getBackStackEntryCount() > 0);
 		}
 
 		// Monitor back stack changes to ensure the action bar shows the
@@ -79,6 +79,10 @@ public class CardFlipActivity extends FragmentActivity implements
 				NavUtils.navigateUpTo(this,
 						new Intent(this, MainActivity.class));
 				return true;
+			case R.id.action_home:
+				NavUtils.navigateUpTo(this,
+						new Intent(this, MainActivity.class));				
+	            return true;		
 			case R.id.action_settings:
 				// TODO
 				return true;
@@ -125,7 +129,6 @@ public class CardFlipActivity extends FragmentActivity implements
 		}
 
 		// Flip to the back.
-
 		_showingBack = true;
 
 		// Create and commit a new fragment transaction that adds the fragment
@@ -209,17 +212,13 @@ public class CardFlipActivity extends FragmentActivity implements
 	@Override
 	public void onSwipe(int direction)
 	{
-		flipCard();
-		/*
-		 * String str = "";
-		 * 
-		 * switch (direction) { case SimpleGestureFilter.SWIPE_RIGHT: str =
-		 * "Swipe Right"; break; case SimpleGestureFilter.SWIPE_LEFT: str =
-		 * "Swipe Left"; break; case SimpleGestureFilter.SWIPE_DOWN: str =
-		 * "Swipe Down"; break; case SimpleGestureFilter.SWIPE_UP: str =
-		 * "Swipe Up"; break; } Toast.makeText(this, str,
-		 * Toast.LENGTH_SHORT).show();
-		 */
+		switch (direction) 
+		{ 
+			case SimpleGestureFilter.SWIPE_RIGHT:
+			case SimpleGestureFilter.SWIPE_LEFT:
+				flipCard();
+				break;
+		}
 	}
 
 	@Override
@@ -264,6 +263,5 @@ public class CardFlipActivity extends FragmentActivity implements
 			cardView.setImageResource(((CardFlipActivity)getActivity()).backId);
 			return view;
 		}
-	}	
-
+	}
 }

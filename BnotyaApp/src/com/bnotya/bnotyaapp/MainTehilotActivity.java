@@ -64,6 +64,10 @@ public class MainTehilotActivity extends ActionBarActivity
 				NavUtils.navigateUpTo(this,
 						new Intent(this, MainActivity.class));
 				return true;
+			case R.id.action_home:
+				NavUtils.navigateUpTo(this,
+						new Intent(this, MainActivity.class));				
+	            return true;		
 			case R.id.action_settings:
 				// TODO
 				return true;

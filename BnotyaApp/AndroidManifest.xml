@@ -30,7 +30,8 @@
         <activity
             android:name="com.bnotya.bnotyaapp.MainActivity"
             android:label="@string/app_name"
-            android:parentActivityName="com.bnotya.bnotyaapp.SplashActivity" >
+            android:parentActivityName="com.bnotya.bnotyaapp.SplashActivity"
+            android:launchMode="singleTask" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.bnotya.bnotyaapp.SplashActivity" />
@@ -93,9 +94,9 @@
         <!-- Women List activity -->
         <activity
             android:name="com.bnotya.bnotyaapp.WomenListActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/app_name"
-            android:parentActivityName="com.bnotya.bnotyaapp.MainWomenActivity" 
-            android:configChanges="keyboardHidden|orientation|screenSize">
+            android:parentActivityName="com.bnotya.bnotyaapp.MainWomenActivity" >
             <intent-filter>
                 <action android:name="com.bnotya.bnotyaapp.WomenListActivity" />
 
@@ -105,14 +106,17 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.bnotya.bnotyaapp.MainWomenActivity" />
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
         </activity>
 
         <!-- Card Flip activity -->
         <activity
             android:name="com.bnotya.bnotyaapp.CardFlipActivity"
             android:label="@string/title_card_flip"
-            android:parentActivityName="com.bnotya.bnotyaapp.MainActivity" 
-            android:screenOrientation="portrait">
+            android:parentActivityName="com.bnotya.bnotyaapp.WomenListActivity"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="com.bnotya.bnotyaapp.CardFlipActivity" />
 
@@ -121,7 +125,14 @@
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.bnotya.bnotyaapp.MainActivity" />
+                android:value="com.bnotya.bnotyaapp.WomenListActivity" />
+        </activity>
+        
+        <!-- Search activity -->
+        <activity android:name="com.bnotya.bnotyaapp.SearchResultsActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
         </activity>
     </application>
 

@@ -1,11 +1,17 @@
 package com.bnotya.bnotyaapp;
 
+import java.util.Arrays;
+import java.util.List;
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,17 +20,13 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SearchView;
 
 @SuppressLint("NewApi")
 public class WomenListActivity extends ActionBarActivity
 {
 	ListView listView;
-	// Defined Array values to show in ListView
-	String[] womenNames = new String[]
-	{
-			"First", "Second", "Third"
-	};
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -51,6 +53,20 @@ public class WomenListActivity extends ActionBarActivity
 	{
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.search_menu, menu);
+		
+		// TODO: fix this
+		/*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) 
+		{
+			// Associate searchable configuration with the SearchView
+	        SearchManager searchManager =
+	                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+	        SearchView searchView =
+	                (SearchView) menu.findItem(R.id.action_open_search).getActionView();
+	        searchView.setSearchableInfo(
+	                searchManager.getSearchableInfo(getComponentName()));
+	        searchView.setIconifiedByDefault(false);
+	    }*/
+
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -62,8 +78,12 @@ public class WomenListActivity extends ActionBarActivity
 		{
 			case android.R.id.home:
 				NavUtils.navigateUpTo(this,
-						new Intent(this, MainActivity.class));
-				return true;
+						new Intent(this, MainActivity.class));	
+	            return true;
+			case R.id.action_home:
+				NavUtils.navigateUpTo(this,
+						new Intent(this, MainActivity.class));				
+	            return true;				
 			case R.id.action_settings:
 				// TODO
 				return true;
@@ -71,12 +91,12 @@ public class WomenListActivity extends ActionBarActivity
 				// TODO
 				return true;
 			case R.id.action_open_search:
-				openSearch(null);
+				onSearchRequested();
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
 		}
-	}
+	}	
 
 	private void initView()
 	{
@@ -95,6 +115,9 @@ public class WomenListActivity extends ActionBarActivity
 		// Get ListView object from xml
 		listView = (ListView) findViewById(R.id.womenlist);
 
+		List<String> listDataHeaders = Arrays.asList(getResources()
+				.getStringArray(R.array.women_names_array));
+
 		// Define a new Adapter
 		// First parameter - Context
 		// Second parameter - Layout for the row
@@ -102,7 +125,7 @@ public class WomenListActivity extends ActionBarActivity
 		// Forth - the Array of data
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_list_item_1, android.R.id.text1,
-				womenNames);
+				listDataHeaders);
 
 		// Assign adapter to ListView
 		listView.setAdapter(adapter);
@@ -114,35 +137,12 @@ public class WomenListActivity extends ActionBarActivity
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id)
 			{
-				// String selectedWoman = womenNames[position];
-				// TODO: create activities for women
-				// try
-				// {
-				// Class selected = Class.forName("com.bnotya.bnotyaapp." +
-				// selectedWoman);
-				// startActivity(new Intent(this, selected));
-				// }
-				// catch(ClassNotFoundException e)
-				// {
-				// e.printStackTrace();
-				// }
-
-				// ListView Clicked item value
-				//String itemValue = (String) listView.getItemAtPosition(position);
-
-				// Show Alert
-				//Toast.makeText(getApplicationContext(),	"Position :" + position + "  ListItem : " + itemValue, Toast.LENGTH_LONG).show();
-				
-				Intent intent = new Intent(getBaseContext(), CardFlipActivity.class);
+				Intent intent = new Intent(getBaseContext(),
+						CardFlipActivity.class);
 				intent.putExtra("EXTRA_SESSION_ID", position);
 				intent.putExtra("EXTRA_SESSION_ISRANDOM", false);
 				startActivity(intent);
 			}
 		});
-	}
-
-	private void openSearch(View view)
-	{
-
 	}
 }

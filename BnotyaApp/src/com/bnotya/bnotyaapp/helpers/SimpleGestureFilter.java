@@ -7,7 +7,6 @@ import android.view.MotionEvent;
 
 public class SimpleGestureFilter extends SimpleOnGestureListener
 {
-
 	public final static int SWIPE_UP = 1;
 	public final static int SWIPE_DOWN = 2;
 	public final static int SWIPE_LEFT = 3;
@@ -32,7 +31,6 @@ public class SimpleGestureFilter extends SimpleOnGestureListener
 
 	public SimpleGestureFilter(Activity context, SimpleGestureListener sgl)
 	{
-
 		this.context = context;
 		this.detector = new GestureDetector(context, this);
 		this.listener = sgl;
@@ -40,26 +38,29 @@ public class SimpleGestureFilter extends SimpleOnGestureListener
 
 	public void onTouchEvent(MotionEvent event)
 	{
-
 		if (!this.running) return;
 
 		boolean result = this.detector.onTouchEvent(event);
 
 		if (this.mode == MODE_SOLID)
+		{
 			event.setAction(MotionEvent.ACTION_CANCEL);
+		}
 		else if (this.mode == MODE_DYNAMIC)
 		{
-
 			if (event.getAction() == ACTION_FAKE)
+			{
 				event.setAction(MotionEvent.ACTION_UP);
+			}				
 			else if (result)
+			{
 				event.setAction(MotionEvent.ACTION_CANCEL);
+			}				
 			else if (this.tapIndicator)
 			{
 				event.setAction(MotionEvent.ACTION_DOWN);
 				this.tapIndicator = false;
 			}
-
 		}
 		// else just do nothing, it's Transparent
 	}
@@ -110,10 +111,15 @@ public class SimpleGestureFilter extends SimpleOnGestureListener
 	}
 
 	@Override
+	public boolean onDown(MotionEvent e)
+	{
+		return true;
+	}
+
+	@Override
 	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
 			float velocityY)
 	{
-
 		final float xDistance = Math.abs(e1.getX() - e2.getX());
 		final float yDistance = Math.abs(e1.getY() - e2.getY());
 
@@ -171,7 +177,6 @@ public class SimpleGestureFilter extends SimpleOnGestureListener
 	@Override
 	public boolean onSingleTapConfirmed(MotionEvent arg)
 	{
-
 		if (this.mode == MODE_DYNAMIC)
 		{ // we owe an ACTION_UP, so we fake an
 			arg.setAction(ACTION_FAKE); // action which will be converted to an
@@ -188,5 +193,4 @@ public class SimpleGestureFilter extends SimpleOnGestureListener
 
 		void onDoubleTap();
 	}
-
 }
