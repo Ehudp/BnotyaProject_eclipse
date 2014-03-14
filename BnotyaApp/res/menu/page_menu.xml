@@ -23,4 +23,11 @@
         bnotyaapp:showAsAction="never"
         android:title="@string/action_home"/>
     
+    <item
+        android:id="@+id/action_exit"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        bnotyaapp:showAsAction="never"
+        android:title="@string/action_exit"/>
+    
 </menu>

@@ -1,36 +1,28 @@
 package com.bnotya.bnotyaapp;
 
-import android.annotation.SuppressLint;
-import android.support.v4.app.Fragment;
+import com.bnotya.bnotyaapp.fragments.CardFragment;
+import com.bnotya.bnotyaapp.helpers.About;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.NavUtils;
-import android.view.LayoutInflater;
+import android.support.v4.view.GestureDetectorCompat;
+import android.view.GestureDetector.OnDoubleTapListener;
+import android.view.GestureDetector.OnGestureListener;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import com.bnotya.bnotyaapp.helpers.SimpleGestureFilter;
-import com.bnotya.bnotyaapp.helpers.SimpleGestureFilter.SimpleGestureListener;
 
 public class CardFlipActivity extends FragmentActivity implements
-		FragmentManager.OnBackStackChangedListener, SimpleGestureListener
+		OnGestureListener, OnDoubleTapListener
 {
-	/* A handler object, used for deferring UI operations. */
-	private Handler _handler = new Handler();
-	/* Whether or not we're showing the back of the card. */	
-	private boolean _showingBack = false;
-	private SimpleGestureFilter detector;
-	private int frontId;
-	private int backId;
+	/* Whether or not we're showing the back of the card. */
+	public boolean showingBack = false;
+	private GestureDetectorCompat detector;
+	public int frontId;
+	public int backId;
 
-	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -44,19 +36,16 @@ public class CardFlipActivity extends FragmentActivity implements
 			// If there is saved instance state,
 			// this fragment will have already been added to the activity.
 			getSupportFragmentManager().beginTransaction()
-					.add(R.id.container, new CardFrontFragment()).commit();
+					.add(R.id.container, new CardFragment()).commit();
 		}
 		else
 		{
-			_showingBack = (getSupportFragmentManager().getBackStackEntryCount() > 0);
+			showingBack = (getSupportFragmentManager().getBackStackEntryCount() > 0);
 		}
 
-		// Monitor back stack changes to ensure the action bar shows the
-		// appropriate button (either "photo" or "info").
-		getSupportFragmentManager().addOnBackStackChangedListener(this);
-
 		// Detect touched area
-		detector = new SimpleGestureFilter(this, this);
+		detector = new GestureDetectorCompat(this, this);
+		detector.setOnDoubleTapListener(this);
 
 		setCard();
 	}
@@ -81,187 +70,184 @@ public class CardFlipActivity extends FragmentActivity implements
 				return true;
 			case R.id.action_home:
 				NavUtils.navigateUpTo(this,
-						new Intent(this, MainActivity.class));				
-	            return true;		
+						new Intent(this, MainActivity.class));
+				return true;
 			case R.id.action_settings:
-				// TODO
+				startActivity(new Intent(this, Preferences.class));
 				return true;
 			case R.id.action_about:
-				// TODO
+				About.showAboutDialog(this);
+				return true;
+			case R.id.action_exit:
+				finish();
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
 		}
-	}
+	}	
 
 	private void setCard()
 	{
 		Intent intent = getIntent();
 		int cardId = 1;
 
-		boolean isRandom = intent.getBooleanExtra("EXTRA_SESSION_ISRANDOM", false);
-		if(isRandom)
+		boolean isRandom = intent.getBooleanExtra("EXTRA_SESSION_ISRANDOM",
+				false);
+		if (isRandom)
 		{
-			int numberOfCards = getResources().getInteger(R.integer.number_of_cards) - 1;
+			int numberOfCards = getResources().getInteger(
+					R.integer.number_of_cards) - 1;
 			// Random from 1 to number of cards
-			cardId += (Math.random() * numberOfCards); 
+			cardId += (Math.random() * numberOfCards);
+
+			// Set extras to prevent card changes on configuration change
+			intent.putExtra("EXTRA_SESSION_ID", (cardId - 1));
+			intent.putExtra("EXTRA_SESSION_ISRANDOM", false);
 		}
 		else
 		{
 			cardId += intent.getIntExtra("EXTRA_SESSION_ID", 0);
-		}		
-		
-		frontId = getResources().getIdentifier(String.format("card%s", cardId) , "drawable", getPackageName());
-		backId = getResources().getIdentifier(String.format("card%s_%s", cardId, cardId) , "drawable", getPackageName());	
-	}
+		}
 
-	public void flipCard(View view)
-	{
-		flipCard();
+		frontId = getResources().getIdentifier(String.format("card%s", cardId),
+				"drawable", getPackageName());
+		backId = getResources().getIdentifier(
+				String.format("card%s_%s", cardId, cardId), "drawable",
+				getPackageName());
 	}
 
 	private void flipCard()
 	{
-		if (_showingBack)
-		{
-			getSupportFragmentManager().popBackStack();
-			return;
-		}
-
-		// Flip to the back.
-		_showingBack = true;
+		showingBack = !showingBack;
 
 		// Create and commit a new fragment transaction that adds the fragment
-		// for the back of the card, uses custom animations, and is part of the
-		// fragment
-		// manager's back stack.
+		// for the card and uses custom animations.
 		getSupportFragmentManager().beginTransaction()
 
 		// Replace the default fragment animations with animator resources
 		// representing rotations when switching to the back of the card,
 		// as well as animator resources representing rotations when flipping
-		// back to the front
-		// (e.g. when the system Back button is pressed).
+		// back to the front.
 				.setCustomAnimations(R.anim.card_flip_right_in,
 						R.anim.card_flip_right_out, R.anim.card_flip_left_in,
 						R.anim.card_flip_left_out)
 
 				// Replace any fragments currently in the container view with a
-				// fragment
-				// representing the next page (indicated by the just-incremented
-				// currentPage
-				// variable).
-				.replace(R.id.container, new CardBackFragment())
-
-				// Add this transaction to the back stack, allowing users to
-				// press Back
-				// to get to the front of the card.
-				.addToBackStack(null)
+				// fragment representing the next page
+				// (indicated by the just-incremented
+				// currentPage variable).
+				.replace(R.id.container, new CardFragment())
 
 				// Commit the transaction.
 				.commit();
-
-		// Defer an invalidation of the options menu (on modern devices, the
-		// action bar). This
-		// can't be done immediately because the transaction may not yet be
-		// committed. Commits
-		// are asynchronous in that they are posted to the main thread's message
-		// loop.
-		_handler.post(new Runnable()
-		{
-			@SuppressLint("NewApi")
-			@Override
-			public void run()
-			{
-				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-				{
-					invalidateOptionsMenu();
-				}
-				else
-				{
-					supportInvalidateOptionsMenu();
-				}
-			}
-		});
 	}
 
-	@SuppressLint("NewApi")
+	/* Touch Implementation */
+
 	@Override
-	public void onBackStackChanged()
+	public boolean onTouchEvent(MotionEvent event)
 	{
-		_showingBack = (getSupportFragmentManager().getBackStackEntryCount() > 0);
-
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-		{
-			invalidateOptionsMenu();
-		}
-		else
-		{
-			supportInvalidateOptionsMenu();
-		}
+		this.detector.onTouchEvent(event);
+		// Be sure to call the superclass implementation
+		return super.onTouchEvent(event);
 	}
-	
+
 	@Override
-	public boolean dispatchTouchEvent(MotionEvent me)
+	public boolean onDown(MotionEvent event)
 	{
-		// Call onTouchEvent of SimpleGestureFilter class
-		this.detector.onTouchEvent(me);
-		return super.dispatchTouchEvent(me);
+		/*
+		 * Toast.makeText(getApplicationContext(), "onDown: " +
+		 * event.toString(), Toast.LENGTH_SHORT).show();
+		 */
+		return true;
 	}
 
 	@Override
-	public void onSwipe(int direction)
+	public boolean onFling(MotionEvent event1, MotionEvent event2,
+			float velocityX, float velocityY)
 	{
-		switch (direction) 
-		{ 
-			case SimpleGestureFilter.SWIPE_RIGHT:
-			case SimpleGestureFilter.SWIPE_LEFT:
-				flipCard();
-				break;
-		}
+		/*
+		 * Toast.makeText(getApplicationContext(), "onFling: " +
+		 * event1.toString()+event2.toString(), Toast.LENGTH_SHORT).show();
+		 */
+		flipCard();
+		return true;
 	}
 
 	@Override
-	public void onDoubleTap()
+	public void onLongPress(MotionEvent event)
+	{
+		/*
+		 * Toast.makeText(getApplicationContext(), "onLongPress: " +
+		 * event.toString(), Toast.LENGTH_SHORT).show();
+		 */
+	}
+
+	@Override
+	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
+			float distanceY)
+	{
+		/*
+		 * Toast.makeText(getApplicationContext(), "onScroll: " +
+		 * e1.toString()+e2.toString(), Toast.LENGTH_SHORT).show();
+		 */
+		return true;
+	}
+
+	@Override
+	public void onShowPress(MotionEvent event)
+	{
+		/*
+		 * Toast.makeText(getApplicationContext(), "onShowPress: " +
+		 * event.toString(), Toast.LENGTH_SHORT).show();
+		 */
+	}
+
+	@Override
+	public boolean onSingleTapUp(MotionEvent event)
+	{
+		/*
+		 * Toast.makeText(getApplicationContext(), "onSingleTapUp: " +
+		 * event.toString(), Toast.LENGTH_SHORT).show();
+		 */
+		return true;
+	}
+
+	@Override
+	public boolean onDoubleTap(MotionEvent event)
+	{
+		/*
+		 * Toast.makeText(getApplicationContext(), "onDoubleTap: " +
+		 * event.toString(), Toast.LENGTH_SHORT).show();
+		 */
+		flipCard();
+		return true;
+	}
+
+	@Override
+	public boolean onDoubleTapEvent(MotionEvent event)
+	{
+		/*
+		 * Toast.makeText(getApplicationContext(), "onDoubleTapEvent: " +
+		 * event.toString(), Toast.LENGTH_SHORT).show();
+		 */
+		return true;
+	}
+
+	@Override
+	public boolean onSingleTapConfirmed(MotionEvent event)
+	{
+		/*
+		 * Toast.makeText(getApplicationContext(), "onSingleTapConfirmed: " +
+		 * event.toString(), Toast.LENGTH_SHORT).show();
+		 */
+		return true;
+	}
+
+	/* End of Touch Implementation */
+
+	public void flipCard(View view)
 	{
 		flipCard();
-	}
-
-	public static class CardFrontFragment extends Fragment
-	{
-		public CardFrontFragment()
-		{
-			// Empty constructor required for fragment subclasses
-		}
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState)
-		{
-			View view = inflater.inflate(R.layout.fragment_card_front,
-					container, false);
-			ImageView cardView = (ImageView) view.findViewById(R.id.card_front);
-			cardView.setImageResource(((CardFlipActivity)getActivity()).frontId);
-			return view;
-		}
-	}
-
-	public static class CardBackFragment extends Fragment
-	{
-		public CardBackFragment()
-		{
-			// Empty constructor required for fragment subclasses
-		}
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState)
-		{
-			View view = inflater.inflate(R.layout.fragment_card_back,
-					container, false);
-			ImageView cardView = (ImageView) view.findViewById(R.id.card_back);
-			cardView.setImageResource(((CardFlipActivity)getActivity()).backId);
-			return view;
-		}
-	}
+	}	
 }

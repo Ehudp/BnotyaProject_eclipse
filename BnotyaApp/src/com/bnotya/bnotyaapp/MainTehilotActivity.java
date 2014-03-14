@@ -1,5 +1,6 @@
 package com.bnotya.bnotyaapp;
 
+import com.bnotya.bnotyaapp.helpers.About;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Build;
@@ -11,7 +12,6 @@ import android.view.MenuItem;
 
 public class MainTehilotActivity extends ActionBarActivity
 {
-
 	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -69,10 +69,13 @@ public class MainTehilotActivity extends ActionBarActivity
 						new Intent(this, MainActivity.class));				
 	            return true;		
 			case R.id.action_settings:
-				// TODO
+				startActivity(new Intent(this, Preferences.class));
 				return true;
 			case R.id.action_about:
-				// TODO
+				About.showAboutDialog(this);
+				return true;
+			case R.id.action_exit:
+				finish();
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);

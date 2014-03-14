@@ -5,6 +5,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import com.bnotya.bnotyaapp.adapters.ExpandableListAdapter;
+import com.bnotya.bnotyaapp.fragments.MainDefaultFragment;
+import com.bnotya.bnotyaapp.fragments.MainTehilotFragment;
+import com.bnotya.bnotyaapp.fragments.MainWomenFragment;
+import com.bnotya.bnotyaapp.helpers.About;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -19,14 +23,11 @@ import android.content.res.Configuration;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnGroupCollapseListener;
 import android.widget.ExpandableListView.OnGroupExpandListener;
 import android.widget.Toast;
 
-@SuppressLint("NewApi")
 public class MainActivity extends ActionBarActivity
 {
 	private ExpandableListView _drawerList;
@@ -78,10 +79,13 @@ public class MainActivity extends ActionBarActivity
 		switch (item.getItemId())
 		{
 			case R.id.action_settings:
-				// TODO
+				startActivity(new Intent(this, Preferences.class));
 				return true;
 			case R.id.action_about:
-				// TODO
+				About.showAboutDialog(this);
+				return true;
+			case R.id.action_exit:
+				finish();
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
@@ -127,6 +131,7 @@ public class MainActivity extends ActionBarActivity
 		});
 	}
 
+	@SuppressLint("NewApi")
 	private void initDrawerLayout(Bundle savedInstanceState)
 	{
 		_drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -206,6 +211,7 @@ public class MainActivity extends ActionBarActivity
 		R.string.drawer_close /* "close drawer" description for accessibility */
 		)
 		{
+			@SuppressLint("NewApi")
 			public void onDrawerClosed(View view)
 			{
 				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
@@ -221,6 +227,7 @@ public class MainActivity extends ActionBarActivity
 				}
 			}
 
+			@SuppressLint("NewApi")
 			public void onDrawerOpened(View drawerView)
 			{
 				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
@@ -438,92 +445,4 @@ public class MainActivity extends ActionBarActivity
 		fragmentManager.beginTransaction()
 				.replace(R.id.content_frame, fragment).commit();
 	}
-	
-	/**
-	 * Tehilot fragment that appears in the "content_frame"
-	 */
-	public static class MainTehilotFragment extends Fragment
-	{
-		public static final String ARG_VIEW_NUMBER = "view_number";
-
-		public MainTehilotFragment()
-		{
-			// Empty constructor required for fragment subclasses
-		}
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState)
-		{
-			View rootView = inflater.inflate(R.layout.activity_main_tehilot,
-					container, false);
-
-			int i = getArguments().getInt(ARG_VIEW_NUMBER);
-			String view = getResources().getStringArray(R.array.views_array)[i];
-
-			/*
-			 * int imageId = getResources().getIdentifier(
-			 * view.toLowerCase(Locale.getDefault()), "drawable",
-			 * getActivity().getPackageName()); ((ImageView)
-			 * rootView.findViewById(R.id.image)) .setImageResource(imageId);
-			 */
-
-			getActivity().setTitle(view);
-			return rootView;
-		}
-	}
-
-	/**
-	 * Women fragment that appears in the "content_frame"
-	 */
-	public static class MainWomenFragment extends Fragment
-	{
-		public static final String ARG_VIEW_NUMBER = "view_number";
-
-		public MainWomenFragment()
-		{
-			// Empty constructor required for fragment subclasses
-		}
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState)
-		{
-			View rootView = inflater.inflate(R.layout.activity_main_women,
-					container, false);
-
-			int i = getArguments().getInt(ARG_VIEW_NUMBER);
-			String view = getResources().getStringArray(R.array.views_array)[i];
-
-			getActivity().setTitle(view);
-			return rootView;
-		}
-	}
-
-	/**
-	 * Default fragment that appears in the "content_frame"
-	 */
-	public static class MainDefaultFragment extends Fragment
-	{
-		public static final String ARG_VIEW_NUMBER = "view_number";
-
-		public MainDefaultFragment()
-		{
-			// Empty constructor required for fragment subclasses
-		}
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState)
-		{
-			View rootView = inflater.inflate(R.layout.fragment_main_default,
-					container, false);
-
-			int i = getArguments().getInt(ARG_VIEW_NUMBER);
-			String view = getResources().getStringArray(R.array.views_array)[i];
-
-			getActivity().setTitle(view);
-			return rootView;
-		}
-	}	
 }

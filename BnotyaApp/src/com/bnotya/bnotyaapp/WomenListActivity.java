@@ -2,6 +2,7 @@ package com.bnotya.bnotyaapp;
 
 import java.util.Arrays;
 import java.util.List;
+import com.bnotya.bnotyaapp.helpers.About;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.SearchManager;
@@ -85,13 +86,16 @@ public class WomenListActivity extends ActionBarActivity
 						new Intent(this, MainActivity.class));				
 	            return true;				
 			case R.id.action_settings:
-				// TODO
+				startActivity(new Intent(this, Preferences.class));
 				return true;
 			case R.id.action_about:
-				// TODO
+				About.showAboutDialog(this);
 				return true;
 			case R.id.action_open_search:
 				onSearchRequested();
+				return true;
+			case R.id.action_exit:
+				finish();
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);

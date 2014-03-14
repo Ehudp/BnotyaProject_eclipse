@@ -13,7 +13,6 @@ import com.bnotya.bnotyaapp.R;
 
 public class ExpandableListAdapter extends BaseExpandableListAdapter
 {
-
 	private Context _context;
 	private List<String> _listDataHeader; // header titles
 	// child data in format of header title, child title

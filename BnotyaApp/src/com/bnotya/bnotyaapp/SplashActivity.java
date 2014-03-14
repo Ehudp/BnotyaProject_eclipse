@@ -18,7 +18,7 @@ public class SplashActivity extends Activity
 			{
 				try
 				{
-					sleep(5000);
+					sleep(1000);
 					startActivity(new Intent("com.bnotya.bnotyaapp.MainActivity"));
 				}
 				catch(InterruptedException e)

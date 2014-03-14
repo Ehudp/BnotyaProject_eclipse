@@ -1033,7 +1033,7 @@ containing a value of this type.
         public static final int logo_01=0x7f020074;
     }
     public static final class id {
-        public static final int action_about=0x7f070049;
+        public static final int action_about=0x7f070048;
         public static final int action_bar=0x7f07001e;
         public static final int action_bar_activity_content=0x7f070015;
         public static final int action_bar_container=0x7f07001d;
@@ -1042,6 +1042,7 @@ containing a value of this type.
         public static final int action_bar_subtitle=0x7f070025;
         public static final int action_bar_title=0x7f070024;
         public static final int action_context_bar=0x7f07001f;
+        public static final int action_exit=0x7f070049;
         public static final int action_flip=0x7f07001b;
         public static final int action_home=0x7f07004a;
         public static final int action_menu_divider=0x7f070016;
@@ -1057,12 +1058,11 @@ containing a value of this type.
          */
         public static final int action_next=0x7f07001a;
         public static final int action_open_search=0x7f07004b;
-        public static final int action_settings=0x7f070048;
+        public static final int action_settings=0x7f070047;
         public static final int activity_chooser_view_content=0x7f070027;
         public static final int always=0x7f07000b;
         public static final int beginning=0x7f070011;
-        public static final int card_back=0x7f070045;
-        public static final int card_front=0x7f070046;
+        public static final int card=0x7f070045;
         public static final int checkbox=0x7f07002f;
         public static final int collapseActionView=0x7f07000d;
         public static final int container=0x7f07003e;
@@ -1090,7 +1090,7 @@ containing a value of this type.
         public static final int never=0x7f070009;
         public static final int none=0x7f070010;
         public static final int normal=0x7f070000;
-        public static final int openWomenMenuButton=0x7f070047;
+        public static final int openWomenMenuButton=0x7f070046;
         public static final int progress_circular=0x7f070018;
         public static final int progress_horizontal=0x7f070019;
         public static final int radio=0x7f070031;
@@ -1179,10 +1179,9 @@ containing a value of this type.
         public static final int activity_women_list=0x7f03001d;
         public static final int drawer_list_group=0x7f03001e;
         public static final int drawer_list_item=0x7f03001f;
-        public static final int fragment_card_back=0x7f030020;
-        public static final int fragment_card_front=0x7f030021;
-        public static final int fragment_main_default=0x7f030022;
-        public static final int support_simple_spinner_dropdown_item=0x7f030023;
+        public static final int fragment_card=0x7f030020;
+        public static final int fragment_main_default=0x7f030021;
+        public static final int support_simple_spinner_dropdown_item=0x7f030022;
     }
     public static final class menu {
         public static final int main_menu=0x7f0f0000;
@@ -1230,28 +1229,27 @@ containing a value of this type.
         /**  Description of a share target (both in the list of such or the default share button) in a ShareActionProvider (share UI). [CHAR LIMIT=NONE] 
          */
         public static final int abc_shareactionprovider_share_with_application=0x7f0c000b;
-        public static final int about_main_menu=0x7f0c0012;
-        public static final int about_main_tehilot=0x7f0c0013;
-        public static final int about_main_women=0x7f0c0014;
+        public static final int about_main_menu=0x7f0c0013;
+        public static final int about_main_tehilot=0x7f0c0014;
+        public static final int about_main_women=0x7f0c0015;
+        public static final int about_text=0x7f0c001e;
         public static final int action_about=0x7f0c000f;
-        public static final int action_card_back=0x7f0c001b;
-        public static final int action_card_front=0x7f0c001c;
+        public static final int action_exit=0x7f0c0012;
         public static final int action_home=0x7f0c0011;
         public static final int action_search=0x7f0c0010;
         public static final int action_settings=0x7f0c000e;
         public static final int app_name=0x7f0c000d;
-        public static final int app_not_available=0x7f0c0022;
-        public static final int description_card_back=0x7f0c001f;
-        public static final int description_card_front=0x7f0c001e;
-        public static final int drawer_close=0x7f0c0021;
-        public static final int drawer_open=0x7f0c0020;
-        public static final int open_random_card=0x7f0c0019;
-        public static final int open_self_improvement_page=0x7f0c0017;
-        public static final int open_tehilot=0x7f0c0015;
-        public static final int open_trivia_page=0x7f0c0018;
-        public static final int open_women_list=0x7f0c001a;
-        public static final int open_women_menu=0x7f0c0016;
-        public static final int title_card_flip=0x7f0c001d;
+        public static final int app_not_available=0x7f0c0021;
+        public static final int description_card=0x7f0c001d;
+        public static final int drawer_close=0x7f0c0020;
+        public static final int drawer_open=0x7f0c001f;
+        public static final int open_random_card=0x7f0c001a;
+        public static final int open_self_improvement_page=0x7f0c0018;
+        public static final int open_tehilot=0x7f0c0016;
+        public static final int open_trivia_page=0x7f0c0019;
+        public static final int open_women_list=0x7f0c001b;
+        public static final int open_women_menu=0x7f0c0017;
+        public static final int title_card_flip=0x7f0c001c;
     }
     public static final class style {
         /** 
@@ -1485,7 +1483,8 @@ containing a value of this type.
         public static final int Widget_AppCompat_Spinner_DropDown_ActionBar=0x7f0d0022;
     }
     public static final class xml {
-        public static final int searchable=0x7f060000;
+        public static final int prefs=0x7f060000;
+        public static final int searchable=0x7f060001;
     }
     public static final class styleable {
         /**  ============================================ 
