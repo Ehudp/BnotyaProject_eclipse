@@ -1256,6 +1256,10 @@ containing a value of this type.
         public static final int open_trivia_page=0x7f0d0019;
         public static final int open_women_list=0x7f0d001b;
         public static final int open_women_menu=0x7f0d0017;
+        public static final int settings_dialog_message=0x7f0d0026;
+        public static final int settings_summary=0x7f0d0027;
+        public static final int settings_title=0x7f0d0029;
+        public static final int settings_unit=0x7f0d0028;
         public static final int title_card_flip=0x7f0d001c;
     }
     public static final class style {

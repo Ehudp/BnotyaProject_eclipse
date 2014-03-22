@@ -22,13 +22,13 @@ public class CardFlipActivity extends ActionBarActivity implements
 {
 	/* Whether or not we're showing the back of the card. */
 	public boolean showingBack = false;
-	private GestureDetectorCompat detector;
+	private GestureDetectorCompat _detector;
 	public int frontId;
 	public int backId;
-	ActionBar actionBar;
-	ActionBar.TabListener tabListener;		
-	Tab cardFrontTab;
-	Tab cardBackTab;	
+	private ActionBar _actionBar;
+	private ActionBar.TabListener _tabListener;		
+	private Tab _cardFrontTab;
+	private Tab _cardBackTab;	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -53,19 +53,19 @@ public class CardFlipActivity extends ActionBarActivity implements
 		}
 
 		// Detect touched area
-		detector = new GestureDetectorCompat(this, this);
-		detector.setOnDoubleTapListener(this);
+		_detector = new GestureDetectorCompat(this, this);
+		_detector.setOnDoubleTapListener(this);
 
 		setCard();
 	}
 
 	private void InitTabs()
 	{
-		actionBar = getSupportActionBar();
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		_actionBar = getSupportActionBar();
+		_actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
 		// Create a tab listener that is called when the user changes tabs.
-		tabListener = new ActionBar.TabListener()
+		_tabListener = new ActionBar.TabListener()
 		{
 			@Override
 			public void onTabReselected(Tab tab, FragmentTransaction arg1)
@@ -87,21 +87,21 @@ public class CardFlipActivity extends ActionBarActivity implements
 		};
 
 		// Add 2 tabs, specifying the tab's text and TabListener
-		cardFrontTab = actionBar.newTab().setText(R.string.card_front)
-				.setTabListener(tabListener);
-		cardBackTab = actionBar.newTab().setText(R.string.card_back)
-				.setTabListener(tabListener);			
+		_cardFrontTab = _actionBar.newTab().setText(R.string.card_front)
+				.setTabListener(_tabListener);
+		_cardBackTab = _actionBar.newTab().setText(R.string.card_back)
+				.setTabListener(_tabListener);			
 		
-		actionBar.addTab(cardFrontTab);
-		actionBar.addTab(cardBackTab);
+		_actionBar.addTab(_cardFrontTab);
+		_actionBar.addTab(_cardBackTab);
 	}
 	
 	private void SelectTab()
 	{
-		if(actionBar.getSelectedTab() == cardFrontTab)
-			actionBar.selectTab(cardBackTab);
+		if(_actionBar.getSelectedTab() == _cardFrontTab)
+			_actionBar.selectTab(_cardBackTab);
 		else
-			actionBar.selectTab(cardFrontTab);
+			_actionBar.selectTab(_cardFrontTab);
 	}
 
 	@Override
@@ -201,7 +201,7 @@ public class CardFlipActivity extends ActionBarActivity implements
 	@Override
 	public boolean onTouchEvent(MotionEvent event)
 	{
-		this.detector.onTouchEvent(event);
+		this._detector.onTouchEvent(event);
 		// Be sure to call the superclass implementation
 		return super.onTouchEvent(event);
 	}

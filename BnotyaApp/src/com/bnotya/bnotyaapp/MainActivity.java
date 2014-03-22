@@ -22,7 +22,6 @@ import android.view.View;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.res.Configuration;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
@@ -32,8 +31,7 @@ import android.widget.ExpandableListView.OnGroupCollapseListener;
 import android.widget.ExpandableListView.OnGroupExpandListener;
 import android.widget.Toast;
 
-public class MainActivity extends ActionBarActivity implements
-		OnSharedPreferenceChangeListener
+public class MainActivity extends ActionBarActivity 
 {
 	private ExpandableListView _drawerList;
 	private List<String> _listDataHeaders;
@@ -42,8 +40,8 @@ public class MainActivity extends ActionBarActivity implements
 	private ActionBarDrawerToggle _drawerToggle;
 	private CharSequence _drawerTitle;
 	private CharSequence _title;
-	MediaPlayer music;
-	SharedPreferences prefs;	
+	public static MediaPlayer music;
+	private SharedPreferences _prefs;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -54,7 +52,7 @@ public class MainActivity extends ActionBarActivity implements
 		initDrawerList();
 		_title = _drawerTitle = getTitle();
 		initDrawerLayout(savedInstanceState);
-
+		
 		initMusic();
 	}
 
@@ -99,29 +97,6 @@ public class MainActivity extends ActionBarActivity implements
 			default:
 				return super.onOptionsItemSelected(item);
 		}
-	}
-
-	private void initMusic()
-	{	
-		music = MediaPlayer.create(this, R.raw.backgroundmusic);
-		prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-		prefs.registerOnSharedPreferenceChangeListener(this);
-		boolean hasMusic = prefs.getBoolean(
-				getString(R.string.music_preference), true);
-		if (hasMusic) 
-			music.start();
-	}
-	
-	@Override
-	protected void onResume() {
-	    super.onResume();
-	    prefs.registerOnSharedPreferenceChangeListener(this);
-	}
-
-	@Override
-	protected void onPause() {
-	    super.onPause();
-	    prefs.unregisterOnSharedPreferenceChangeListener(this);
 	}
 
 	private void initDrawerList()
@@ -477,22 +452,14 @@ public class MainActivity extends ActionBarActivity implements
 		fragmentManager.beginTransaction()
 				.replace(R.id.content_frame, fragment).commit();
 	}
-
-	@Override
-	public void onSharedPreferenceChanged(SharedPreferences arg0, String key)
+	
+	private void initMusic()
 	{
-		if (key.equals(getString(R.string.music_preference)))
-		{
-			boolean hasMusic = prefs.getBoolean(key, true);
-			if (hasMusic)
-				music.start();
-			else
-				music.stop();
-		}
-		// TODO
-		/*else if (key.equals(getString(R.string.music_volume_preference)))
-		{
-			music.setVolume(50, 50);
-		}*/
+		music = MediaPlayer.create(this, R.raw.backgroundmusic);
+		_prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());		
+		boolean hasMusic = _prefs.getBoolean(
+				getString(R.string.music_preference), true);
+		if (hasMusic) 
+			music.start();
 	}
 }

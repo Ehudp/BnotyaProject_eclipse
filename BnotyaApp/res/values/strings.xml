@@ -26,4 +26,9 @@
     <string name="card_back">Back</string>   
     <string name="music_preference">musicPreference</string>
     <string name="music_volume_preference">musicVolumePreference</string>
+    <string name="settings_dialog_message">Set music volume</string>
+    <string name="settings_summary">Current value is 1</string>
+    <string name="settings_unit"></string>
+    <string name="settings_title">Music Volume</string>
+
 </resources>

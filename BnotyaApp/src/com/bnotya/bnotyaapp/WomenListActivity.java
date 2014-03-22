@@ -26,7 +26,7 @@ import android.widget.SearchView;
 @SuppressLint("NewApi")
 public class WomenListActivity extends ActionBarActivity
 {
-	ListView listView;
+	private ListView _listView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -117,7 +117,7 @@ public class WomenListActivity extends ActionBarActivity
 		}
 
 		// Get ListView object from xml
-		listView = (ListView) findViewById(R.id.womenlist);
+		_listView = (ListView) findViewById(R.id.womenlist);
 
 		List<String> listDataHeaders = Arrays.asList(getResources()
 				.getStringArray(R.array.women_names_array));
@@ -132,10 +132,10 @@ public class WomenListActivity extends ActionBarActivity
 				listDataHeaders);
 
 		// Assign adapter to ListView
-		listView.setAdapter(adapter);
+		_listView.setAdapter(adapter);
 
 		// ListView Item Click Listener
-		listView.setOnItemClickListener(new OnItemClickListener()
+		_listView.setOnItemClickListener(new OnItemClickListener()
 		{
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
