@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     
+    <CheckBoxPreference android:title="Music"
+        android:defaultValue="true"
+        android:key="musicPreference"
+        android:summary="Music On/Off"/>
+    
+    <VolumePreference android:title="Music Volume"	        
+	        android:key="musicVolumePreference"
+	        android:summary="Music Volume"
+			android:defaultValue="50"/>    
 
 </PreferenceScreen>

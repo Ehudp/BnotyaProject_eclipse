@@ -22,4 +22,8 @@
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>    
     <string name="app_not_available">Sorry, there\'s no web browser available</string>
+    <string name="card_front">Front</string>  
+    <string name="card_back">Back</string>   
+    <string name="music_preference">musicPreference</string>
+    <string name="music_volume_preference">musicVolumePreference</string>
 </resources>

@@ -2,11 +2,14 @@ package com.bnotya.bnotyaapp;
 
 import com.bnotya.bnotyaapp.fragments.CardFragment;
 import com.bnotya.bnotyaapp.helpers.About;
-import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.GestureDetectorCompat;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBar.Tab;
+import android.support.v7.app.ActionBarActivity;
 import android.view.GestureDetector.OnDoubleTapListener;
 import android.view.GestureDetector.OnGestureListener;
 import android.view.Menu;
@@ -14,7 +17,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 
-public class CardFlipActivity extends FragmentActivity implements
+public class CardFlipActivity extends ActionBarActivity implements
 		OnGestureListener, OnDoubleTapListener
 {
 	/* Whether or not we're showing the back of the card. */
@@ -22,12 +25,18 @@ public class CardFlipActivity extends FragmentActivity implements
 	private GestureDetectorCompat detector;
 	public int frontId;
 	public int backId;
+	ActionBar actionBar;
+	ActionBar.TabListener tabListener;		
+	Tab cardFrontTab;
+	Tab cardBackTab;	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_card_flip);
+
+		InitTabs();
 
 		if (savedInstanceState == null)
 		{
@@ -48,6 +57,51 @@ public class CardFlipActivity extends FragmentActivity implements
 		detector.setOnDoubleTapListener(this);
 
 		setCard();
+	}
+
+	private void InitTabs()
+	{
+		actionBar = getSupportActionBar();
+		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
+		// Create a tab listener that is called when the user changes tabs.
+		tabListener = new ActionBar.TabListener()
+		{
+			@Override
+			public void onTabReselected(Tab tab, FragmentTransaction arg1)
+			{
+				
+			}
+
+			@Override
+			public void onTabSelected(Tab tab, FragmentTransaction arg1)
+			{	
+				flipCard();
+			}
+
+			@Override
+			public void onTabUnselected(Tab tab, FragmentTransaction arg1)
+			{
+				
+			}
+		};
+
+		// Add 2 tabs, specifying the tab's text and TabListener
+		cardFrontTab = actionBar.newTab().setText(R.string.card_front)
+				.setTabListener(tabListener);
+		cardBackTab = actionBar.newTab().setText(R.string.card_back)
+				.setTabListener(tabListener);			
+		
+		actionBar.addTab(cardFrontTab);
+		actionBar.addTab(cardBackTab);
+	}
+	
+	private void SelectTab()
+	{
+		if(actionBar.getSelectedTab() == cardFrontTab)
+			actionBar.selectTab(cardBackTab);
+		else
+			actionBar.selectTab(cardFrontTab);
 	}
 
 	@Override
@@ -84,7 +138,7 @@ public class CardFlipActivity extends FragmentActivity implements
 			default:
 				return super.onOptionsItemSelected(item);
 		}
-	}	
+	}
 
 	private void setCard()
 	{
@@ -118,7 +172,7 @@ public class CardFlipActivity extends FragmentActivity implements
 
 	private void flipCard()
 	{
-		showingBack = !showingBack;
+		showingBack = !showingBack;	
 
 		// Create and commit a new fragment transaction that adds the fragment
 		// for the card and uses custom animations.
@@ -170,7 +224,7 @@ public class CardFlipActivity extends FragmentActivity implements
 		 * Toast.makeText(getApplicationContext(), "onFling: " +
 		 * event1.toString()+event2.toString(), Toast.LENGTH_SHORT).show();
 		 */
-		flipCard();
+		SelectTab();		
 		return true;
 	}
 
@@ -191,6 +245,7 @@ public class CardFlipActivity extends FragmentActivity implements
 		 * Toast.makeText(getApplicationContext(), "onScroll: " +
 		 * e1.toString()+e2.toString(), Toast.LENGTH_SHORT).show();
 		 */
+		SelectTab();	
 		return true;
 	}
 
@@ -220,7 +275,7 @@ public class CardFlipActivity extends FragmentActivity implements
 		 * Toast.makeText(getApplicationContext(), "onDoubleTap: " +
 		 * event.toString(), Toast.LENGTH_SHORT).show();
 		 */
-		flipCard();
+		SelectTab();	
 		return true;
 	}
 
@@ -248,6 +303,6 @@ public class CardFlipActivity extends FragmentActivity implements
 
 	public void flipCard(View view)
 	{
-		flipCard();
-	}	
+		SelectTab();	
+	}
 }

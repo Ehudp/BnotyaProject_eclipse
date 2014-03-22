@@ -9,8 +9,10 @@ import com.bnotya.bnotyaapp.fragments.MainDefaultFragment;
 import com.bnotya.bnotyaapp.fragments.MainTehilotFragment;
 import com.bnotya.bnotyaapp.fragments.MainWomenFragment;
 import com.bnotya.bnotyaapp.helpers.About;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -19,6 +21,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.res.Configuration;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
@@ -28,7 +32,8 @@ import android.widget.ExpandableListView.OnGroupCollapseListener;
 import android.widget.ExpandableListView.OnGroupExpandListener;
 import android.widget.Toast;
 
-public class MainActivity extends ActionBarActivity
+public class MainActivity extends ActionBarActivity implements
+		OnSharedPreferenceChangeListener
 {
 	private ExpandableListView _drawerList;
 	private List<String> _listDataHeaders;
@@ -37,6 +42,8 @@ public class MainActivity extends ActionBarActivity
 	private ActionBarDrawerToggle _drawerToggle;
 	private CharSequence _drawerTitle;
 	private CharSequence _title;
+	MediaPlayer music;
+	SharedPreferences prefs;	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -47,6 +54,8 @@ public class MainActivity extends ActionBarActivity
 		initDrawerList();
 		_title = _drawerTitle = getTitle();
 		initDrawerLayout(savedInstanceState);
+
+		initMusic();
 	}
 
 	@Override
@@ -60,7 +69,7 @@ public class MainActivity extends ActionBarActivity
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu)
 	{
-		// If the nav drawer is open, 
+		// If the nav drawer is open,
 		// hide action items related to the content view
 		boolean drawerOpen = _drawerLayout.isDrawerOpen(_drawerList);
 		menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
@@ -90,6 +99,29 @@ public class MainActivity extends ActionBarActivity
 			default:
 				return super.onOptionsItemSelected(item);
 		}
+	}
+
+	private void initMusic()
+	{	
+		music = MediaPlayer.create(this, R.raw.backgroundmusic);
+		prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+		prefs.registerOnSharedPreferenceChangeListener(this);
+		boolean hasMusic = prefs.getBoolean(
+				getString(R.string.music_preference), true);
+		if (hasMusic) 
+			music.start();
+	}
+	
+	@Override
+	protected void onResume() {
+	    super.onResume();
+	    prefs.registerOnSharedPreferenceChangeListener(this);
+	}
+
+	@Override
+	protected void onPause() {
+	    super.onPause();
+	    prefs.unregisterOnSharedPreferenceChangeListener(this);
 	}
 
 	private void initDrawerList()
@@ -444,5 +476,23 @@ public class MainActivity extends ActionBarActivity
 
 		fragmentManager.beginTransaction()
 				.replace(R.id.content_frame, fragment).commit();
+	}
+
+	@Override
+	public void onSharedPreferenceChanged(SharedPreferences arg0, String key)
+	{
+		if (key.equals(getString(R.string.music_preference)))
+		{
+			boolean hasMusic = prefs.getBoolean(key, true);
+			if (hasMusic)
+				music.start();
+			else
+				music.stop();
+		}
+		// TODO
+		/*else if (key.equals(getString(R.string.music_volume_preference)))
+		{
+			music.setVolume(50, 50);
+		}*/
 	}
 }

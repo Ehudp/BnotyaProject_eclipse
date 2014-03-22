@@ -3,6 +3,8 @@ package com.bnotya.bnotyaapp;
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.Preference;
+import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 
@@ -41,6 +43,4 @@ public class Preferences extends PreferenceActivity
             addPreferencesFromResource(R.xml.prefs);
         }
     }
-
-
 }
