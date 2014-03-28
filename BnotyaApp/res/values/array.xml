@@ -18,15 +18,20 @@
 
     <!-- Navigation drawer -->
     <string-array name="views_array">
-        <item>Default Fragment</item>        
-        <item>Tehilot Fragment</item>
-        <item>Women Fragment</item>
-        <item>Tehilot Activity</item>
-        <item>Women Activity</item>             
+        <item>Default</item>        
+        <item>Tehilot</item>
+        <item>Women</item>             
     </string-array>
     <string-array name="women_views_array">        
         <item>Show Random Card</item>
         <item>Open Women List</item>
         <item>Open Trivia Page</item>               
     </string-array>
+    <!-- Nav Drawer List Item Icons -->    
+    <array name="nav_drawer_icons">
+        <item>@drawable/ic_action_search</item>
+        <item>@drawable/ic_action_search</item>
+        <item>@drawable/ic_action_search</item>        
+    </array>
+    
 </resources>

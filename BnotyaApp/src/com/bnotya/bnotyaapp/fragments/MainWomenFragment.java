@@ -20,7 +20,7 @@ public class MainWomenFragment extends Fragment
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState)
 	{
-		View rootView = inflater.inflate(R.layout.activity_main_women,
+		View rootView = inflater.inflate(R.layout.fragment_main_women,
 				container, false);
 
 		int i = getArguments().getInt(ARG_VIEW_NUMBER);

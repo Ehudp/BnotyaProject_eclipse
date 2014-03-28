@@ -26,16 +26,16 @@ public class CardFlipActivity extends ActionBarActivity implements
 	public int frontId;
 	public int backId;
 	private ActionBar _actionBar;
-	private ActionBar.TabListener _tabListener;		
+	private ActionBar.TabListener _tabListener;
 	private Tab _cardFrontTab;
 	private Tab _cardBackTab;	
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_card_flip);
-
+		
 		InitTabs();
 
 		if (savedInstanceState == null)
@@ -46,11 +46,7 @@ public class CardFlipActivity extends ActionBarActivity implements
 			// this fragment will have already been added to the activity.
 			getSupportFragmentManager().beginTransaction()
 					.add(R.id.container, new CardFragment()).commit();
-		}
-		else
-		{
-			showingBack = (getSupportFragmentManager().getBackStackEntryCount() > 0);
-		}
+		}		
 
 		// Detect touched area
 		_detector = new GestureDetectorCompat(this, this);
@@ -70,19 +66,23 @@ public class CardFlipActivity extends ActionBarActivity implements
 			@Override
 			public void onTabReselected(Tab tab, FragmentTransaction arg1)
 			{
-				
+
 			}
 
 			@Override
 			public void onTabSelected(Tab tab, FragmentTransaction arg1)
-			{	
-				flipCard();
+			{
+				if (_actionBar.getSelectedTab() == _cardFrontTab && showingBack
+						|| _actionBar.getSelectedTab() == _cardBackTab && !showingBack)
+				{
+					flipCard();
+				}	
 			}
 
 			@Override
 			public void onTabUnselected(Tab tab, FragmentTransaction arg1)
 			{
-				
+
 			}
 		};
 
@@ -90,15 +90,15 @@ public class CardFlipActivity extends ActionBarActivity implements
 		_cardFrontTab = _actionBar.newTab().setText(R.string.card_front)
 				.setTabListener(_tabListener);
 		_cardBackTab = _actionBar.newTab().setText(R.string.card_back)
-				.setTabListener(_tabListener);			
-		
+				.setTabListener(_tabListener);
+
 		_actionBar.addTab(_cardFrontTab);
 		_actionBar.addTab(_cardBackTab);
 	}
-	
+
 	private void SelectTab()
 	{
-		if(_actionBar.getSelectedTab() == _cardFrontTab)
+		if (_actionBar.getSelectedTab() == _cardFrontTab)
 			_actionBar.selectTab(_cardBackTab);
 		else
 			_actionBar.selectTab(_cardFrontTab);
@@ -172,7 +172,7 @@ public class CardFlipActivity extends ActionBarActivity implements
 
 	private void flipCard()
 	{
-		showingBack = !showingBack;	
+		showingBack = !showingBack;
 
 		// Create and commit a new fragment transaction that adds the fragment
 		// for the card and uses custom animations.
@@ -224,7 +224,7 @@ public class CardFlipActivity extends ActionBarActivity implements
 		 * Toast.makeText(getApplicationContext(), "onFling: " +
 		 * event1.toString()+event2.toString(), Toast.LENGTH_SHORT).show();
 		 */
-		SelectTab();		
+		SelectTab();
 		return true;
 	}
 
@@ -245,7 +245,7 @@ public class CardFlipActivity extends ActionBarActivity implements
 		 * Toast.makeText(getApplicationContext(), "onScroll: " +
 		 * e1.toString()+e2.toString(), Toast.LENGTH_SHORT).show();
 		 */
-		SelectTab();	
+		SelectTab();
 		return true;
 	}
 
@@ -275,7 +275,7 @@ public class CardFlipActivity extends ActionBarActivity implements
 		 * Toast.makeText(getApplicationContext(), "onDoubleTap: " +
 		 * event.toString(), Toast.LENGTH_SHORT).show();
 		 */
-		SelectTab();	
+		SelectTab();
 		return true;
 	}
 
@@ -303,6 +303,6 @@ public class CardFlipActivity extends ActionBarActivity implements
 
 	public void flipCard(View view)
 	{
-		SelectTab();	
+		SelectTab();
 	}
 }

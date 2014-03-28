@@ -40,34 +40,6 @@
             </intent-filter>
         </activity>
 
-        <!-- Main Tehilot activity -->
-        <activity
-            android:name="com.bnotya.bnotyaapp.MainTehilotActivity"
-            android:label="@string/app_name"
-            android:parentActivityName="com.bnotya.bnotyaapp.MainActivity" >
-            <intent-filter>
-                <action android:name="com.bnotya.bnotyaapp.MainTehilotActivity" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.bnotya.bnotyaapp.MainActivity" />
-        </activity>
-
-        <!-- Main Women activity -->
-        <activity
-            android:name="com.bnotya.bnotyaapp.MainWomenActivity"
-            android:label="@string/app_name"
-            android:parentActivityName="com.bnotya.bnotyaapp.MainActivity" >
-            <intent-filter>
-                <action android:name="com.bnotya.bnotyaapp.MainWomenActivity" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.bnotya.bnotyaapp.MainActivity" />
-        </activity>
-
         <!-- Trivia  activity -->
         <activity
             android:name="com.bnotya.bnotyaapp.TriviaActivity"

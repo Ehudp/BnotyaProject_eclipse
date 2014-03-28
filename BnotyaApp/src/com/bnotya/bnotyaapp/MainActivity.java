@@ -9,6 +9,7 @@ import com.bnotya.bnotyaapp.fragments.MainDefaultFragment;
 import com.bnotya.bnotyaapp.fragments.MainTehilotFragment;
 import com.bnotya.bnotyaapp.fragments.MainWomenFragment;
 import com.bnotya.bnotyaapp.helpers.About;
+import com.bnotya.bnotyaapp.models.NavDrawerItem;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.content.res.TypedArray;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -31,11 +33,11 @@ import android.widget.ExpandableListView.OnGroupCollapseListener;
 import android.widget.ExpandableListView.OnGroupExpandListener;
 import android.widget.Toast;
 
-public class MainActivity extends ActionBarActivity 
+public class MainActivity extends ActionBarActivity
 {
 	private ExpandableListView _drawerList;
-	private List<String> _listDataHeaders;
-	private HashMap<String, List<String>> _listDataChildren;
+	private List<NavDrawerItem> _listDataHeaders;
+	private HashMap<String, List<NavDrawerItem>> _listDataChildren;
 	private DrawerLayout _drawerLayout;
 	private ActionBarDrawerToggle _drawerToggle;
 	private CharSequence _drawerTitle;
@@ -52,7 +54,7 @@ public class MainActivity extends ActionBarActivity
 		initDrawerList();
 		_title = _drawerTitle = getTitle();
 		initDrawerLayout(savedInstanceState);
-		
+
 		initMusic();
 	}
 
@@ -67,8 +69,7 @@ public class MainActivity extends ActionBarActivity
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu)
 	{
-		// If the nav drawer is open,
-		// hide action items related to the content view
+		// If the nav drawer is open, hide action items
 		boolean drawerOpen = _drawerLayout.isDrawerOpen(_drawerList);
 		menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
 		menu.findItem(R.id.action_about).setVisible(!drawerOpen);
@@ -180,11 +181,11 @@ public class MainActivity extends ActionBarActivity
 		public boolean onChildClick(ExpandableListView parent, View v,
 				int groupPosition, int childPosition, long id)
 		{
-			String key = _listDataHeaders.get(groupPosition);
+			String key = _listDataHeaders.get(groupPosition).getTitle();
 
 			Toast.makeText(
 					getApplicationContext(),
-					key + " : " + _listDataChildren.get(key).get(childPosition),
+					key + " : " + _listDataChildren.get(key).get(childPosition).getTitle(),
 					Toast.LENGTH_SHORT).show();
 			selectChild(groupPosition, childPosition);
 			return false;
@@ -199,8 +200,8 @@ public class MainActivity extends ActionBarActivity
 		public boolean onGroupClick(ExpandableListView parent, View v,
 				int groupPosition, long id)
 		{
-			String key = _listDataHeaders.get(groupPosition);
-			List<String> children = _listDataChildren.get(key);
+			String key = _listDataHeaders.get(groupPosition).getTitle();
+			List<NavDrawerItem> children = _listDataChildren.get(key);
 			if (children.size() == 0)
 			{
 				selectGroup(groupPosition);
@@ -255,19 +256,45 @@ public class MainActivity extends ActionBarActivity
 	private void prepareListData()
 	{
 		// Setting group headers
-		_listDataHeaders = Arrays.asList(getResources().getStringArray(
-				R.array.views_array));
-		// Initiating _listDataChildren
-		_listDataChildren = new HashMap<String, List<String>>();
-		// Adding child data
-		List<String> womenChildrenList = Arrays.asList(getResources()
-				.getStringArray(R.array.women_views_array));
+		_listDataHeaders = fillNavigationData(R.array.views_array,
+				R.array.nav_drawer_icons);
 
-		_listDataChildren.put(_listDataHeaders.get(0), new ArrayList<String>());
-		_listDataChildren.put(_listDataHeaders.get(1), new ArrayList<String>());
-		_listDataChildren.put(_listDataHeaders.get(2), womenChildrenList);
-		_listDataChildren.put(_listDataHeaders.get(3), new ArrayList<String>());
-		_listDataChildren.put(_listDataHeaders.get(4), womenChildrenList);
+		// Initiating _listDataChildren
+		_listDataChildren = new HashMap<String, List<NavDrawerItem>>();
+
+		// Adding child data
+
+		// Setting child headers
+		List<NavDrawerItem> womenChildrenList = fillNavigationData(
+				R.array.women_views_array, R.array.nav_drawer_icons);
+
+		_listDataChildren.put(_listDataHeaders.get(0).getTitle(),
+				new ArrayList<NavDrawerItem>());
+		_listDataChildren.put(_listDataHeaders.get(1).getTitle(),
+				new ArrayList<NavDrawerItem>());
+		_listDataChildren.put(_listDataHeaders.get(2).getTitle(),
+				womenChildrenList);
+	}
+
+	private List<NavDrawerItem> fillNavigationData(int titlesID, int iconsID)
+	{
+		List<NavDrawerItem> result = new ArrayList<NavDrawerItem>();
+		// Load nav item values
+		String[] navMenuTitles = getResources().getStringArray(titlesID);
+		TypedArray navMenuIcons = getResources().obtainTypedArray(iconsID);
+
+		// Adding nav drawer items to array
+
+		for (int i = 0; i < navMenuTitles.length; i++)
+		{
+			result.add(new NavDrawerItem(navMenuTitles[i], navMenuIcons
+					.getResourceId(i, -1)));
+		}
+
+		// Recycle the typed array
+		navMenuIcons.recycle();
+
+		return result;
 	}
 
 	private void selectGroup(int position)
@@ -289,27 +316,17 @@ public class MainActivity extends ActionBarActivity
 				replaceFragment(new MainWomenFragment(), position);
 				break;
 			}
-			case 3:
-			{
-				startActivity(new Intent(this, MainTehilotActivity.class));
-				break;
-			}
-			case 4:
-			{
-				startActivity(new Intent(this, MainWomenActivity.class));
-				break;
-			}
 		}
 
 		// update selected item and title, then close the drawer
 		_drawerList.setItemChecked(position, true);
-		setTitle(_listDataHeaders.get(position));
+		setTitle(_listDataHeaders.get(position).getTitle());
 		_drawerLayout.closeDrawer(_drawerList);
 	}
 
 	private void selectChild(int groupPosition, int childPosition)
 	{
-		String key = _listDataHeaders.get(groupPosition);
+		String key = _listDataHeaders.get(groupPosition).getTitle();
 
 		switch (groupPosition)
 		{
@@ -344,38 +361,11 @@ public class MainActivity extends ActionBarActivity
 
 				break;
 			}
-			case 3:
-			{
-				break;
-			}
-			case 4:
-			{
-				switch (childPosition)
-				{
-					case 0:
-					{
-						openRandomCard(null);
-						break;
-					}
-					case 1:
-					{
-						openWomenList(null);
-						break;
-					}
-					case 2:
-					{
-						openTriviaPage(null);
-						break;
-					}
-				}
-
-				break;
-			}
 		}
 
 		// update selected item and title, then close the drawer
 		_drawerList.setItemChecked(groupPosition, true);
-		setTitle(_listDataChildren.get(key).get(childPosition));
+		setTitle(_listDataChildren.get(key).get(childPosition).getTitle());
 		_drawerLayout.closeDrawer(_drawerList);
 	}
 
@@ -452,14 +442,14 @@ public class MainActivity extends ActionBarActivity
 		fragmentManager.beginTransaction()
 				.replace(R.id.content_frame, fragment).commit();
 	}
-	
+
 	private void initMusic()
 	{
 		music = MediaPlayer.create(this, R.raw.backgroundmusic);
-		_prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());		
+		_prefs = PreferenceManager
+				.getDefaultSharedPreferences(getBaseContext());
 		boolean hasMusic = _prefs.getBoolean(
 				getString(R.string.music_preference), true);
-		if (hasMusic) 
-			music.start();
+		if (hasMusic) music.start();
 	}
 }

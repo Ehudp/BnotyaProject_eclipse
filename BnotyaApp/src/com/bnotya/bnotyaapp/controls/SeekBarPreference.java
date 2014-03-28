@@ -75,7 +75,6 @@ public class SeekBarPreference extends DialogPreference implements
 	@Override
 	protected View onCreateDialogView()
 	{
-
 		LinearLayout.LayoutParams params;
 		LinearLayout layout = new LinearLayout(mContext);
 		layout.setOrientation(LinearLayout.VERTICAL);
