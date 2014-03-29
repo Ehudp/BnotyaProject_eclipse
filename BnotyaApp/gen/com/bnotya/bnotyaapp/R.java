@@ -816,7 +816,7 @@ containing a value of this type.
         public static final int abc_split_action_bar_is_narrow=0x7f090002;
     }
     public static final class color {
-        public static final int abc_search_url_text_holo=0x7f0a000b;
+        public static final int abc_search_url_text_holo=0x7f0a000c;
         public static final int abc_search_url_text_normal=0x7f0a0000;
         public static final int abc_search_url_text_pressed=0x7f0a0002;
         public static final int abc_search_url_text_selected=0x7f0a0001;
@@ -826,6 +826,7 @@ containing a value of this type.
         public static final int counter_text_color=0x7f0a0005;
         public static final int list_background_end=0x7f0a0009;
         public static final int list_background_pressed=0x7f0a000a;
+        public static final int list_background_selected=0x7f0a000b;
         public static final int list_background_start=0x7f0a0008;
         public static final int list_item_title=0x7f0a0007;
     }
@@ -1042,8 +1043,9 @@ containing a value of this type.
         public static final int ic_launcher=0x7f020074;
         public static final int list_item_bg_normal=0x7f020075;
         public static final int list_item_bg_pressed=0x7f020076;
-        public static final int list_selector=0x7f020077;
-        public static final int logo_01=0x7f020078;
+        public static final int list_item_bg_selected=0x7f020077;
+        public static final int list_selector=0x7f020078;
+        public static final int logo_01=0x7f020079;
     }
     public static final class id {
         public static final int action_about=0x7f08004a;
