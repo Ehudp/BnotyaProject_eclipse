@@ -33,6 +33,9 @@ public final class R {
         /**  Navigation drawer 
          */
         public static final int views_array=0x7f0f0001;
+        /**  Women List Item Icons 
+         */
+        public static final int women_list_icons=0x7f0f0004;
         /**  Women list 
          */
         public static final int women_names_array=0x7f0f0000;
@@ -816,7 +819,7 @@ containing a value of this type.
         public static final int abc_split_action_bar_is_narrow=0x7f090002;
     }
     public static final class color {
-        public static final int abc_search_url_text_holo=0x7f0a000c;
+        public static final int abc_search_url_text_holo=0x7f0a000d;
         public static final int abc_search_url_text_normal=0x7f0a0000;
         public static final int abc_search_url_text_pressed=0x7f0a0002;
         public static final int abc_search_url_text_selected=0x7f0a0001;
@@ -829,6 +832,7 @@ containing a value of this type.
         public static final int list_background_selected=0x7f0a000b;
         public static final int list_background_start=0x7f0a0008;
         public static final int list_item_title=0x7f0a0007;
+        public static final int women_list_item_title=0x7f0a000c;
     }
     public static final class dimen {
         /**  Default height of an action bar. 
@@ -1038,17 +1042,18 @@ containing a value of this type.
         public static final int card9_9=0x7f02006f;
         public static final int counter_bg=0x7f020070;
         public static final int drawer_shadow=0x7f020071;
-        public static final int ic_action_search=0x7f020072;
-        public static final int ic_drawer=0x7f020073;
-        public static final int ic_launcher=0x7f020074;
-        public static final int list_item_bg_normal=0x7f020075;
-        public static final int list_item_bg_pressed=0x7f020076;
-        public static final int list_item_bg_selected=0x7f020077;
-        public static final int list_selector=0x7f020078;
-        public static final int logo_01=0x7f020079;
+        public static final int ic_action_overflow=0x7f020072;
+        public static final int ic_action_search=0x7f020073;
+        public static final int ic_drawer=0x7f020074;
+        public static final int ic_launcher=0x7f020075;
+        public static final int list_item_bg_normal=0x7f020076;
+        public static final int list_item_bg_pressed=0x7f020077;
+        public static final int list_item_bg_selected=0x7f020078;
+        public static final int list_selector=0x7f020079;
+        public static final int logo_01=0x7f02007a;
     }
     public static final class id {
-        public static final int action_about=0x7f08004a;
+        public static final int action_about=0x7f08004b;
         public static final int action_bar=0x7f08001e;
         public static final int action_bar_activity_content=0x7f080015;
         public static final int action_bar_container=0x7f08001d;
@@ -1057,9 +1062,9 @@ containing a value of this type.
         public static final int action_bar_subtitle=0x7f080025;
         public static final int action_bar_title=0x7f080024;
         public static final int action_context_bar=0x7f08001f;
-        public static final int action_exit=0x7f08004b;
+        public static final int action_exit=0x7f08004c;
         public static final int action_flip=0x7f08001b;
-        public static final int action_home=0x7f08004c;
+        public static final int action_home=0x7f08004d;
         public static final int action_menu_divider=0x7f080016;
         public static final int action_menu_presenter=0x7f080017;
         public static final int action_mode_close_button=0x7f080026;
@@ -1072,8 +1077,9 @@ containing a value of this type.
     
          */
         public static final int action_next=0x7f08001a;
-        public static final int action_open_search=0x7f08004d;
-        public static final int action_settings=0x7f080049;
+        public static final int action_open_search=0x7f08004e;
+        public static final int action_overflow=0x7f080049;
+        public static final int action_settings=0x7f08004a;
         public static final int activity_chooser_view_content=0x7f080027;
         public static final int always=0x7f08000b;
         public static final int beginning=0x7f080011;
@@ -1199,6 +1205,7 @@ containing a value of this type.
         public static final int fragment_main_tehilot=0x7f030020;
         public static final int fragment_main_women=0x7f030021;
         public static final int support_simple_spinner_dropdown_item=0x7f030022;
+        public static final int women_list_item=0x7f030023;
     }
     public static final class menu {
         public static final int main_menu=0x7f100000;

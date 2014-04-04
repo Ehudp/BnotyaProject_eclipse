@@ -1,26 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:bnotyaapp="http://schemas.android.com/apk/res-auto" >
-    
+
+    <item
+        android:id="@+id/action_overflow"
+        android:icon="@drawable/ic_action_overflow"
+        android:orderInCategory="100"
+        bnotyaapp:showAsAction="always"/>        
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:showAsAction="never"
-        bnotyaapp:showAsAction="never"
-        android:title="@string/action_settings"/>
-    
+        android:title="@string/action_settings"
+        bnotyaapp:showAsAction="never"/>
     <item
         android:id="@+id/action_about"
         android:orderInCategory="100"
         android:showAsAction="never"
-        bnotyaapp:showAsAction="never"
-        android:title="@string/action_about"/>
-    
+        android:title="@string/action_about"
+        bnotyaapp:showAsAction="never"/>
     <item
         android:id="@+id/action_exit"
         android:orderInCategory="100"
         android:showAsAction="never"
-        bnotyaapp:showAsAction="never"
-        android:title="@string/action_exit"/>
-    
+        android:title="@string/action_exit"
+        bnotyaapp:showAsAction="never"/>
+
 </menu>

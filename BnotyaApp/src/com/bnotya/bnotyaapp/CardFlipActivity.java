@@ -245,7 +245,7 @@ public class CardFlipActivity extends ActionBarActivity implements
 		 * Toast.makeText(getApplicationContext(), "onScroll: " +
 		 * e1.toString()+e2.toString(), Toast.LENGTH_SHORT).show();
 		 */
-		SelectTab();
+		//SelectTab();
 		return true;
 	}
 

@@ -12,6 +12,8 @@ import com.bnotya.bnotyaapp.models.NavDrawerItem;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.Fragment;
@@ -43,13 +45,15 @@ public class MainActivity extends ActionBarActivity
 	private CharSequence _title;
 	public static MediaPlayer music;
 	private SharedPreferences _prefs;
+	// For Menu Overflow in API < 11
+	private Handler handler = new Handler(Looper.getMainLooper());
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
+		
 		initDrawerList();
 		_title = _drawerTitle = getTitle();
 		initDrawerLayout(savedInstanceState);
@@ -68,6 +72,12 @@ public class MainActivity extends ActionBarActivity
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu)
 	{
+		// For Menu Overflow in API < 11
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+		{
+			menu.removeItem(R.id.action_overflow);
+		}
+
 		// If the nav drawer is open, hide action items
 		boolean drawerOpen = _drawerLayout.isDrawerOpen(_drawerList);
 		menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
@@ -85,6 +95,10 @@ public class MainActivity extends ActionBarActivity
 
 		switch (item.getItemId())
 		{
+			// For Menu Overflow in API < 11
+			case R.id.action_overflow:
+				openOptionsMenuDeferred();
+				return true;
 			case R.id.action_settings:
 				startActivity(new Intent(this, Preferences.class));
 				return true;
@@ -97,6 +111,19 @@ public class MainActivity extends ActionBarActivity
 			default:
 				return super.onOptionsItemSelected(item);
 		}
+	}	
+
+	// For Menu Overflow in API < 11
+	public void openOptionsMenuDeferred()
+	{
+		handler.post(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				openOptionsMenu();
+			}
+		});
 	}
 
 	private void initDrawerList()
@@ -184,8 +211,10 @@ public class MainActivity extends ActionBarActivity
 
 			Toast.makeText(
 					getApplicationContext(),
-					key + " : " + _listDataChildren.get(key).get(childPosition).getTitle(),
-					Toast.LENGTH_SHORT).show();
+					key
+							+ " : "
+							+ _listDataChildren.get(key).get(childPosition)
+									.getTitle(), Toast.LENGTH_SHORT).show();
 			selectChild(groupPosition, childPosition);
 			return false;
 		}
@@ -450,5 +479,5 @@ public class MainActivity extends ActionBarActivity
 		boolean hasMusic = _prefs.getBoolean(
 				getString(R.string.music_preference), true);
 		if (hasMusic) music.start();
-	}
+	}	
 }

@@ -1,7 +1,7 @@
 package com.bnotya.bnotyaapp.models;
 
-public class NavDrawerItem {
-    
+public class NavDrawerItem 
+{    
     private String title;
     private int icon;
     private String count = "0";
