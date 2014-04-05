@@ -2,6 +2,7 @@ package com.bnotya.bnotyaapp;
 
 import com.bnotya.bnotyaapp.fragments.CardFragment;
 import com.bnotya.bnotyaapp.helpers.About;
+import com.bnotya.bnotyaapp.models.Card;
 import android.support.v4.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,19 +24,19 @@ public class CardFlipActivity extends ActionBarActivity implements
 	/* Whether or not we're showing the back of the card. */
 	public boolean showingBack = false;
 	private GestureDetectorCompat _detector;
-	public int frontId;
-	public int backId;
+	public Card card;
 	private ActionBar _actionBar;
 	private ActionBar.TabListener _tabListener;
 	private Tab _cardFrontTab;
-	private Tab _cardBackTab;	
-	
+	private Tab _cardBackTab;
+	private boolean _isRandom;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_card_flip);
-		
+
 		InitTabs();
 
 		if (savedInstanceState == null)
@@ -46,13 +47,17 @@ public class CardFlipActivity extends ActionBarActivity implements
 			// this fragment will have already been added to the activity.
 			getSupportFragmentManager().beginTransaction()
 					.add(R.id.container, new CardFragment()).commit();
-		}		
+		}
 
 		// Detect touched area
 		_detector = new GestureDetectorCompat(this, this);
 		_detector.setOnDoubleTapListener(this);
 
-		setCard();
+		_isRandom = getIntent().getBooleanExtra("EXTRA_SESSION_ISRANDOM",
+				false);
+		
+		// Setup card
+		card = new Card(getIntent(), getResources(), getPackageName());	
 	}
 
 	private void InitTabs()
@@ -73,10 +78,11 @@ public class CardFlipActivity extends ActionBarActivity implements
 			public void onTabSelected(Tab tab, FragmentTransaction arg1)
 			{
 				if (_actionBar.getSelectedTab() == _cardFrontTab && showingBack
-						|| _actionBar.getSelectedTab() == _cardBackTab && !showingBack)
+						|| _actionBar.getSelectedTab() == _cardBackTab
+						&& !showingBack)
 				{
 					flipCard();
-				}	
+				}
 			}
 
 			@Override
@@ -119,12 +125,10 @@ public class CardFlipActivity extends ActionBarActivity implements
 		switch (item.getItemId())
 		{
 			case android.R.id.home:
-				NavUtils.navigateUpTo(this,
-						new Intent(this, MainActivity.class));
+				navigateBack();
 				return true;
 			case R.id.action_home:
-				NavUtils.navigateUpTo(this,
-						new Intent(this, MainActivity.class));
+				navigateBack();
 				return true;
 			case R.id.action_settings:
 				startActivity(new Intent(this, Preferences.class));
@@ -140,34 +144,13 @@ public class CardFlipActivity extends ActionBarActivity implements
 		}
 	}
 
-	private void setCard()
+	private void navigateBack()
 	{
-		Intent intent = getIntent();
-		int cardId = 1;
-
-		boolean isRandom = intent.getBooleanExtra("EXTRA_SESSION_ISRANDOM",
-				false);
-		if (isRandom)
-		{
-			int numberOfCards = getResources().getInteger(
-					R.integer.number_of_cards) - 1;
-			// Random from 1 to number of cards
-			cardId += (Math.random() * numberOfCards);
-
-			// Set extras to prevent card changes on configuration change
-			intent.putExtra("EXTRA_SESSION_ID", (cardId - 1));
-			intent.putExtra("EXTRA_SESSION_ISRANDOM", false);
-		}
+		if (_isRandom)
+			NavUtils.navigateUpTo(this, new Intent(this, MainActivity.class));
 		else
-		{
-			cardId += intent.getIntExtra("EXTRA_SESSION_ID", 0);
-		}
-
-		frontId = getResources().getIdentifier(String.format("card%s", cardId),
-				"drawable", getPackageName());
-		backId = getResources().getIdentifier(
-				String.format("card%s_%s", cardId, cardId), "drawable",
-				getPackageName());
+			NavUtils.navigateUpTo(this, new Intent(this,
+					WomenListActivity.class));
 	}
 
 	private void flipCard()
@@ -245,7 +228,7 @@ public class CardFlipActivity extends ActionBarActivity implements
 		 * Toast.makeText(getApplicationContext(), "onScroll: " +
 		 * e1.toString()+e2.toString(), Toast.LENGTH_SHORT).show();
 		 */
-		//SelectTab();
+		// SelectTab();
 		return true;
 	}
 

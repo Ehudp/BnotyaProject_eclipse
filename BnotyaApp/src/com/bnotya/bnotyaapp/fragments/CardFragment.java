@@ -24,9 +24,9 @@ public class CardFragment extends Fragment
 				false);
 		ImageView cardView = (ImageView) view.findViewById(R.id.card);
 		if (((CardFlipActivity) getActivity()).showingBack)
-			cardView.setImageResource(((CardFlipActivity) getActivity()).backId);
+			cardView.setImageResource(((CardFlipActivity) getActivity()).card.getBackId());
 		else
-			cardView.setImageResource(((CardFlipActivity) getActivity()).frontId);
+			cardView.setImageResource(((CardFlipActivity) getActivity()).card.getFrontId());
 		return view;
 	}
 }
