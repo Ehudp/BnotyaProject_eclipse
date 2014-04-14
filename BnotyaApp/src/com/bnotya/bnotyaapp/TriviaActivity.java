@@ -42,7 +42,7 @@ public class TriviaActivity extends ActionBarActivity implements OnCheckedChange
 			getSupportActionBar().setHomeButtonEnabled(true);
 		}
 
-		_db = new DatabaseHelper(this);
+		_db = DatabaseHelper.getInstance(this);
 		
 		clearDB();
 
