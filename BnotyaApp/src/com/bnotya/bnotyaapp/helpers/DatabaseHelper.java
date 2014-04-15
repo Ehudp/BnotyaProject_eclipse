@@ -353,7 +353,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
 	{
 		List<Answer> answers = new ArrayList<Answer>();
 		SQLiteDatabase db = this.getReadableDatabase();
-		List<Answer> allAnswers = getAllAnswers();
+		/*List<Answer> allAnswers = getAllAnswers();
 
 		String selectQuery = "SELECT * FROM " + TABLE_QUESTION_ANSWER
 				+ " WHERE " + KEY_QUESTION_ID + " = " + question_id;
@@ -374,7 +374,25 @@ public class DatabaseHelper extends SQLiteOpenHelper
 					}
 				}
 			} while (c.moveToNext());
+		}*/
+		String selectQuery = "SELECT * FROM " + TABLE_ANSWER + " AS TA JOIN " + TABLE_QUESTION_ANSWER + " AS TQA ON TQA." + KEY_ANSWER_ID + "=TA." + KEY_ID
+				+ " WHERE " + KEY_QUESTION_ID + " = " + question_id;
+		Cursor c = db.rawQuery(selectQuery, null);
+		// looping through all rows and adding to list
+		if (c.moveToFirst())
+		{
+			do
+			{
+				Answer answer = new Answer();
+				answer.setId(c.getInt(c
+						.getColumnIndex(KEY_ID)));
+				answer.setContent(c.getString(c
+						.getColumnIndex(KEY_CONTENT)));	
+				answers.add(answer);
+				
+			} while (c.moveToNext());
 		}
+		
 
 		return answers;
 	}
