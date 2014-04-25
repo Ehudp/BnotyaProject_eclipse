@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">בנותיה</string>
+    <string name="action_settings">אפשרויות</string>
+    <string name="action_about">הודות</string>
+    <string name="action_search">חיפוש</string>
+    <string name="action_home">בית</string>
+    <string name="action_exit">יציאה</string>
+    <string name="about_main_menu">About article goes here</string>
+    <string name="about_main_tehilot">About article goes here</string>
+    <string name="about_main_women">About article goes here</string>
+    <string name="open_tehilot">תהילות</string>
+    <string name="open_women_menu">נשים בתנ"\ך</string>
+    <string name="open_self_improvement_page">שיפור עצמי</string>
+    <string name="open_trivia_page">טריויה</string>
+    <string name="open_random_card">קלף אקראי</string>
+    <string name="open_women_list">קלפי נשים בתנ"\ך</string>
+    <string name="title_card_flip">קלף</string>
+    <string name="description_card">Image</string>
+    <string name="about_text">About the Bnotya project</string>
+    <string name="drawer_open">פתח נווט</string>
+    <string name="drawer_close">סגור נווט</string>
+    <string name="app_not_available">מצטערים, אין דפדפן אינטרנט זמין</string>
+    <string name="card_front">פנים</string>
+    <string name="card_back">גב</string>
+    <string name="music_preference">musicPreference</string>
+    <string name="music_volume_preference">musicVolumePreference</string>
+    <string name="settings_dialog_message">קבע עוצמת המוסיקה</string>
+    <string name="settings_summary">הערך הנןכחי הינו 1</string>
+    <string name="settings_unit"></string>
+    <string name="settings_title">עוצמת המוסיקה</string>
+    <string name="desc_list_item_icon">Image</string>
+    <string name="correct_answer">תשובה נכונה</string>
+    <string name="wrong_answer">תשובה לא נכונה</string>
+
+</resources>

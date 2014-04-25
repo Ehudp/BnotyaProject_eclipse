@@ -436,6 +436,7 @@ int string app_name 0x7f0d000d
 int string app_not_available 0x7f0d0021
 int string card_back 0x7f0d0023
 int string card_front 0x7f0d0022
+int string correct_answer 0x7f0d002b
 int string desc_list_item_icon 0x7f0d002a
 int string description_card 0x7f0d001d
 int string drawer_close 0x7f0d0020
@@ -453,6 +454,7 @@ int string settings_summary 0x7f0d0027
 int string settings_title 0x7f0d0029
 int string settings_unit 0x7f0d0028
 int string title_card_flip 0x7f0d001c
+int string wrong_answer 0x7f0d002c
 int style AppBaseTheme 0x7f0e0085
 int style CustomActionBarTheme 0x7f0e0083
 int style MyActionBar 0x7f0e0084

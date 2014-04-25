@@ -15,21 +15,23 @@
     <string name="open_self_improvement_page">Open Self Improvement Page</string>
     <string name="open_trivia_page">Open Trivia Page</string>
     <string name="open_random_card">Open Random Card</string>
-    <string name="open_women_list">Open Women List</string>    
-    <string name="title_card_flip">Card Flip</string>    
-    <string name="description_card">Image</string>   
+    <string name="open_women_list">Open Women List</string>
+    <string name="title_card_flip">Card</string>
+    <string name="description_card">Image</string>
     <string name="about_text">About the Bnotya project</string>
     <string name="drawer_open">Open navigation drawer</string>
-    <string name="drawer_close">Close navigation drawer</string>    
+    <string name="drawer_close">Close navigation drawer</string>
     <string name="app_not_available">Sorry, there\'s no web browser available</string>
-    <string name="card_front">Front</string>  
-    <string name="card_back">Back</string>   
+    <string name="card_front">Front</string>
+    <string name="card_back">Back</string>
     <string name="music_preference">musicPreference</string>
     <string name="music_volume_preference">musicVolumePreference</string>
     <string name="settings_dialog_message">Set music volume</string>
     <string name="settings_summary">Current value is 1</string>
     <string name="settings_unit"></string>
     <string name="settings_title">Music Volume</string>
-<string name="desc_list_item_icon">Image</string>
+    <string name="desc_list_item_icon">Image</string>
+    <string name="correct_answer">Correct answer</string>
+    <string name="wrong_answer">Wrong answer</string>
 
 </resources>

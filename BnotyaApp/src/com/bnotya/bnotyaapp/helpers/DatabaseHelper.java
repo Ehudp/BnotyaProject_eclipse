@@ -56,13 +56,14 @@ public class DatabaseHelper extends SQLiteOpenHelper
 
 	// TABLE_QUESTION_ANSWER table create statement
 	private static final String CREATE_TABLE_QUESTION_ANSWER = "CREATE TABLE "
-			+ TABLE_QUESTION_ANSWER + "(" + KEY_ID
-			+ " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_QUESTION_ID
-			+ " INTEGER NOT NULL, FOREIGN KEY (" + KEY_QUESTION_ID
-			+ ") REFERENCES " + TABLE_QUESTION + " (" + KEY_ID + ")"
-			+ KEY_ANSWER_ID + " INTEGER NOT NULL, FOREIGN KEY ("
-			+ KEY_ANSWER_ID + ") REFERENCES " + TABLE_ANSWER + " (" + KEY_ID
-			+ ")" + KEY_ISCORRECT + " BOOLEAN NOT NULL)";
+			+ TABLE_QUESTION_ANSWER 
+			+ "(" 
+			+ KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " 
+			+ KEY_QUESTION_ID + " INTEGER NOT NULL, " 
+			+ KEY_ANSWER_ID + " INTEGER NOT NULL, "
+			+ KEY_ISCORRECT + " BOOLEAN NOT NULL, "
+			+ "FOREIGN KEY (" + KEY_ANSWER_ID + ") REFERENCES " + TABLE_ANSWER + " (" + KEY_ID	+ "), " 
+			+ "FOREIGN KEY (" + KEY_QUESTION_ID	+ ") REFERENCES " + TABLE_QUESTION + " (" + KEY_ID + ")) ";
 
 	public static DatabaseHelper getInstance(Context context)
 	{
@@ -109,6 +110,13 @@ public class DatabaseHelper extends SQLiteOpenHelper
 			db.execSQL("PRAGMA foreign_keys=ON;");
 		}
 	}
+	
+	public void clearDb()
+	{
+		SQLiteDatabase db = this.getWritableDatabase();
+		int version = db.getVersion();
+		onUpgrade(db, version, ++version);
+	}
 
 	// ------------- "TABLE_QUESTION" methods ----------------//
 
@@ -130,7 +138,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
 		{
 			createQuestionAnswerEntry(question_id, answer_id);
 		}
-
+		
 		return question_id;
 	}
 
@@ -230,6 +238,10 @@ public class DatabaseHelper extends SQLiteOpenHelper
 		// check if answers under it should also be deleted
 		if (should_delete_all_questions_answers)
 		{
+			db.delete(TABLE_QUESTION_ANSWER, KEY_QUESTION_ID + " = ?", new String[]
+					{
+						String.valueOf(question.getId())
+					});
 			// get all answers under this question
 			List<Answer> allQuestionAnswers = getAllAnswersByQuestion(question
 					.getId());
@@ -262,8 +274,12 @@ public class DatabaseHelper extends SQLiteOpenHelper
 		values.put(KEY_CONTENT, answer.getContent());
 
 		// insert row
-		long answer_id = db.insert(TABLE_ANSWER, null, values);
+		db.insert(TABLE_ANSWER, null, values);
 
+		Cursor c = db.query(TABLE_ANSWER, new String[] {KEY_ID}, null, null, null, null, null);
+		c.moveToLast();
+		long answer_id = c.getInt(c.getColumnIndex(KEY_ID));		
+		
 		return answer_id;
 	}
 
@@ -353,28 +369,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
 	{
 		List<Answer> answers = new ArrayList<Answer>();
 		SQLiteDatabase db = this.getReadableDatabase();
-		/*List<Answer> allAnswers = getAllAnswers();
-
-		String selectQuery = "SELECT * FROM " + TABLE_QUESTION_ANSWER
-				+ " WHERE " + KEY_QUESTION_ID + " = " + question_id;
-		Cursor c = db.rawQuery(selectQuery, null);
-		// looping through all rows and adding to list
-		if (c.moveToFirst())
-		{
-			do
-			{
-				for (Answer answer : allAnswers)
-				{
-					if (answer.getId() == c.getInt(c
-							.getColumnIndex(KEY_ANSWER_ID)))
-					{
-						// adding to list
-						answers.add(answer);
-						break;
-					}
-				}
-			} while (c.moveToNext());
-		}*/
+		
 		String selectQuery = "SELECT * FROM " + TABLE_ANSWER + " AS TA JOIN " + TABLE_QUESTION_ANSWER + " AS TQA ON TQA." + KEY_ANSWER_ID + "=TA." + KEY_ID
 				+ " WHERE " + KEY_QUESTION_ID + " = " + question_id;
 		Cursor c = db.rawQuery(selectQuery, null);

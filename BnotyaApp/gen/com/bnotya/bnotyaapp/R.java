@@ -28,15 +28,19 @@ public final class R {
     }
     public static final class array {
         /**  Nav Drawer List Item Icons 
+ Nav Drawer List Item Icons 
          */
         public static final int nav_drawer_icons=0x7f0f0003;
         /**  Navigation drawer 
+ Navigation drawer 
          */
         public static final int views_array=0x7f0f0001;
         /**  Women List Item Icons 
+ Women List Item Icons 
          */
         public static final int women_list_icons=0x7f0f0004;
         /**  Women list 
+ Women list 
          */
         public static final int women_names_array=0x7f0f0000;
         public static final int women_views_array=0x7f0f0002;
@@ -1271,6 +1275,7 @@ containing a value of this type.
         public static final int app_not_available=0x7f0d0021;
         public static final int card_back=0x7f0d0023;
         public static final int card_front=0x7f0d0022;
+        public static final int correct_answer=0x7f0d002b;
         public static final int desc_list_item_icon=0x7f0d002a;
         public static final int description_card=0x7f0d001d;
         public static final int drawer_close=0x7f0d0020;
@@ -1288,6 +1293,7 @@ containing a value of this type.
         public static final int settings_title=0x7f0d0029;
         public static final int settings_unit=0x7f0d0028;
         public static final int title_card_flip=0x7f0d001c;
+        public static final int wrong_answer=0x7f0d002c;
     }
     public static final class style {
         /** 

@@ -17,6 +17,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class TriviaActivity extends ActionBarActivity implements OnCheckedChangeListener
 {
@@ -53,11 +54,12 @@ public class TriviaActivity extends ActionBarActivity implements OnCheckedChange
 
 	private void clearDB()
 	{
-		List<Question> allQuestions = _db.getAllQuestions();
+		_db.clearDb();
+		/*List<Question> allQuestions = _db.getAllQuestions();
 		for (Question question : allQuestions)
 		{
 			_db.deleteQuestion(question, true);
-		}
+		}*/
 	}
 
 	private void createDB()
@@ -153,11 +155,11 @@ public class TriviaActivity extends ActionBarActivity implements OnCheckedChange
 		boolean result = _db.getIsCorrectAnswer(Long.valueOf(_questionView.getTag().toString()), (long)checkedId);
 		if(result)
 		{
-			// Right answer
+			Toast.makeText(getApplicationContext(), R.string.correct_answer, Toast.LENGTH_SHORT).show();
 		}
 		else
 		{
-			// Wrong answer
+			Toast.makeText(getApplicationContext(), R.string.wrong_answer, Toast.LENGTH_SHORT).show();
 		}
 	}
 }
