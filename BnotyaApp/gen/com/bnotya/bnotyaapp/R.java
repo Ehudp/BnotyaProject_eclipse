@@ -1044,17 +1044,18 @@ containing a value of this type.
         public static final int card8_8=0x7f02006d;
         public static final int card9=0x7f02006e;
         public static final int card9_9=0x7f02006f;
-        public static final int counter_bg=0x7f020070;
-        public static final int drawer_shadow=0x7f020071;
-        public static final int ic_action_overflow=0x7f020072;
-        public static final int ic_action_search=0x7f020073;
-        public static final int ic_drawer=0x7f020074;
-        public static final int ic_launcher=0x7f020075;
-        public static final int list_item_bg_normal=0x7f020076;
-        public static final int list_item_bg_pressed=0x7f020077;
-        public static final int list_item_bg_selected=0x7f020078;
-        public static final int list_selector=0x7f020079;
-        public static final int logo_01=0x7f02007a;
+        public static final int clean_background=0x7f020070;
+        public static final int counter_bg=0x7f020071;
+        public static final int drawer_shadow=0x7f020072;
+        public static final int ic_action_overflow=0x7f020073;
+        public static final int ic_action_search=0x7f020074;
+        public static final int ic_drawer=0x7f020075;
+        public static final int ic_launcher=0x7f020076;
+        public static final int list_item_bg_normal=0x7f020077;
+        public static final int list_item_bg_pressed=0x7f020078;
+        public static final int list_item_bg_selected=0x7f020079;
+        public static final int list_selector=0x7f02007a;
+        public static final int logo_01=0x7f02007b;
     }
     public static final class id {
         public static final int action_about=0x7f08004d;

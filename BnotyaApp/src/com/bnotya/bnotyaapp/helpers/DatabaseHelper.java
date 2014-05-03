@@ -423,8 +423,9 @@ public class DatabaseHelper extends SQLiteOpenHelper
 		values.put(KEY_ISCORRECT, isCorrect);
 
 		// updating row
-		return db.update(TABLE_QUESTION_ANSWER, values, KEY_QUESTION_ID
-				+ " = ? AND " + KEY_ANSWER_ID + " = ?", new String[]
+		String whereClause = String.format("%s = ? AND %s = ?", KEY_QUESTION_ID, KEY_ANSWER_ID);
+		
+		return db.update(TABLE_QUESTION_ANSWER, values, whereClause, new String[]
 		{
 				String.valueOf(question_id), String.valueOf(answer_id)
 		});
