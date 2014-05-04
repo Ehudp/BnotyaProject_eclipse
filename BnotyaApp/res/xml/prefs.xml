@@ -5,16 +5,11 @@
         android:defaultValue="true"
         android:key="musicPreference"
         android:summary="Music On/Off"/>
-    
-    <VolumePreference android:title="Music Volume"	        
-	        android:key="musicVolumePreference"
-	        android:summary="Music Volume"
-			android:defaultValue="50"/>  
 			
     <com.bnotya.bnotyaapp.controls.SeekBarPreference
             android:defaultValue="50"
             android:dialogMessage="@string/settings_dialog_message"
-            android:key="SEEKBAR_VALUE"
+            android:key="musicVolumePreference"
             android:max="100"
             android:summary="@string/settings_summary"
             android:text="@string/settings_unit"

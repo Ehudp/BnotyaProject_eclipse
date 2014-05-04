@@ -1,9 +1,12 @@
 package com.bnotya.bnotyaapp;
 
 import com.bnotya.bnotyaapp.controls.SeekBarPreference;
+
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
@@ -13,7 +16,8 @@ import android.preference.PreferenceManager;
 public class Preferences extends PreferenceActivity implements
 		OnSharedPreferenceChangeListener
 {
-	private static SeekBarPreference _seekBarPref;
+	private SeekBarPreference _seekBarPref;
+	private AudioManager _audioManager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -34,21 +38,25 @@ public class Preferences extends PreferenceActivity implements
 	private void onCreatePreferenceActivity()
 	{
 		addPreferencesFromResource(R.xml.prefs);
-		// Get widgets :
-		_seekBarPref = (SeekBarPreference) this.findPreference("SEEKBAR_VALUE");
+		// Get widgets:
+		_seekBarPref = (SeekBarPreference)findPreference(getString(R.string.music_volume_preference));
 
-		// Set listener :
+		// Set listener:
 		getPreferenceScreen().getSharedPreferences()
 				.registerOnSharedPreferenceChangeListener(this);
 
-		// Set seekbar summary :
-		int radius = PreferenceManager.getDefaultSharedPreferences(this)
-				.getInt("SEEKBAR_VALUE", 50);
-		_seekBarPref.setSummary(this.getString(R.string.settings_summary)
-				.replace("1", "" + radius));
+		_audioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+		int maxVolume = _audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+		int currentVolume = _audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+		_seekBarPref.setMax(maxVolume);
+		_seekBarPref.setProgress(currentVolume);
+		
+		// Set volume summary:		
+		_seekBarPref.setSummary(getString(R.string.settings_summary)
+				.replace("1", "" + currentVolume));
 	}
 
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	/*@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	private void onCreatePreferenceFragment()
 	{
 		getFragmentManager().beginTransaction()
@@ -67,18 +75,21 @@ public class Preferences extends PreferenceActivity implements
 
 			addPreferencesFromResource(R.xml.prefs);
 			// Get widgets :
-			_seekBarPref = (SeekBarPreference) this
-					.findPreference("SEEKBAR_VALUE");
+			_seekBarPref = (SeekBarPreference)findPreference(getString(R.string.music_volume_preference));
 
 			// Set listener :
 			getPreferenceScreen().getSharedPreferences()
 					.registerOnSharedPreferenceChangeListener(this);
 
-			// Set seekbar summary :
-			int radius = PreferenceManager.getDefaultSharedPreferences(
-					this.getActivity()).getInt("SEEKBAR_VALUE", 50);
-			_seekBarPref.setSummary(this.getString(R.string.settings_summary)
-					.replace("1", "" + radius));
+			_audioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+			int maxVolume = _audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+			int currentVolume = _audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+			_seekBarPref.setMax(maxVolume);
+			_seekBarPref.setProgress(currentVolume);
+			
+			// Set volume summary:		
+			_seekBarPref.setSummary(getString(R.string.settings_summary)
+					.replace("1", "" + currentVolume));
 		}
 
 		@Override
@@ -88,53 +99,51 @@ public class Preferences extends PreferenceActivity implements
 			if (key.equals(getString(R.string.music_preference)))
 			{
 				if (MainActivity.music == null) return;
-				boolean hasMusic = getPreferenceScreen().getSharedPreferences()
-						.getBoolean(key, true);
-				if (hasMusic)
-					MainActivity.music.start();
-				else
-					MainActivity.music.stop();
+				setMusicOnOffSwitch(key);
 			}
 			else
 			{
-				// Set seekbar summary :
-				int volume = PreferenceManager.getDefaultSharedPreferences(
-						this.getActivity()).getInt("SEEKBAR_VALUE", 50);
-				_seekBarPref.setSummary(this.getString(
-						R.string.settings_summary).replace("1", "" + volume));
-				if (MainActivity.music != null)
-				{
-					MainActivity.music.setVolume(volume, volume);
-				}
+				setMusicVolume();
 			}
 		}
-	}
-
-	@SuppressWarnings("deprecation")
+	}*/
+	
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences arg0, String key)
 	{
 		if (key.equals(getString(R.string.music_preference)))
 		{
 			if (MainActivity.music == null) return;
-			boolean hasMusic = getPreferenceScreen().getSharedPreferences()
-					.getBoolean(key, true);
-			if (hasMusic)
-				MainActivity.music.start();
-			else
-				MainActivity.music.stop();
+			setMusicOnOffSwitch(key);
 		}
-		else
+		else if(key.equals(getString(R.string.music_volume_preference)))
 		{
-			// Set seekbar summary :
-			int volume = PreferenceManager.getDefaultSharedPreferences(this)
-					.getInt("SEEKBAR_VALUE", 50);
-			_seekBarPref.setSummary(this.getString(R.string.settings_summary)
-					.replace("1", "" + volume));
-			if (MainActivity.music != null)
-			{
-				MainActivity.music.setVolume(volume, volume);
-			}
+			setMusicVolume();
+		}
+	}
+	
+	@SuppressWarnings("deprecation")
+	private void setMusicOnOffSwitch(String key)
+	{
+		boolean hasMusic = getPreferenceScreen().getSharedPreferences()
+				.getBoolean(key, true);
+		if (hasMusic)
+			MainActivity.music.start();
+		else
+			MainActivity.music.release();
+	}
+	
+	private void setMusicVolume()
+	{
+		// Set volume summary:	
+		int volume = PreferenceManager.getDefaultSharedPreferences(this)
+				.getInt(getString(R.string.music_volume_preference), 50);
+		_seekBarPref.setSummary(getString(R.string.settings_summary)
+				.replace("1", "" + volume));
+		
+		if (MainActivity.music != null)
+		{				
+			_audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, volume, 0);				
 		}
 	}
 
@@ -145,6 +154,10 @@ public class Preferences extends PreferenceActivity implements
 		super.onResume();
 		getPreferenceScreen().getSharedPreferences()
 				.registerOnSharedPreferenceChangeListener(this);
+		boolean hasMusic = getPreferenceScreen().getSharedPreferences()
+				.getBoolean(getString(R.string.music_preference), true);
+		if (hasMusic)
+			MainActivity.music.start();
 	}
 
 	@SuppressWarnings("deprecation")
@@ -152,6 +165,7 @@ public class Preferences extends PreferenceActivity implements
 	protected void onPause()
 	{
 		super.onPause();
+		MainActivity.music.release();
 		getPreferenceScreen().getSharedPreferences()
 				.unregisterOnSharedPreferenceChangeListener(this);
 	}
