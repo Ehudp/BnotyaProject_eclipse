@@ -22,6 +22,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -44,7 +47,6 @@ public class MainActivity extends ActionBarActivity
 	private CharSequence _drawerTitle;
 	private CharSequence _title;
 	public static MediaPlayer music;
-	private SharedPreferences _prefs;
 	// For Menu Overflow in API < 11
 	private Handler handler = new Handler(Looper.getMainLooper());
 
@@ -53,12 +55,14 @@ public class MainActivity extends ActionBarActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
+
 		initDrawerList();
 		_title = _drawerTitle = getTitle();
 		initDrawerLayout(savedInstanceState);
 
 		initMusic();
+
+		initNotification();
 	}
 
 	@Override
@@ -95,7 +99,7 @@ public class MainActivity extends ActionBarActivity
 
 		switch (item.getItemId())
 		{
-			// For Menu Overflow in API < 11
+		// For Menu Overflow in API < 11
 			case R.id.action_overflow:
 				openOptionsMenuDeferred();
 				return true;
@@ -111,7 +115,7 @@ public class MainActivity extends ActionBarActivity
 			default:
 				return super.onOptionsItemSelected(item);
 		}
-	}	
+	}
 
 	// For Menu Overflow in API < 11
 	public void openOptionsMenuDeferred()
@@ -474,10 +478,48 @@ public class MainActivity extends ActionBarActivity
 	private void initMusic()
 	{
 		music = MediaPlayer.create(this, R.raw.backgroundmusic);
-		_prefs = PreferenceManager
+		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(getBaseContext());
-		boolean hasMusic = _prefs.getBoolean(
+		boolean hasMusic = prefs.getBoolean(
 				getString(R.string.music_preference), true);
-		if (hasMusic) music.start();
-	}	
+		if (hasMusic)
+			music.start();
+		else
+			music.release();
+	}
+
+	@SuppressLint("NewApi") 
+	@SuppressWarnings("deprecation")
+	private void initNotification()
+	{
+		Intent intent = new Intent(this, CardFlipActivity.class);
+		intent.putExtra("EXTRA_SESSION_ISRANDOM", true);
+		// Sets the Activity to start in a new, empty task
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
+				intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+		Notification notification;
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+		{
+			notification = new Notification.Builder(this)
+					.setContentTitle("Localize").setContentText("Localize")
+					.setSmallIcon(R.drawable.ic_launcher)
+					.setContentIntent(pendingIntent).build();
+		}
+		else
+		{
+			notification = new Notification(
+					R.drawable.ic_launcher, "Localize",
+					System.currentTimeMillis());
+			notification.setLatestEventInfo(this, "Localize", "Localize",
+					pendingIntent);
+			notification.defaults = Notification.DEFAULT_ALL;
+		}
+
+		NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+		notification.flags |= Notification.FLAG_AUTO_CANCEL;
+		notificationManager.notify(1234567, notification);
+	}
 }

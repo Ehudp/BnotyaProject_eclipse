@@ -7,6 +7,8 @@
     <uses-sdk
         android:minSdkVersion="7"
         android:targetSdkVersion="19" />
+    
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
     <application
         android:allowBackup="true"
@@ -92,6 +94,8 @@
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
+            <meta-data android:name="android.app.searchable"
+                   android:resource="@xml/searchable"/>            
         </activity>
         
         <!-- Preferences activity -->
@@ -102,6 +106,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>            
         </activity>
+        
     </application>
 
 </manifest>

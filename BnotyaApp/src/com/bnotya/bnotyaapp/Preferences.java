@@ -153,11 +153,7 @@ public class Preferences extends PreferenceActivity implements
 	{
 		super.onResume();
 		getPreferenceScreen().getSharedPreferences()
-				.registerOnSharedPreferenceChangeListener(this);
-		boolean hasMusic = getPreferenceScreen().getSharedPreferences()
-				.getBoolean(getString(R.string.music_preference), true);
-		if (hasMusic)
-			MainActivity.music.start();
+				.registerOnSharedPreferenceChangeListener(this);		
 	}
 
 	@SuppressWarnings("deprecation")

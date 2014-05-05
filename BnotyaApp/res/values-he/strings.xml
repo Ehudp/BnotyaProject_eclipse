@@ -33,5 +33,6 @@
     <string name="desc_list_item_icon">Image</string>
     <string name="correct_answer">תשובה נכונה</string>
     <string name="wrong_answer">תשובה לא נכונה</string>
+    <string name="send_mail">שלח מייל</string>
 
 </resources>

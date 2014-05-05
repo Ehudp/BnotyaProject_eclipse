@@ -823,7 +823,7 @@ containing a value of this type.
         public static final int abc_split_action_bar_is_narrow=0x7f090002;
     }
     public static final class color {
-        public static final int abc_search_url_text_holo=0x7f0a000d;
+        public static final int abc_search_url_text_holo=0x7f0a000f;
         public static final int abc_search_url_text_normal=0x7f0a0000;
         public static final int abc_search_url_text_pressed=0x7f0a0002;
         public static final int abc_search_url_text_selected=0x7f0a0001;
@@ -836,7 +836,9 @@ containing a value of this type.
         public static final int list_background_selected=0x7f0a000b;
         public static final int list_background_start=0x7f0a0008;
         public static final int list_item_title=0x7f0a0007;
-        public static final int women_list_item_title=0x7f0a000c;
+        public static final int screen_background_end=0x7f0a000d;
+        public static final int screen_background_start=0x7f0a000c;
+        public static final int women_list_item_title=0x7f0a000e;
     }
     public static final class dimen {
         /**  Default height of an action bar. 
@@ -1056,9 +1058,10 @@ containing a value of this type.
         public static final int list_item_bg_selected=0x7f020079;
         public static final int list_selector=0x7f02007a;
         public static final int logo_01=0x7f02007b;
+        public static final int screen_background=0x7f02007c;
     }
     public static final class id {
-        public static final int action_about=0x7f08004d;
+        public static final int action_about=0x7f080051;
         public static final int action_bar=0x7f08001e;
         public static final int action_bar_activity_content=0x7f080015;
         public static final int action_bar_container=0x7f08001d;
@@ -1067,9 +1070,9 @@ containing a value of this type.
         public static final int action_bar_subtitle=0x7f080025;
         public static final int action_bar_title=0x7f080024;
         public static final int action_context_bar=0x7f08001f;
-        public static final int action_exit=0x7f08004e;
+        public static final int action_exit=0x7f080052;
         public static final int action_flip=0x7f08001b;
-        public static final int action_home=0x7f08004f;
+        public static final int action_home=0x7f080053;
         public static final int action_menu_divider=0x7f080016;
         public static final int action_menu_presenter=0x7f080017;
         public static final int action_mode_close_button=0x7f080026;
@@ -1082,12 +1085,16 @@ containing a value of this type.
     
          */
         public static final int action_next=0x7f08001a;
-        public static final int action_open_search=0x7f080050;
-        public static final int action_overflow=0x7f08004b;
-        public static final int action_settings=0x7f08004c;
+        public static final int action_open_search=0x7f080054;
+        public static final int action_overflow=0x7f08004f;
+        public static final int action_settings=0x7f080050;
         public static final int activity_chooser_view_content=0x7f080027;
         public static final int always=0x7f08000b;
         public static final int beginning=0x7f080011;
+        public static final int btnEMail=0x7f08004d;
+        public static final int btnFacebook=0x7f08004e;
+        public static final int btnTehilotMenu=0x7f08004b;
+        public static final int btnWomenMenu=0x7f08004c;
         public static final int card=0x7f080049;
         public static final int checkbox=0x7f08002f;
         public static final int collapseActionView=0x7f08000d;
@@ -1117,7 +1124,6 @@ containing a value of this type.
         public static final int never=0x7f080009;
         public static final int none=0x7f080010;
         public static final int normal=0x7f080000;
-        public static final int openWomenMenuButton=0x7f08004a;
         public static final int progress_circular=0x7f080018;
         public static final int progress_horizontal=0x7f080019;
         public static final int radio=0x7f080031;
@@ -1142,6 +1148,7 @@ containing a value of this type.
         public static final int title=0x7f08002d;
         public static final int titleChild=0x7f080047;
         public static final int top_action_bar=0x7f080022;
+        public static final int tvMainText=0x7f08004a;
         public static final int tvQuestion=0x7f080042;
         public static final int up=0x7f080023;
         public static final int useLogo=0x7f080003;
@@ -1289,6 +1296,7 @@ containing a value of this type.
         public static final int open_trivia_page=0x7f0d0019;
         public static final int open_women_list=0x7f0d001b;
         public static final int open_women_menu=0x7f0d0017;
+        public static final int send_mail=0x7f0d002d;
         public static final int settings_dialog_message=0x7f0d0026;
         public static final int settings_summary=0x7f0d0027;
         public static final int settings_title=0x7f0d0029;

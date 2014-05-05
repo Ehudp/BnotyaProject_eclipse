@@ -33,5 +33,6 @@
     <string name="desc_list_item_icon">Image</string>
     <string name="correct_answer">Correct answer</string>
     <string name="wrong_answer">Wrong answer</string>
+    <string name="send_mail">Send E-Mail</string>
 
 </resources>
