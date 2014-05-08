@@ -5,8 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import com.bnotya.bnotyaapp.adapters.ExpandableListAdapter;
 import com.bnotya.bnotyaapp.fragments.MainDefaultFragment;
+import com.bnotya.bnotyaapp.fragments.MainMailFragment;
 import com.bnotya.bnotyaapp.fragments.MainTehilotFragment;
 import com.bnotya.bnotyaapp.fragments.MainWomenFragment;
+import com.bnotya.bnotyaapp.fragments.TriviaFragment;
+import com.bnotya.bnotyaapp.fragments.WomenListFragment;
 import com.bnotya.bnotyaapp.helpers.About;
 import com.bnotya.bnotyaapp.models.NavDrawerItem;
 import android.media.MediaPlayer;
@@ -46,6 +49,7 @@ public class MainActivity extends ActionBarActivity
 	private ActionBarDrawerToggle _drawerToggle;
 	private CharSequence _drawerTitle;
 	private CharSequence _title;
+	private boolean _isSearchable;
 	public static MediaPlayer music;
 	// For Menu Overflow in API < 11
 	private Handler handler = new Handler(Looper.getMainLooper());
@@ -55,20 +59,33 @@ public class MainActivity extends ActionBarActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		_isSearchable = false;
 
 		initDrawerList();
 		_title = _drawerTitle = getTitle();
 		initDrawerLayout(savedInstanceState);
 
-		initMusic();
-
-		initNotification();
+		initMusic();		
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
 		getMenuInflater().inflate(R.menu.main_menu, menu);
+		
+		// TODO: fix this
+		/*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) 
+		{
+			// Associate searchable configuration with the SearchView
+	        SearchManager searchManager =
+	                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+	        SearchView searchView =
+	                (SearchView) menu.findItem(R.id.action_open_search).getActionView();
+	        searchView.setSearchableInfo(
+	                searchManager.getSearchableInfo(getComponentName()));
+	        searchView.setIconifiedByDefault(false);
+	    }*/
+		
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -79,8 +96,13 @@ public class MainActivity extends ActionBarActivity
 		// For Menu Overflow in API < 11
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
 		{
-			menu.removeItem(R.id.action_overflow);
+			menu.removeItem(R.id.action_overflow);			
 		}
+		
+		if(_isSearchable)
+			menu.findItem(R.id.action_open_search).setVisible(true);
+		else
+			menu.findItem(R.id.action_open_search).setVisible(false);
 
 		// If the nav drawer is open, hide action items
 		boolean drawerOpen = _drawerLayout.isDrawerOpen(_drawerList);
@@ -99,7 +121,7 @@ public class MainActivity extends ActionBarActivity
 
 		switch (item.getItemId())
 		{
-		// For Menu Overflow in API < 11
+			// For Menu Overflow in API < 11
 			case R.id.action_overflow:
 				openOptionsMenuDeferred();
 				return true;
@@ -108,6 +130,9 @@ public class MainActivity extends ActionBarActivity
 				return true;
 			case R.id.action_about:
 				About.showAboutDialog(this);
+				return true;
+			case R.id.action_open_search:
+				onSearchRequested();
 				return true;
 			case R.id.action_exit:
 				finish();
@@ -135,10 +160,11 @@ public class MainActivity extends ActionBarActivity
 		// get the listview
 		_drawerList = (ExpandableListView) findViewById(R.id.left_drawer);
 
-		// preparing list data
-		prepareListData();
+		// init headers
+		initHeaders();
+		initChildHeaders();
 
-		// setting list adapter
+		// set list adapter
 		_drawerList.setAdapter(new ExpandableListAdapter(this,
 				_listDataHeaders, _listDataChildren));
 
@@ -285,7 +311,17 @@ public class MainActivity extends ActionBarActivity
 		};
 	}
 
-	private void prepareListData()
+	private void initChildHeaders()
+	{
+		// Setting child headers
+		List<NavDrawerItem> womenChildrenList = fillNavigationData(
+				R.array.women_views_array, R.array.nav_drawer_icons);
+
+		_listDataChildren.put(_listDataHeaders.get(2).getTitle(),
+				womenChildrenList);
+	}
+
+	private void initHeaders()
 	{
 		// Setting group headers
 		_listDataHeaders = fillNavigationData(R.array.views_array,
@@ -295,17 +331,11 @@ public class MainActivity extends ActionBarActivity
 		_listDataChildren = new HashMap<String, List<NavDrawerItem>>();
 
 		// Adding child data
-
-		// Setting child headers
-		List<NavDrawerItem> womenChildrenList = fillNavigationData(
-				R.array.women_views_array, R.array.nav_drawer_icons);
-
-		_listDataChildren.put(_listDataHeaders.get(0).getTitle(),
-				new ArrayList<NavDrawerItem>());
-		_listDataChildren.put(_listDataHeaders.get(1).getTitle(),
-				new ArrayList<NavDrawerItem>());
-		_listDataChildren.put(_listDataHeaders.get(2).getTitle(),
-				womenChildrenList);
+		for (int i = 0; i < _listDataHeaders.size(); i++)
+		{
+			_listDataChildren.put(_listDataHeaders.get(i).getTitle(),
+					new ArrayList<NavDrawerItem>());
+		}
 	}
 
 	private List<NavDrawerItem> fillNavigationData(int titlesID, int iconsID)
@@ -347,7 +377,7 @@ public class MainActivity extends ActionBarActivity
 			{
 				replaceFragment(new MainWomenFragment(), position);
 				break;
-			}
+			}			
 		}
 
 		// update selected item and title, then close the drawer
@@ -445,13 +475,13 @@ public class MainActivity extends ActionBarActivity
 	}
 
 	public void openWomenList(View view)
-	{
-		startActivity(new Intent(this, WomenListActivity.class));
+	{		
+		replaceFragment(new WomenListFragment(), 0);		
 	}
 
 	public void openTriviaPage(View view)
-	{
-		startActivity(new Intent(this, TriviaActivity.class));
+	{		
+		replaceFragment(new TriviaFragment(), 0);
 	}
 
 	public void openTehilotPage(View view)
@@ -464,6 +494,11 @@ public class MainActivity extends ActionBarActivity
 		replaceFragment(new MainWomenFragment(), 2);
 	}
 
+	public void openMailPage(View view)
+	{
+		replaceFragment(new MainMailFragment(), 3);
+	}
+
 	public void replaceFragment(Fragment fragment, int position)
 	{
 		Bundle args = new Bundle();
@@ -473,6 +508,13 @@ public class MainActivity extends ActionBarActivity
 
 		fragmentManager.beginTransaction()
 				.replace(R.id.content_frame, fragment).commit();
+		
+		if(fragment instanceof WomenListFragment)		
+			_isSearchable = true;		
+		else		
+			_isSearchable = false;
+		// call onPrepareOptionsMenu
+		supportInvalidateOptionsMenu();
 	}
 
 	private void initMusic()
@@ -481,45 +523,10 @@ public class MainActivity extends ActionBarActivity
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(getBaseContext());
 		boolean hasMusic = prefs.getBoolean(
-				getString(R.string.music_preference), true);
+				getString(R.string.music_on_preference), true);
 		if (hasMusic)
 			music.start();
 		else
 			music.release();
-	}
-
-	@SuppressLint("NewApi") 
-	@SuppressWarnings("deprecation")
-	private void initNotification()
-	{
-		Intent intent = new Intent(this, CardFlipActivity.class);
-		intent.putExtra("EXTRA_SESSION_ISRANDOM", true);
-		// Sets the Activity to start in a new, empty task
-		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
-		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
-				intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-		Notification notification;
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-		{
-			notification = new Notification.Builder(this)
-					.setContentTitle("Localize").setContentText("Localize")
-					.setSmallIcon(R.drawable.ic_launcher)
-					.setContentIntent(pendingIntent).build();
-		}
-		else
-		{
-			notification = new Notification(
-					R.drawable.ic_launcher, "Localize",
-					System.currentTimeMillis());
-			notification.setLatestEventInfo(this, "Localize", "Localize",
-					pendingIntent);
-			notification.defaults = Notification.DEFAULT_ALL;
-		}
-
-		NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-		notification.flags |= Notification.FLAG_AUTO_CANCEL;
-		notificationManager.notify(1234567, notification);
-	}
+	}	
 }

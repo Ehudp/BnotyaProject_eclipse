@@ -29,17 +29,25 @@ public final class R {
     public static final class array {
         /**  Nav Drawer List Item Icons 
  Nav Drawer List Item Icons 
+ Nav Drawer List Item Icons 
+ Nav Drawer List Item Icons 
          */
         public static final int nav_drawer_icons=0x7f0f0003;
         /**  Navigation drawer 
+ Navigation drawer 
+ Navigation drawer 
  Navigation drawer 
          */
         public static final int views_array=0x7f0f0001;
         /**  Women List Item Icons 
  Women List Item Icons 
+ Women List Item Icons 
+ Women List Item Icons 
          */
         public static final int women_list_icons=0x7f0f0004;
         /**  Women list 
+ Women list 
+ Women list 
  Women list 
          */
         public static final int women_names_array=0x7f0f0000;
@@ -1061,7 +1069,7 @@ containing a value of this type.
         public static final int screen_background=0x7f02007c;
     }
     public static final class id {
-        public static final int action_about=0x7f080051;
+        public static final int action_about=0x7f080057;
         public static final int action_bar=0x7f08001e;
         public static final int action_bar_activity_content=0x7f080015;
         public static final int action_bar_container=0x7f08001d;
@@ -1070,9 +1078,9 @@ containing a value of this type.
         public static final int action_bar_subtitle=0x7f080025;
         public static final int action_bar_title=0x7f080024;
         public static final int action_context_bar=0x7f08001f;
-        public static final int action_exit=0x7f080052;
+        public static final int action_exit=0x7f080059;
         public static final int action_flip=0x7f08001b;
-        public static final int action_home=0x7f080053;
+        public static final int action_home=0x7f08005a;
         public static final int action_menu_divider=0x7f080016;
         public static final int action_menu_presenter=0x7f080017;
         public static final int action_mode_close_button=0x7f080026;
@@ -1085,14 +1093,15 @@ containing a value of this type.
     
          */
         public static final int action_next=0x7f08001a;
-        public static final int action_open_search=0x7f080054;
-        public static final int action_overflow=0x7f08004f;
-        public static final int action_settings=0x7f080050;
+        public static final int action_open_search=0x7f080058;
+        public static final int action_overflow=0x7f080055;
+        public static final int action_settings=0x7f080056;
         public static final int activity_chooser_view_content=0x7f080027;
         public static final int always=0x7f08000b;
         public static final int beginning=0x7f080011;
         public static final int btnEMail=0x7f08004d;
         public static final int btnFacebook=0x7f08004e;
+        public static final int btnSendEMail=0x7f080053;
         public static final int btnTehilotMenu=0x7f08004b;
         public static final int btnWomenMenu=0x7f08004c;
         public static final int card=0x7f080049;
@@ -1109,6 +1118,10 @@ containing a value of this type.
         public static final int dropdown=0x7f08000f;
         public static final int edit_query=0x7f080032;
         public static final int end=0x7f080013;
+        public static final int etContent=0x7f080052;
+        public static final int etEmail=0x7f08004f;
+        public static final int etName=0x7f080050;
+        public static final int etTitle=0x7f080051;
         public static final int expand_activities_button=0x7f080028;
         public static final int expanded_menu=0x7f08002e;
         public static final int home=0x7f080014;
@@ -1124,6 +1137,7 @@ containing a value of this type.
         public static final int never=0x7f080009;
         public static final int none=0x7f080010;
         public static final int normal=0x7f080000;
+        public static final int prefTimePicker=0x7f080054;
         public static final int progress_circular=0x7f080018;
         public static final int progress_horizontal=0x7f080019;
         public static final int radio=0x7f080031;
@@ -1216,10 +1230,14 @@ containing a value of this type.
         public static final int drawer_list_item=0x7f03001d;
         public static final int fragment_card=0x7f03001e;
         public static final int fragment_main_default=0x7f03001f;
-        public static final int fragment_main_tehilot=0x7f030020;
-        public static final int fragment_main_women=0x7f030021;
-        public static final int support_simple_spinner_dropdown_item=0x7f030022;
-        public static final int women_list_item=0x7f030023;
+        public static final int fragment_main_mail=0x7f030020;
+        public static final int fragment_main_tehilot=0x7f030021;
+        public static final int fragment_main_women=0x7f030022;
+        public static final int support_simple_spinner_dropdown_item=0x7f030023;
+        public static final int time_preference=0x7f030024;
+        public static final int trivia=0x7f030025;
+        public static final int women_list=0x7f030026;
+        public static final int women_list_item=0x7f030027;
     }
     public static final class menu {
         public static final int main_menu=0x7f100000;
@@ -1283,26 +1301,50 @@ containing a value of this type.
         public static final int app_not_available=0x7f0d0021;
         public static final int card_back=0x7f0d0023;
         public static final int card_front=0x7f0d0022;
-        public static final int correct_answer=0x7f0d002b;
-        public static final int desc_list_item_icon=0x7f0d002a;
+        public static final int chooser_title=0x7f0d002f;
+        public static final int correct_answer=0x7f0d002a;
+        public static final int desc_list_item_icon=0x7f0d0029;
         public static final int description_card=0x7f0d001d;
         public static final int drawer_close=0x7f0d0020;
         public static final int drawer_open=0x7f0d001f;
-        public static final int music_preference=0x7f0d0024;
-        public static final int music_volume_preference=0x7f0d0025;
+        public static final int email_content=0x7f0d003a;
+        public static final int email_page_title=0x7f0d002d;
+        public static final int email_title=0x7f0d0039;
+        /**  Key strings (DO NOT CHANGE!) 
+ Key strings (DO NOT CHANGE!) 
+         */
+        public static final int music_on_preference=0x7f0d003b;
+        public static final int music_preferences=0x7f0d0030;
+        public static final int music_volume_preference=0x7f0d003c;
+        public static final int notification_on_preference=0x7f0d003e;
+        public static final int notification_preferences=0x7f0d0031;
+        public static final int notification_time_preference=0x7f0d003f;
+        public static final int notification_time_summary=0x7f0d0026;
         public static final int open_random_card=0x7f0d001a;
         public static final int open_self_improvement_page=0x7f0d0018;
         public static final int open_tehilot=0x7f0d0016;
         public static final int open_trivia_page=0x7f0d0019;
         public static final int open_women_list=0x7f0d001b;
         public static final int open_women_menu=0x7f0d0017;
-        public static final int send_mail=0x7f0d002d;
-        public static final int settings_dialog_message=0x7f0d0026;
-        public static final int settings_summary=0x7f0d0027;
-        public static final int settings_title=0x7f0d0029;
-        public static final int settings_unit=0x7f0d0028;
+        public static final int person_email=0x7f0d0037;
+        public static final int person_name=0x7f0d0038;
+        public static final int pref_default_notification_time=0x7f0d0035;
+        public static final int pref_user_name=0x7f0d0033;
+        public static final int pref_user_name_summary=0x7f0d0034;
+        public static final int pref_user_profile=0x7f0d0032;
+        /**  E-Mail strings 
+ E-Mail strings 
+         */
+        public static final int send_email=0x7f0d0036;
+        public static final int settings_dialog_message=0x7f0d0024;
+        public static final int settings_summary=0x7f0d0025;
+        public static final int settings_title=0x7f0d0028;
+        public static final int settings_unit=0x7f0d0027;
         public static final int title_card_flip=0x7f0d001c;
-        public static final int wrong_answer=0x7f0d002c;
+        public static final int trivia_page_title=0x7f0d002e;
+        public static final int user_name_preference=0x7f0d003d;
+        public static final int women_list_title=0x7f0d002c;
+        public static final int wrong_answer=0x7f0d002b;
     }
     public static final class style {
         /** 

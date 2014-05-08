@@ -48,7 +48,8 @@
             android:layout_marginTop="8dp"
             android:contentDescription="@string/description_card"
             android:scaleType="fitXY"
-            android:src="@drawable/ic_launcher" />
+            android:src="@drawable/ic_launcher"
+            android:onClick="openMailPage" />
 
         <ImageButton
             android:id="@+id/btnFacebook"

@@ -23,16 +23,38 @@
     <string name="drawer_close">Close navigation drawer</string>
     <string name="app_not_available">Sorry, there\'s no web browser available</string>
     <string name="card_front">Front</string>
-    <string name="card_back">Back</string>
-    <string name="music_preference">musicPreference</string>
-    <string name="music_volume_preference">musicVolumePreference</string>
+    <string name="card_back">Back</string>    
     <string name="settings_dialog_message">Set music volume</string>
     <string name="settings_summary">Current value is 1</string>
+    <string name="notification_time_summary">Current value is hour:minute</string>
     <string name="settings_unit"></string>
     <string name="settings_title">Music Volume</string>
     <string name="desc_list_item_icon">Image</string>
     <string name="correct_answer">Correct answer</string>
-    <string name="wrong_answer">Wrong answer</string>
-    <string name="send_mail">Send E-Mail</string>
+    <string name="wrong_answer">Wrong answer</string> 
+    <string name="women_list_title">Women From Bible</string>   
+    <string name="email_page_title">EMail</string>
+    <string name="trivia_page_title">Trivia</string>
+    <string name="chooser_title">Choose App to send email:</string>
+    <string name="music_preferences">Music Preferences</string>
+    <string name="notification_preferences">Notification Preferences</string>
+    <string name="pref_user_profile">User Profile</string>
+    <string name="pref_user_name">User Name</string>
+    <string name="pref_user_name_summary">Set your username</string>
+    <string name="pref_default_notification_time">Default notification time</string>
+     
+    <!-- E-Mail strings -->
+    <string name="send_email">Send E-Mail</string>
+    <string name="person_email">Your E-Mail</string>
+    <string name="person_name">Your Name</string>
+    <string name="email_title">Title</string>
+    <string name="email_content">Content</string>
+      
+    <!-- Key strings (DO NOT CHANGE!) -->
+	<string name="music_on_preference">musicPreference</string>
+    <string name="music_volume_preference">musicVolumePreference</string>
+    <string name="user_name_preference">prefUsername</string> 
+    <string name="notification_on_preference">notificationOnPreference</string> 
+    <string name="notification_time_preference">notificationTimePreference</string> 
 
 </resources>
