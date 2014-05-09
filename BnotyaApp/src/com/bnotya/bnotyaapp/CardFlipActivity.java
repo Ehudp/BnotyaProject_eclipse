@@ -28,8 +28,7 @@ public class CardFlipActivity extends ActionBarActivity implements
 	private ActionBar _actionBar;
 	private ActionBar.TabListener _tabListener;
 	private Tab _cardFrontTab;
-	private Tab _cardBackTab;
-	private boolean _isRandom;
+	private Tab _cardBackTab;	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -51,10 +50,7 @@ public class CardFlipActivity extends ActionBarActivity implements
 
 		// Detect touched area
 		_detector = new GestureDetectorCompat(this, this);
-		_detector.setOnDoubleTapListener(this);
-
-		_isRandom = getIntent().getBooleanExtra("EXTRA_SESSION_ISRANDOM",
-				false);
+		_detector.setOnDoubleTapListener(this);		
 		
 		// Setup card
 		card = new Card(getIntent(), getResources(), getPackageName());	
@@ -115,7 +111,6 @@ public class CardFlipActivity extends ActionBarActivity implements
 	{
 		super.onCreateOptionsMenu(menu);
 		getMenuInflater().inflate(R.menu.page_menu, menu);
-
 		return true;
 	}
 
@@ -125,10 +120,10 @@ public class CardFlipActivity extends ActionBarActivity implements
 		switch (item.getItemId())
 		{
 			case android.R.id.home:
-				navigateBack();
+				NavUtils.navigateUpTo(this, new Intent(this, MainActivity.class));
 				return true;
 			case R.id.action_home:
-				navigateBack();
+				NavUtils.navigateUpTo(this, new Intent(this, MainActivity.class));
 				return true;
 			case R.id.action_settings:
 				startActivity(new Intent(this, Preferences.class));
@@ -142,16 +137,7 @@ public class CardFlipActivity extends ActionBarActivity implements
 			default:
 				return super.onOptionsItemSelected(item);
 		}
-	}
-
-	private void navigateBack()
-	{
-		if (_isRandom)
-			NavUtils.navigateUpTo(this, new Intent(this, MainActivity.class));
-		else
-			NavUtils.navigateUpTo(this, new Intent(this,
-					WomenListActivity.class));
-	}
+	}	
 
 	private void flipCard()
 	{

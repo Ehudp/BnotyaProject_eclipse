@@ -62,8 +62,9 @@ public class DatabaseHelper extends SQLiteOpenHelper
 			+ KEY_QUESTION_ID + " INTEGER NOT NULL, " 
 			+ KEY_ANSWER_ID + " INTEGER NOT NULL, "
 			+ KEY_ISCORRECT + " BOOLEAN NOT NULL, "
-			+ "FOREIGN KEY (" + KEY_ANSWER_ID + ") REFERENCES " + TABLE_ANSWER + " (" + KEY_ID	+ "), " 
-			+ "FOREIGN KEY (" + KEY_QUESTION_ID	+ ") REFERENCES " + TABLE_QUESTION + " (" + KEY_ID + ")) ";
+			+ "FOREIGN KEY (" + KEY_QUESTION_ID	+ ") REFERENCES " + TABLE_QUESTION + "(" + KEY_ID + "), "
+			+ "FOREIGN KEY (" + KEY_ANSWER_ID + ") REFERENCES " + TABLE_ANSWER + "(" + KEY_ID	+ "));"; 
+			
 
 	public static DatabaseHelper getInstance(Context context)
 	{
@@ -92,9 +93,9 @@ public class DatabaseHelper extends SQLiteOpenHelper
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
 	{
 		// on upgrade drop older tables
-		db.execSQL("DROP TABLE IF EXISTS " + TABLE_QUESTION);
-		db.execSQL("DROP TABLE IF EXISTS " + TABLE_ANSWER);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_QUESTION_ANSWER);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_QUESTION);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_ANSWER);		
 
 		// create new tables
 		onCreate(db);
@@ -116,6 +117,30 @@ public class DatabaseHelper extends SQLiteOpenHelper
 		SQLiteDatabase db = this.getWritableDatabase();
 		int version = db.getVersion();
 		onUpgrade(db, version, ++version);
+	}
+	
+	public void createDb()
+	{
+		Question question1 = new Question("Who is the President of US?");
+		Question question2 = new Question("Who is the President of Mars?");
+		Answer answer1 = new Answer("Yoda");
+		Answer answer2 = new Answer("Bibi");
+		// Inserting answers in DB
+		long answer1_id = createAnswer(answer1);
+		long answer2_id = createAnswer(answer2);
+
+		// Inserting questions in DB
+		long question1_id = createQuestion(question1, new long[]
+		{
+				answer1_id, answer2_id
+		});
+		long question2_id = createQuestion(question2, new long[]
+		{
+				answer1_id, answer2_id
+		});
+
+		updateQuestionAnswerEntry(question1_id, answer1_id, true);
+		updateQuestionAnswerEntry(question2_id, answer2_id, true);
 	}
 
 	// ------------- "TABLE_QUESTION" methods ----------------//
@@ -370,7 +395,9 @@ public class DatabaseHelper extends SQLiteOpenHelper
 		List<Answer> answers = new ArrayList<Answer>();
 		SQLiteDatabase db = this.getReadableDatabase();
 		
-		String selectQuery = "SELECT * FROM " + TABLE_ANSWER + " AS TA JOIN " + TABLE_QUESTION_ANSWER + " AS TQA ON TQA." + KEY_ANSWER_ID + "=TA." + KEY_ID
+		String selectQuery = "SELECT * FROM " + TABLE_ANSWER + " AS TA JOIN " 
+				+ TABLE_QUESTION_ANSWER + " AS TQA ON TQA." 
+				+ KEY_ANSWER_ID + "=TA." + KEY_ID
 				+ " WHERE " + KEY_QUESTION_ID + " = " + question_id;
 		Cursor c = db.rawQuery(selectQuery, null);
 		// looping through all rows and adding to list
@@ -386,8 +413,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
 				answers.add(answer);
 				
 			} while (c.moveToNext());
-		}
-		
+		}		
 
 		return answers;
 	}
@@ -435,19 +461,24 @@ public class DatabaseHelper extends SQLiteOpenHelper
 	 * Get is correct answer
 	 */
 	public boolean getIsCorrectAnswer(long question_id, long answer_id)
-	{
-		SQLiteDatabase db = this.getWritableDatabase();
-		String selectQuery = "SELECT * FROM " + TABLE_QUESTION_ANSWER
-				+ " WHERE " + KEY_QUESTION_ID + " = " + question_id + " AND "
-				+ KEY_ANSWER_ID + " = " + answer_id;
-
+	{	
+		SQLiteDatabase db = this.getReadableDatabase();
+		
+		String selectQuery = "SELECT * FROM " + TABLE_ANSWER + " AS TA JOIN " 
+				+ TABLE_QUESTION_ANSWER + " AS TQA ON TQA." 
+				+ KEY_ANSWER_ID + "=TA." + KEY_ID
+				+ " WHERE " + KEY_QUESTION_ID + " = " + question_id
+				+ " AND " + KEY_ISCORRECT + " = 1";
 		Cursor c = db.rawQuery(selectQuery, null);
-
-		if (c != null) c.moveToFirst();
-
-		int result = c.getInt(c.getColumnIndex(KEY_ISCORRECT));
-
-		return result == 1;
+		
+		if (c.moveToFirst())
+		{			
+			int correctAnswerId = c.getInt(c.getColumnIndex(KEY_ID));
+			
+			return correctAnswerId == answer_id;
+		}
+		
+		return false;
 	}
 
 	/**

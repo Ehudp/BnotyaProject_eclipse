@@ -1,29 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"   
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"    
-    android:orientation="vertical"  >
-      
-<TextView android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/about_main_menu" 
-        android:layout_gravity="center_horizontal"/>
-    
-    <Button android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/open_tehilot"
-        android:onClick="openTehilotPage"
-        android:layout_gravity="center_horizontal"/>
-    
-    <Button android:id="@+id/openWomenMenuButton"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/background"
+    android:padding="10dp" >
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/open_women_menu"
-         android:onClick="openWomenPage"
-         android:layout_gravity="center_horizontal"/>   
+        android:layout_height="match_parent"
+        android:background="@drawable/screen_background"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin" >
+
+        <TextView
+            android:id="@+id/tvMainText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:text="@string/about_main_menu" />
+
+        <Button
+            android:id="@+id/btnTehilotMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvMainText"
+            android:onClick="openTehilotPage"
+            android:text="@string/open_tehilot" />
+
+        <Button
+            android:id="@+id/btnWomenMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/btnTehilotMenu"
+            android:onClick="openWomenPage"
+            android:text="@string/open_women_menu" />
+
+        <ImageButton
+            android:id="@+id/btnEMail"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:contentDescription="@string/description_card"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_launcher"
+            android:onClick="openMailPage" />
+
+        <ImageButton
+            android:id="@+id/btnFacebook"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_toRightOf="@id/btnEMail"
+            android:contentDescription="@string/description_card"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_launcher" />
+    </RelativeLayout>
 
 </LinearLayout>

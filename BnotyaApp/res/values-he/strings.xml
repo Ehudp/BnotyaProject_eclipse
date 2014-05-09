@@ -23,15 +23,38 @@
     <string name="drawer_close">סגור נווט</string>
     <string name="app_not_available">מצטערים, אין דפדפן אינטרנט זמין</string>
     <string name="card_front">פנים</string>
-    <string name="card_back">גב</string>
-    <string name="music_preference">musicPreference</string>
-    <string name="music_volume_preference">musicVolumePreference</string>
+    <string name="card_back">גב</string>    
     <string name="settings_dialog_message">קבע עוצמת המוסיקה</string>
-    <string name="settings_summary">הערך הנןכחי הינו 1</string>
+    <string name="settings_summary">הערך הנוכחי הינו 1</string>
+    <string name="notification_time_summary">הערך הנוכחי הינו hour:minute</string>
     <string name="settings_unit"></string>
     <string name="settings_title">עוצמת המוסיקה</string>
     <string name="desc_list_item_icon">Image</string>
     <string name="correct_answer">תשובה נכונה</string>
     <string name="wrong_answer">תשובה לא נכונה</string>
-
+    <string name="women_list_title">נשים בתנ"\ך</string>   
+    <string name="email_page_title">מייל</string>
+    <string name="trivia_page_title">טריויה</string>
+    <string name="chooser_title">בחר אפליקציה לשליחת המייל</string>
+    <string name="music_preferences">עדיפויות מוסיקה</string>
+    <string name="notification_preferences">עדיפויות תזכורת יומית</string>
+    <string name="pref_user_profile">עדיפויות משתמש</string>
+    <string name="pref_user_name">שם משתמש</string>
+    <string name="pref_user_name_summary">מלא שם משתמש</string>  
+    <string name="pref_default_notification_time">זמן תזכורת יומית</string>  
+    
+    <!-- E-Mail strings -->
+    <string name="send_email">שלח מייל</string>
+    <string name="person_email">כתובת מייל</string>
+    <string name="person_name">שם</string>
+    <string name="email_title">כותרת</string>
+    <string name="email_content">תוכן</string> 
+    
+    <!-- Key strings (DO NOT CHANGE!) -->
+	<string name="music_on_preference">musicPreference</string>
+    <string name="music_volume_preference">musicVolumePreference</string>
+    <string name="user_name_preference">prefUsername</string>
+    <string name="notification_on_preference">notificationOnPreference</string>
+    <string name="notification_time_preference">notificationTimePreference</string>
+    
 </resources>

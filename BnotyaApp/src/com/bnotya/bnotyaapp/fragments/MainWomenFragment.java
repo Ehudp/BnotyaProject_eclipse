@@ -24,9 +24,8 @@ public class MainWomenFragment extends Fragment
 				container, false);
 
 		int i = getArguments().getInt(ARG_VIEW_NUMBER);
-		String view = getResources().getStringArray(R.array.views_array)[i];
-
-		getActivity().setTitle(view);
+		String viewTitle = getResources().getStringArray(R.array.views_array)[i];
+		getActivity().setTitle(viewTitle);
 		return rootView;
 	}
 }

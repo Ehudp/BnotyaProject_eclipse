@@ -12,5 +12,8 @@
     <color name="list_background_pressed">#FFDCDCDC</color>
     <color name="list_background_selected">#FFBBBBDC</color> 
     
+    <color name="screen_background_start">#DDDCDCDC</color>
+    <color name="screen_background_end">#DD99DDEE</color>
+    
     <color name="women_list_item_title">#FF000000</color>
 </resources>
