@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import com.bnotya.bnotyaapp.CardFlipActivity;
+import com.bnotya.bnotyaapp.CardFlipActivity.CardPart;
 import com.bnotya.bnotyaapp.R;
 
 public class CardFragment extends Fragment
@@ -23,10 +24,14 @@ public class CardFragment extends Fragment
 		View view = inflater.inflate(R.layout.fragment_card, container,
 				false);
 		ImageView cardView = (ImageView) view.findViewById(R.id.card);
-		if (((CardFlipActivity) getActivity()).showingBack)
+		
+		if (((CardFlipActivity) getActivity()).visibleSide == CardPart.BACK)
 			cardView.setImageResource(((CardFlipActivity) getActivity()).card.getBackId());
-		else
+		else if (((CardFlipActivity) getActivity()).visibleSide == CardPart.FRONT)
 			cardView.setImageResource(((CardFlipActivity) getActivity()).card.getFrontId());
+		else if (((CardFlipActivity) getActivity()).visibleSide == CardPart.INSIGHT)
+			cardView.setImageResource(((CardFlipActivity) getActivity()).card.getInsightId());
+		
 		return view;
 	}
 }

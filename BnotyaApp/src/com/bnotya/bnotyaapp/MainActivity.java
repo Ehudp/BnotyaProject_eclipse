@@ -2,7 +2,9 @@ package com.bnotya.bnotyaapp;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import com.bnotya.bnotyaapp.adapters.ExpandableListAdapter;
 import com.bnotya.bnotyaapp.fragments.MainDefaultFragment;
 import com.bnotya.bnotyaapp.fragments.MainMailFragment;
@@ -21,13 +23,11 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.annotation.SuppressLint;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -50,9 +50,11 @@ public class MainActivity extends ActionBarActivity
 	private CharSequence _drawerTitle;
 	private CharSequence _title;
 	private boolean _isSearchable;
-	public static MediaPlayer music;
 	// For Menu Overflow in API < 11
 	private Handler handler = new Handler(Looper.getMainLooper());
+	private Queue<Integer> _recentInsights = new LinkedList<Integer>();
+	
+	public static MediaPlayer music;	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -72,19 +74,6 @@ public class MainActivity extends ActionBarActivity
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
 		getMenuInflater().inflate(R.menu.main_menu, menu);
-		
-		// TODO: fix this
-		/*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) 
-		{
-			// Associate searchable configuration with the SearchView
-	        SearchManager searchManager =
-	                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-	        SearchView searchView =
-	                (SearchView) menu.findItem(R.id.action_open_search).getActionView();
-	        searchView.setSearchableInfo(
-	                searchManager.getSearchableInfo(getComponentName()));
-	        searchView.setIconifiedByDefault(false);
-	    }*/
 		
 		return super.onCreateOptionsMenu(menu);
 	}
@@ -140,6 +129,25 @@ public class MainActivity extends ActionBarActivity
 			default:
 				return super.onOptionsItemSelected(item);
 		}
+	}
+	
+	@Override
+	public void onBackPressed()
+	{
+		FragmentManager fragmentManager = getSupportFragmentManager();
+        int stackSize = fragmentManager.getBackStackEntryCount();
+        if (stackSize == 0) 
+        {
+            finish();
+        }
+        else 
+        {
+        	// TODO: create backward navigation
+            /*String fragmentTag = fragmentManager.getBackStackEntryAt(stackSize - 1).getName();
+            fragmentManager.popBackStack(fragmentTag, FragmentManager.POP_BACK_STACK_INCLUSIVE);*/
+        	fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        }
+		super.onBackPressed();
 	}
 
 	// For Menu Overflow in API < 11
@@ -406,7 +414,7 @@ public class MainActivity extends ActionBarActivity
 				{
 					case 0:
 					{
-						openRandomCard(null);
+						openRandomInsight(null);
 						break;
 					}
 					case 1:
@@ -467,21 +475,49 @@ public class MainActivity extends ActionBarActivity
 		_drawerToggle.onConfigurationChanged(newConfig);
 	}
 
-	public void openRandomCard(View view)
+	public void openRandomInsight(View view)
 	{
-		Intent intent = new Intent(this, CardFlipActivity.class);
-		intent.putExtra("EXTRA_SESSION_ISRANDOM", true);
+		Intent intent = new Intent(this, InsightActivity.class);
+		
+		int numberOfCards = getResources().getInteger(
+				R.integer.number_of_cards) - 1;
+		
+		int id = 0;
+		
+		do
+		{
+			id = getRandomId(numberOfCards);
+		}while(_recentInsights.contains(id));		
+		
+		intent.putExtra("EXTRA_SESSION_ID", id);
+		_recentInsights.add(id);
+		
+		if(_recentInsights.size() > 10)
+			_recentInsights.poll();
+		
 		startActivity(intent);
+	}
+	
+	private int getRandomId(int max)
+	{
+		// Random from 1 to max
+		int result = 0;
+		result += (Math.random() * max);
+		return result;
 	}
 
 	public void openWomenList(View view)
 	{		
-		replaceFragment(new WomenListFragment(), 0);		
+		//replaceFragment(new WomenListFragment(), 0);	
+		Intent intent = new Intent(this, WomenListActivity.class);
+		startActivity(intent);
 	}
 
 	public void openTriviaPage(View view)
 	{		
-		replaceFragment(new TriviaFragment(), 0);
+		//replaceFragment(new TriviaFragment(), 0);
+		Intent intent = new Intent(this, TriviaActivity.class);
+		startActivity(intent);
 	}
 
 	public void openTehilotPage(View view)
@@ -502,12 +538,15 @@ public class MainActivity extends ActionBarActivity
 	public void replaceFragment(Fragment fragment, int position)
 	{
 		Bundle args = new Bundle();
-		FragmentManager fragmentManager = getSupportFragmentManager();
+		
 		args.putInt(MainDefaultFragment.ARG_VIEW_NUMBER, position);
 		fragment.setArguments(args);
 
-		fragmentManager.beginTransaction()
-				.replace(R.id.content_frame, fragment).commit();
+		getSupportFragmentManager().beginTransaction()
+				.replace(R.id.content_frame, fragment)
+				.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+				.addToBackStack(null)
+				.commit();
 		
 		if(fragment instanceof WomenListFragment)		
 			_isSearchable = true;		

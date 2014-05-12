@@ -34,7 +34,7 @@ public class TriviaFragment extends Fragment implements OnCheckedChangeListener
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState)
 	{
-		View rootView = inflater.inflate(R.layout.trivia,
+		View rootView = inflater.inflate(R.layout.trivia_view,
 				container, false);
 		
 		getActivity().setTitle(R.string.trivia_page_title);

@@ -25,13 +25,14 @@ public class TriviaActivity extends ActionBarActivity implements OnCheckedChange
 	DatabaseHelper _db;
 	
 	TextView _questionView;
+	RadioGroup _answers;
 
 	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_trivia);
+		setContentView(R.layout.trivia_view);
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
 		{
 			getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -43,74 +44,43 @@ public class TriviaActivity extends ActionBarActivity implements OnCheckedChange
 			getSupportActionBar().setHomeButtonEnabled(true);
 		}
 
+		_questionView = (TextView) findViewById(R.id.tvQuestion);
+		_answers = (RadioGroup) findViewById(R.id.rgAnswers);
+
 		_db = DatabaseHelper.getInstance(this);
 		
-		clearDB();
+		_db.clearDb();
 
-		createDB();
+		_db.createDb();
 
 		initQuestion();
-	}
-
-	private void clearDB()
-	{
-		_db.clearDb();
-		/*List<Question> allQuestions = _db.getAllQuestions();
-		for (Question question : allQuestions)
-		{
-			_db.deleteQuestion(question, true);
-		}*/
-	}
-
-	private void createDB()
-	{
-		Question question1 = new Question("Who is the President of US?");
-		Question question2 = new Question("Who is the President of Mars?");
-		Answer answer1 = new Answer("Yoda");
-		Answer answer2 = new Answer("Bibi");
-		// Inserting answers in db
-		long answer1_id = _db.createAnswer(answer1);
-		long answer2_id = _db.createAnswer(answer2);
-
-		// Inserting questions in db
-		long question1_id = _db.createQuestion(question1, new long[]
-		{
-				answer1_id, answer2_id
-		});
-		long question2_id = _db.createQuestion(question2, new long[]
-		{
-				answer1_id, answer2_id
-		});
-
-		_db.updateQuestionAnswerEntry(question1_id, answer1_id, true);
-		_db.updateQuestionAnswerEntry(question2_id, answer2_id, true);
-	}
+	}	
 
 	private void initQuestion()
 	{
-		// Setup the question
+		// get all questions
 		List<Question> allQuestions = _db.getAllQuestions();
+		// get question
 		Question question = allQuestions.get(0);
-		_questionView = (TextView) findViewById(R.id.tvQuestion);
+		// set question		
 		_questionView.setText(question.getContent());
 		_questionView.setTag(question.getId());
 		
 		// Setup the answers
 		List<Answer> allAnswers = _db.getAllAnswersByQuestion(question
 				.getId());
-
-		RadioGroup answers = (RadioGroup) findViewById(R.id.rgAnswers);
+		
 		for (Answer answer : allAnswers)
 		{
 			RadioButton radioButton = new RadioButton(this);
 			radioButton.setText(answer.getContent());
 			radioButton.setId((int)answer.getId());
-			answers.addView(radioButton, new RadioGroup.LayoutParams(
+			_answers.addView(radioButton, new RadioGroup.LayoutParams(
 					RadioGroup.LayoutParams.WRAP_CONTENT,
 					RadioGroup.LayoutParams.WRAP_CONTENT));
 		}
 		
-		answers.setOnCheckedChangeListener(this);
+		_answers.setOnCheckedChangeListener(this);
 	}
 
 	@Override
@@ -152,14 +122,17 @@ public class TriviaActivity extends ActionBarActivity implements OnCheckedChange
 	@Override
 	public void onCheckedChanged(RadioGroup group, int checkedId)
 	{	
-		boolean result = _db.getIsCorrectAnswer(Long.valueOf(_questionView.getTag().toString()), (long)checkedId);
+		boolean result = _db.getIsCorrectAnswer(
+				Long.valueOf(_questionView.getTag().toString()), (long)checkedId);
 		if(result)
 		{
-			Toast.makeText(getApplicationContext(), R.string.correct_answer, Toast.LENGTH_SHORT).show();
+			Toast.makeText(getApplicationContext(),
+					R.string.correct_answer, Toast.LENGTH_SHORT).show();
 		}
 		else
 		{
-			Toast.makeText(getApplicationContext(), R.string.wrong_answer, Toast.LENGTH_SHORT).show();
+			Toast.makeText(getApplicationContext(), 
+					R.string.wrong_answer, Toast.LENGTH_SHORT).show();
 		}
 	}
 }

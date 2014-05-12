@@ -3,6 +3,7 @@ package com.bnotya.bnotyaapp.services;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import com.bnotya.bnotyaapp.CardFlipActivity;
+import com.bnotya.bnotyaapp.InsightActivity;
 import com.bnotya.bnotyaapp.MainActivity;
 import android.annotation.SuppressLint;
 import android.app.Notification;
@@ -60,8 +61,16 @@ public class AlarmReceiver extends BroadcastReceiver
 	@SuppressWarnings("deprecation")
 	private void initNotification(Context context)
 	{
-		Intent intent = new Intent(context, CardFlipActivity.class);
-		intent.putExtra("EXTRA_SESSION_ISRANDOM", true);
+		Intent intent = new Intent(context, InsightActivity.class);
+		
+		int numberOfCards = context.getResources().getInteger(
+				R.integer.number_of_cards) - 1;
+		// Random from 1 to number of cards
+		int id = 0;
+		id += (Math.random() * numberOfCards);
+		
+		intent.putExtra("EXTRA_SESSION_ID", id);
+		
 		// Sets the Activity to start in a new, empty task
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
 				| Intent.FLAG_ACTIVITY_CLEAR_TASK);

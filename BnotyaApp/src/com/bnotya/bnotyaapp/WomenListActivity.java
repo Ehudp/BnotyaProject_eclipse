@@ -109,7 +109,7 @@ public class WomenListActivity extends ActionBarActivity
 
 	private void initView()
 	{
-		setContentView(R.layout.activity_women_list);
+		setContentView(R.layout.women_list_view);
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
 		{
 			getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -147,8 +147,7 @@ public class WomenListActivity extends ActionBarActivity
 			{
 				Intent intent = new Intent(getBaseContext(),
 						CardFlipActivity.class);
-				intent.putExtra("EXTRA_SESSION_ID", position);
-				intent.putExtra("EXTRA_SESSION_ISRANDOM", false);
+				intent.putExtra("EXTRA_SESSION_ID", position);				
 				startActivity(intent);
 			}
 		});

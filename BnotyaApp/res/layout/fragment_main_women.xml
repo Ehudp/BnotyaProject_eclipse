@@ -22,8 +22,8 @@
     
     <Button android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/open_random_card"
-        android:onClick="openRandomCard"
+        android:text="@string/open_random_insight"
+        android:onClick="openRandomInsight"
         android:layout_gravity="center_horizontal"/>
     
     <Button android:layout_width="match_parent"

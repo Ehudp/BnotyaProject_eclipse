@@ -10,6 +10,7 @@
 
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
 
     <application
         android:allowBackup="true"
@@ -18,9 +19,9 @@
         android:theme="@style/Theme.AppCompat.Light" >
         <receiver
             android:name="com.bnotya.bnotyaapp.services.AlarmReceiver"
-            android:enabled="false">
+            android:enabled="false" >
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />                
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
 
@@ -57,7 +58,7 @@
         <activity
             android:name="com.bnotya.bnotyaapp.TriviaActivity"
             android:label="@string/app_name"
-            android:parentActivityName="com.bnotya.bnotyaapp.MainWomenActivity" >
+            android:parentActivityName="com.bnotya.bnotyaapp.MainActivity" >
             <intent-filter>
                 <action android:name="com.bnotya.bnotyaapp.TriviaActivity" />
 
@@ -66,7 +67,7 @@
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.bnotya.bnotyaapp.MainWomenActivity" />
+                android:value="com.bnotya.bnotyaapp.MainActivity" />
         </activity>
 
         <!-- Women List activity -->
@@ -74,7 +75,7 @@
             android:name="com.bnotya.bnotyaapp.WomenListActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/app_name"
-            android:parentActivityName="com.bnotya.bnotyaapp.MainWomenActivity" >
+            android:parentActivityName="com.bnotya.bnotyaapp.MainActivity" >
             <intent-filter>
                 <action android:name="com.bnotya.bnotyaapp.WomenListActivity" />
 
@@ -83,7 +84,7 @@
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.bnotya.bnotyaapp.MainWomenActivity" />
+                android:value="com.bnotya.bnotyaapp.MainActivity" />
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
@@ -104,6 +105,23 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.bnotya.bnotyaapp.WomenListActivity" />
+        </activity>
+
+        <!-- Insight activity -->
+        <activity
+            android:name="com.bnotya.bnotyaapp.InsightActivity"
+            android:label="@string/title_insight"
+            android:parentActivityName="com.bnotya.bnotyaapp.MainActivity"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="com.bnotya.bnotyaapp.InsightActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.bnotya.bnotyaapp.MainActivity" />
         </activity>
 
         <!-- Search activity -->

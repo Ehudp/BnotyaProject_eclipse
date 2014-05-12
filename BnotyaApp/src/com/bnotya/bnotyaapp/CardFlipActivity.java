@@ -4,7 +4,10 @@ import com.bnotya.bnotyaapp.fragments.CardFragment;
 import com.bnotya.bnotyaapp.helpers.About;
 import com.bnotya.bnotyaapp.models.Card;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.TaskStackBuilder;
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.GestureDetectorCompat;
@@ -20,23 +23,41 @@ import android.view.View;
 
 public class CardFlipActivity extends ActionBarActivity implements
 		OnGestureListener, OnDoubleTapListener
-{
-	/* Whether or not we're showing the back of the card. */
-	public boolean showingBack = false;
+{	
+	public enum CardPart {
+		   FRONT,
+		   BACK,
+		   INSIGHT
+		}
+	public CardPart visibleSide;
 	private GestureDetectorCompat _detector;
 	public Card card;
 	private ActionBar _actionBar;
 	private ActionBar.TabListener _tabListener;
 	private Tab _cardFrontTab;
-	private Tab _cardBackTab;	
+	private Tab _cardBackTab;
+	private Tab _cardInsightTab;	
 
+	@SuppressLint("NewApi") 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_card_flip);
+		
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+		{
+			getActionBar().setDisplayHomeAsUpEnabled(true);
+			getActionBar().setHomeButtonEnabled(true);
+		}
+		else
+		{
+			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+			getSupportActionBar().setHomeButtonEnabled(true);
+		}
 
-		InitTabs();
+		visibleSide = CardPart.FRONT;
+		InitTabs();		
 
 		if (savedInstanceState == null)
 		{
@@ -54,7 +75,7 @@ public class CardFlipActivity extends ActionBarActivity implements
 		
 		// Setup card
 		card = new Card(getIntent(), getResources(), getPackageName());	
-	}
+	}	
 
 	private void InitTabs()
 	{
@@ -73,9 +94,9 @@ public class CardFlipActivity extends ActionBarActivity implements
 			@Override
 			public void onTabSelected(Tab tab, FragmentTransaction arg1)
 			{
-				if (_actionBar.getSelectedTab() == _cardFrontTab && showingBack
-						|| _actionBar.getSelectedTab() == _cardBackTab
-						&& !showingBack)
+				if (_actionBar.getSelectedTab() == _cardFrontTab && visibleSide != CardPart.FRONT
+					|| _actionBar.getSelectedTab() == _cardBackTab	&& visibleSide != CardPart.BACK
+					|| _actionBar.getSelectedTab() == _cardInsightTab	&& visibleSide != CardPart.INSIGHT)
 				{
 					flipCard();
 				}
@@ -88,22 +109,55 @@ public class CardFlipActivity extends ActionBarActivity implements
 			}
 		};
 
-		// Add 2 tabs, specifying the tab's text and TabListener
+		// Add tabs, specifying the tab's text and TabListener
 		_cardFrontTab = _actionBar.newTab().setText(R.string.card_front)
 				.setTabListener(_tabListener);
 		_cardBackTab = _actionBar.newTab().setText(R.string.card_back)
 				.setTabListener(_tabListener);
+		_cardInsightTab = _actionBar.newTab().setText(R.string.card_insight)
+				.setTabListener(_tabListener);
 
 		_actionBar.addTab(_cardFrontTab);
 		_actionBar.addTab(_cardBackTab);
+		_actionBar.addTab(_cardInsightTab);
 	}
 
 	private void SelectTab()
 	{
 		if (_actionBar.getSelectedTab() == _cardFrontTab)
+		{
 			_actionBar.selectTab(_cardBackTab);
-		else
+			visibleSide = CardPart.BACK;
+		}
+		else if(_actionBar.getSelectedTab() == _cardBackTab)
+		{
+			_actionBar.selectTab(_cardInsightTab);
+			visibleSide = CardPart.INSIGHT;
+		}
+		else if(_actionBar.getSelectedTab() == _cardInsightTab)
+		{
 			_actionBar.selectTab(_cardFrontTab);
+			visibleSide = CardPart.FRONT;
+		}
+	}
+	
+	private void SelectBackwardsTab()
+	{
+		if (_actionBar.getSelectedTab() == _cardFrontTab)
+		{
+			_actionBar.selectTab(_cardInsightTab);
+			visibleSide = CardPart.INSIGHT;
+		}
+		else if(_actionBar.getSelectedTab() == _cardBackTab)
+		{
+			_actionBar.selectTab(_cardFrontTab);
+			visibleSide = CardPart.FRONT;
+		}
+		else if(_actionBar.getSelectedTab() == _cardInsightTab)
+		{
+			_actionBar.selectTab(_cardBackTab);
+			visibleSide = CardPart.BACK;
+		}
 	}
 
 	@Override
@@ -120,10 +174,11 @@ public class CardFlipActivity extends ActionBarActivity implements
 		switch (item.getItemId())
 		{
 			case android.R.id.home:
-				NavUtils.navigateUpTo(this, new Intent(this, MainActivity.class));
+				//NavUtils.navigateUpFromSameTask(this);
+				navigateToParent();
 				return true;
 			case R.id.action_home:
-				NavUtils.navigateUpTo(this, new Intent(this, MainActivity.class));
+				NavUtils.navigateUpTo(this, new Intent(this, MainActivity.class));				
 				return true;
 			case R.id.action_settings:
 				startActivity(new Intent(this, Preferences.class));
@@ -137,16 +192,34 @@ public class CardFlipActivity extends ActionBarActivity implements
 			default:
 				return super.onOptionsItemSelected(item);
 		}
-	}	
+	}
+	
+	private void navigateToParent()
+	{
+		Intent upIntent = NavUtils.getParentActivityIntent(this);
+        /*if (NavUtils.shouldUpRecreateTask(this, upIntent)) 
+        {*/
+            // This activity is NOT part of this app's task, so create a new task
+            // when navigating up, with a synthesized back stack.
+            TaskStackBuilder.create(this)
+                    // Add all of this activity's parents to the back stack
+                    .addNextIntentWithParentStack(upIntent)
+                    // Navigate up to the closest parent
+                    .startActivities();
+        /*} 
+        else 
+        {
+            // This activity is part of this app's task, so simply
+            // navigate up to the logical parent activity.
+            NavUtils.navigateUpTo(this, upIntent);
+        }*/
+	}
 
 	private void flipCard()
 	{
-		showingBack = !showingBack;
-
 		// Create and commit a new fragment transaction that adds the fragment
 		// for the card and uses custom animations.
 		getSupportFragmentManager().beginTransaction()
-
 		// Replace the default fragment animations with animator resources
 		// representing rotations when switching to the back of the card,
 		// as well as animator resources representing rotations when flipping
@@ -154,13 +227,11 @@ public class CardFlipActivity extends ActionBarActivity implements
 				.setCustomAnimations(R.anim.card_flip_right_in,
 						R.anim.card_flip_right_out, R.anim.card_flip_left_in,
 						R.anim.card_flip_left_out)
-
 				// Replace any fragments currently in the container view with a
 				// fragment representing the next page
 				// (indicated by the just-incremented
 				// currentPage variable).
 				.replace(R.id.container, new CardFragment())
-
 				// Commit the transaction.
 				.commit();
 	}
@@ -193,7 +264,15 @@ public class CardFlipActivity extends ActionBarActivity implements
 		 * Toast.makeText(getApplicationContext(), "onFling: " +
 		 * event1.toString()+event2.toString(), Toast.LENGTH_SHORT).show();
 		 */
-		SelectTab();
+		// Check if movement is left or right
+		float x1 = event1.getX();
+		float x2 = event2.getX();
+		
+		if(x1 - x2 > 0)			
+			SelectTab();
+		else			
+			SelectBackwardsTab();
+			
 		return true;
 	}
 

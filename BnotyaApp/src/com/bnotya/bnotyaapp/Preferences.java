@@ -1,22 +1,18 @@
 package com.bnotya.bnotyaapp;
 
-import java.util.Calendar;
 import com.bnotya.bnotyaapp.controls.SeekBarPreference;
 import com.bnotya.bnotyaapp.controls.TimePreference;
 import com.bnotya.bnotyaapp.helpers.About;
-import com.bnotya.bnotyaapp.services.AlarmReceiver;
+import com.bnotya.bnotyaapp.services.NotificationService;
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.app.AlarmManager;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
-import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -24,7 +20,6 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NavUtils;
-import android.support.v4.app.NotificationCompat;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -33,8 +28,7 @@ public class Preferences extends PreferenceActivity implements
 {
 	private SeekBarPreference _seekBarPref;
 	private AudioManager _audioManager;
-	private TimePreference _timePref;
-	private PendingIntent _pendingAlarmIntent;
+	private TimePreference _timePref;	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -59,10 +53,23 @@ public class Preferences extends PreferenceActivity implements
 		getPreferenceScreen().getSharedPreferences()
 				.registerOnSharedPreferenceChangeListener(this);
 		// Get widgets:
+		initUserName();
 		initNotificationTimePicker();
 		initMusicVolume();		
 	}
 	
+	private void initUserName()
+	{
+		// TODO: Doesn't work in emulator
+		/*AccountManager manager = (AccountManager) getSystemService(ACCOUNT_SERVICE);
+		Account[] list = manager.getAccounts();
+		String name = list[0].name;
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+	    Editor editor = prefs.edit();
+	    editor.putString(getString(R.string.user_name_preference), name);	      
+	    editor.commit();*/
+	}
+
 	@SuppressWarnings("deprecation")
 	private void initNotificationTimePicker()
 	{
@@ -200,8 +207,8 @@ public class Preferences extends PreferenceActivity implements
 			setMusicVolume();
 		}
 		else if(key.equals(getString(R.string.user_name_preference)))
-		{
-			// TODO: Set user name
+		{			
+			setUserName();
 		}
 		else if(key.equals(getString(R.string.notification_on_preference)))
 		{
@@ -210,8 +217,22 @@ public class Preferences extends PreferenceActivity implements
 		else if(key.equals(getString(R.string.notification_time_preference) + ".hour")
 				|| key.equals(getString(R.string.notification_time_preference) + ".minute"))
 		{   
-			setTimePickerSummary();		    
+			setTimePickerSummary();	
+			setNotificationOnOffSwitch(getString(R.string.notification_on_preference));
 		}
+	}
+
+	private void setUserName()
+	{
+		// TODO: Set user name
+		/*String name = PreferenceManager.getDefaultSharedPreferences(this)
+				.getString(getString(R.string.user_name_preference), "");
+		if(name == null)
+		{		
+			AccountManager manager = (AccountManager) getSystemService(ACCOUNT_SERVICE);
+			Account[] list = manager.getAccounts();
+			name = list[0].name;
+		}*/
 	}
 
 	@SuppressWarnings("deprecation")
@@ -220,60 +241,16 @@ public class Preferences extends PreferenceActivity implements
 		boolean hasNotification = getPreferenceScreen().getSharedPreferences()
 				.getBoolean(key, true);
 		if (hasNotification)
-			handleNotification();
+		{
+			int hour = PreferenceManager.getDefaultSharedPreferences(this)
+					.getInt(getString(R.string.notification_time_preference) + ".hour", 8);
+		    int minute = PreferenceManager.getDefaultSharedPreferences(this)
+					.getInt(getString(R.string.notification_time_preference) + ".minute", 0);
+		    NotificationService.handleNotification(this, hour, minute);
+		}
 		else		
-			cancelNotification();		
-	}
-	
-	private void cancelNotification()
-	{
-		AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-		alarmManager.cancel(_pendingAlarmIntent);
-		
-		disableAlarm();
-	}
-
-	private void handleNotification() 
-	{		
-		enableAlarm();
-		
-	    Intent alarmIntent = new Intent(this, AlarmReceiver.class);
-	    _pendingAlarmIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-	    AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);	    
-	    
-	    // Set the alarm
-	    Calendar calendar = Calendar.getInstance();
-	    calendar.setTimeInMillis(System.currentTimeMillis());
-	    int hour = PreferenceManager.getDefaultSharedPreferences(this)
-				.getInt(getString(R.string.notification_time_preference) + ".hour", 8);
-	    int minute = PreferenceManager.getDefaultSharedPreferences(this)
-				.getInt(getString(R.string.notification_time_preference) + ".minute", 0);
-	    calendar.set(Calendar.HOUR_OF_DAY, hour);
-	    calendar.set(Calendar.MINUTE, minute);
-	    
-	    alarmManager.setInexactRepeating(AlarmManager.RTC, calendar.getTimeInMillis(),
-	            AlarmManager.INTERVAL_DAY, _pendingAlarmIntent);
-	}
-	
-	private void enableAlarm()
-	{
-		ComponentName receiver = new ComponentName(this, AlarmReceiver.class);
-		PackageManager pm = getPackageManager();
-
-		pm.setComponentEnabledSetting(receiver,
-		        PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-		        PackageManager.DONT_KILL_APP);
-	}
-	
-	private void disableAlarm()
-	{
-		ComponentName receiver = new ComponentName(this, AlarmReceiver.class);
-		PackageManager pm = getPackageManager();
-
-		pm.setComponentEnabledSetting(receiver,
-		        PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-		        PackageManager.DONT_KILL_APP);
-	}
+			NotificationService.cancelNotification(this);		
+	}	
 
 	@SuppressWarnings("deprecation")
 	private void setMusicOnOffSwitch(String key)
@@ -304,8 +281,16 @@ public class Preferences extends PreferenceActivity implements
 	@SuppressWarnings("deprecation")
 	private void initNotification()
 	{
-		Intent intent = new Intent(this, CardFlipActivity.class);
-		intent.putExtra("EXTRA_SESSION_ISRANDOM", true);
+		Intent intent = new Intent(this, InsightActivity.class);
+		
+		int numberOfCards = getResources().getInteger(
+				R.integer.number_of_cards) - 1;
+		// Random from 1 to number of cards
+		int id = 0;
+		id += (Math.random() * numberOfCards);
+		
+		intent.putExtra("EXTRA_SESSION_ID", id);
+		
 		// Sets the Activity to start in a new, empty task
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
 				| Intent.FLAG_ACTIVITY_CLEAR_TASK);

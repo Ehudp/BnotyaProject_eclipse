@@ -14,16 +14,18 @@
     <string name="open_women_menu">Open Women Page</string>
     <string name="open_self_improvement_page">Open Self Improvement Page</string>
     <string name="open_trivia_page">Open Trivia Page</string>
-    <string name="open_random_card">Open Random Card</string>
+    <string name="open_random_insight">Open Random Insight</string>
     <string name="open_women_list">Open Women List</string>
     <string name="title_card_flip">Card</string>
+    <string name="title_insight">Insight</string>
     <string name="description_card">Image</string>
     <string name="about_text">About the Bnotya project</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="app_not_available">Sorry, there\'s no web browser available</string>
     <string name="card_front">Front</string>
-    <string name="card_back">Back</string>    
+    <string name="card_back">Back</string>  
+    <string name="card_insight">Insight</string>
     <string name="settings_dialog_message">Set music volume</string>
     <string name="settings_summary">Current value is 1</string>
     <string name="notification_time_summary">Current value is hour:minute</string>
@@ -42,7 +44,8 @@
     <string name="pref_user_name">User Name</string>
     <string name="pref_user_name_summary">Set your username</string>
     <string name="pref_default_notification_time">Default notification time</string>
-     
+    <string name="loading">Loading...</string>
+    
     <!-- E-Mail strings -->
     <string name="send_email">Send E-Mail</string>
     <string name="person_email">Your E-Mail</string>

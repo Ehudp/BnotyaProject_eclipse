@@ -31,7 +31,7 @@ public class WomenListFragment extends Fragment
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState)
 	{
-		View rootView = inflater.inflate(R.layout.women_list,
+		View rootView = inflater.inflate(R.layout.women_list_view,
 				container, false);		
 
 		getActivity().setTitle(R.string.women_list_title);
@@ -67,8 +67,7 @@ public class WomenListFragment extends Fragment
 			{
 				Intent intent = new Intent(getActivity(),
 						CardFlipActivity.class);
-				intent.putExtra("EXTRA_SESSION_ID", position);
-				intent.putExtra("EXTRA_SESSION_ISRANDOM", false);
+				intent.putExtra("EXTRA_SESSION_ID", position);				
 				startActivity(intent);
 			}
 		});
