@@ -44,7 +44,7 @@ public class Card
     	return _frontId;
     }
     
-    public int getID()
+    public int getId()
     {
     	return _id;
     }

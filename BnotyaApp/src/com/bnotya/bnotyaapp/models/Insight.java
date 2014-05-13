@@ -1,5 +1,6 @@
 package com.bnotya.bnotyaapp.models;
 
+import com.bnotya.bnotyaapp.R;
 import android.content.Intent;
 import android.content.res.Resources;
 
@@ -7,6 +8,8 @@ public class Insight
 {
 	private final int _insightId;
 	private final int _id;
+	private boolean _isFavorite;
+	private final String _name;
 
 	public Insight(Intent intent, Resources resources, String packageName)
 	{
@@ -18,6 +21,23 @@ public class Insight
 				String.format("card%s_%s", id, id), "drawable", packageName);
 
 		_id = id;
+		
+		_isFavorite = false;
+		
+		String[] names = resources.getStringArray(R.array.women_names_array);
+		_name = names[id - 1];
+	}
+	
+	public Insight(int id, boolean isFavorite, String name, Resources resources, String packageName)
+	{
+		_insightId = resources.getIdentifier(
+				String.format("card%s_%s", id, id), "drawable", packageName);
+
+		_id = id;
+		
+		_isFavorite = isFavorite;
+		
+		_name = name;
 	}
 
 	public int getInsightId()
@@ -25,8 +45,23 @@ public class Insight
 		return _insightId;
 	}
 
-	public int getID()
+	public int getId()
 	{
 		return _id;
+	}
+	
+	public boolean getIsFavorite()
+	{
+		return _isFavorite;
+	}
+	
+	public void setIsFavorite(boolean value)
+	{
+		_isFavorite = value;
+	}
+	
+	public String getName()
+	{
+		return _name;
 	}
 }

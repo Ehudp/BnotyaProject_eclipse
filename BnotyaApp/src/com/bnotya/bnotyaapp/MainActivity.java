@@ -13,7 +13,9 @@ import com.bnotya.bnotyaapp.fragments.MainWomenFragment;
 import com.bnotya.bnotyaapp.fragments.TriviaFragment;
 import com.bnotya.bnotyaapp.fragments.WomenListFragment;
 import com.bnotya.bnotyaapp.helpers.About;
+import com.bnotya.bnotyaapp.helpers.DatabaseHelper;
 import com.bnotya.bnotyaapp.models.NavDrawerItem;
+import com.bnotya.bnotyaapp.services.DataBaseService;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
@@ -52,7 +54,7 @@ public class MainActivity extends ActionBarActivity
 	private boolean _isSearchable;
 	// For Menu Overflow in API < 11
 	private Handler handler = new Handler(Looper.getMainLooper());
-	private Queue<Integer> _recentInsights = new LinkedList<Integer>();
+	private Queue<Integer> _recentInsights = new LinkedList<Integer>();	
 	
 	public static MediaPlayer music;	
 
@@ -61,13 +63,23 @@ public class MainActivity extends ActionBarActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
+		// If EXIT is True exit application
+		if(getIntent().getBooleanExtra("EXIT", false))
+		{
+	        finish();
+	        return; 
+	    }
+		
 		_isSearchable = false;
 
 		initDrawerList();
 		_title = _drawerTitle = getTitle();
 		initDrawerLayout(savedInstanceState);
 
-		initMusic();		
+		initMusic();
+		
+		DataBaseService.initDatabaseHelper(this);
 	}
 
 	@Override
@@ -427,6 +439,11 @@ public class MainActivity extends ActionBarActivity
 						openTriviaPage(null);
 						break;
 					}
+					case 3:
+					{
+						openInsightList(null);
+						break;
+					}
 				}
 
 				break;
@@ -517,6 +534,13 @@ public class MainActivity extends ActionBarActivity
 	{		
 		//replaceFragment(new TriviaFragment(), 0);
 		Intent intent = new Intent(this, TriviaActivity.class);
+		startActivity(intent);
+	}
+	
+	public void openInsightList(View view)
+	{		
+		//replaceFragment(new WomenListFragment(), 0);	
+		Intent intent = new Intent(this, InsightListActivity.class);
 		startActivity(intent);
 	}
 

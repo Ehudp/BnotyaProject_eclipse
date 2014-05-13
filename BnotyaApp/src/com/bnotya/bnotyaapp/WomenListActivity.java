@@ -3,10 +3,10 @@ package com.bnotya.bnotyaapp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import com.bnotya.bnotyaapp.adapters.WomenArrayAdapter;
+import com.bnotya.bnotyaapp.adapters.CustomArrayAdapter;
 import com.bnotya.bnotyaapp.helpers.About;
 import com.bnotya.bnotyaapp.models.NavDrawerItem;
-import com.bnotya.bnotyaapp.models.WomenListItem;
+import com.bnotya.bnotyaapp.models.ListItem;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.SearchManager;
@@ -45,14 +45,7 @@ public class WomenListActivity extends ActionBarActivity
 	{
 		super.onConfigurationChanged(newConfig);
 		initView();
-	}
-
-	@Override
-	protected void onPause()
-	{
-		super.onPause();
-		finish();
-	}
+	}	
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
@@ -100,12 +93,21 @@ public class WomenListActivity extends ActionBarActivity
 				onSearchRequested();
 				return true;
 			case R.id.action_exit:
-				finish();
+				exitApplication();
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
 		}
-	}	
+	}
+	
+	private void exitApplication()
+	{
+		Intent intent = new Intent(this, MainActivity.class);
+	    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+	    intent.putExtra("EXIT", true);
+	    startActivity(intent);
+	    finish();
+	}
 
 	private void initView()
 	{
@@ -124,7 +126,7 @@ public class WomenListActivity extends ActionBarActivity
 		// Get ListView object from xml
 		_listView = (ListView) findViewById(R.id.womenlist);		
 		
-		WomenListItem[] listDataHeaders = fillData(R.array.women_names_array,
+		ListItem[] listDataHeaders = fillData(R.array.women_names_array,
 				R.array.women_list_icons);
 
 		// Define a new Adapter
@@ -132,7 +134,7 @@ public class WomenListActivity extends ActionBarActivity
 		// Second parameter - Layout for the row
 		// Third parameter - ID of the TextView to which the data is written
 		// Forth - the Array of data
-		WomenArrayAdapter adapter = new WomenArrayAdapter(this,
+		CustomArrayAdapter adapter = new CustomArrayAdapter(this,
 				R.layout.women_list_item, listDataHeaders);		
 
 		// Assign adapter to ListView
@@ -153,19 +155,19 @@ public class WomenListActivity extends ActionBarActivity
 		});
 	}
 	
-	private WomenListItem[] fillData(int titlesID, int iconsID)
+	private ListItem[] fillData(int titlesID, int iconsID)
 	{		
 		// Load item values
 		String[] titles = getResources().getStringArray(titlesID);
 		TypedArray icons = getResources().obtainTypedArray(iconsID);
 		
-		WomenListItem[] result = new WomenListItem[titles.length];
+		ListItem[] result = new ListItem[titles.length];
 
 		// Adding items to array
 
 		for (int i = 0; i < titles.length; i++)
 		{
-			result[i] = new WomenListItem(titles[i], icons
+			result[i] = new ListItem(titles[i], icons
 					.getResourceId(i, -1));
 		}
 

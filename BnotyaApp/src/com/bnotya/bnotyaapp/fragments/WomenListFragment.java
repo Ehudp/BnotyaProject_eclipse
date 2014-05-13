@@ -14,8 +14,8 @@ import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 import com.bnotya.bnotyaapp.CardFlipActivity;
 import com.bnotya.bnotyaapp.R;
-import com.bnotya.bnotyaapp.adapters.WomenArrayAdapter;
-import com.bnotya.bnotyaapp.models.WomenListItem;
+import com.bnotya.bnotyaapp.adapters.CustomArrayAdapter;
+import com.bnotya.bnotyaapp.models.ListItem;
 
 public class WomenListFragment extends Fragment
 {
@@ -44,7 +44,7 @@ public class WomenListFragment extends Fragment
 		// Get ListView object from xml		
 		_listView = (ListView) rootView.findViewById(R.id.womenlist);
 
-		WomenListItem[] listDataHeaders = fillData(R.array.women_names_array,
+		ListItem[] listDataHeaders = fillData(R.array.women_names_array,
 				R.array.women_list_icons);
 
 		// Define a new Adapter
@@ -52,7 +52,7 @@ public class WomenListFragment extends Fragment
 		// Second parameter - Layout for the row
 		// Third parameter - ID of the TextView to which the data is written
 		// Forth - the Array of data
-		WomenArrayAdapter adapter = new WomenArrayAdapter(getActivity(),
+		CustomArrayAdapter adapter = new CustomArrayAdapter(getActivity(),
 				R.layout.women_list_item, listDataHeaders);
 
 		// Assign adapter to ListView
@@ -73,19 +73,19 @@ public class WomenListFragment extends Fragment
 		});
 	}
 
-	private WomenListItem[] fillData(int titlesID, int iconsID)
+	private ListItem[] fillData(int titlesID, int iconsID)
 	{
 		// Load item values
 		String[] titles = getResources().getStringArray(titlesID);
 		TypedArray icons = getResources().obtainTypedArray(iconsID);
 
-		WomenListItem[] result = new WomenListItem[titles.length];
+		ListItem[] result = new ListItem[titles.length];
 
 		// Adding items to array
 
 		for (int i = 0; i < titles.length; i++)
 		{
-			result[i] = new WomenListItem(titles[i], icons.getResourceId(i, -1));
+			result[i] = new ListItem(titles[i], icons.getResourceId(i, -1));
 		}
 
 		// Recycle the typed array

@@ -174,8 +174,8 @@ public class CardFlipActivity extends ActionBarActivity implements
 		switch (item.getItemId())
 		{
 			case android.R.id.home:
-				//NavUtils.navigateUpFromSameTask(this);
-				navigateToParent();
+				NavUtils.navigateUpFromSameTask(this);
+				//navigateToParent();
 				return true;
 			case R.id.action_home:
 				NavUtils.navigateUpTo(this, new Intent(this, MainActivity.class));				
@@ -187,13 +187,14 @@ public class CardFlipActivity extends ActionBarActivity implements
 				About.showAboutDialog(this);
 				return true;
 			case R.id.action_exit:
-				finish();
+				exitApplication();
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
 		}
 	}
 	
+	// Do not remove!
 	private void navigateToParent()
 	{
 		Intent upIntent = NavUtils.getParentActivityIntent(this);
@@ -213,6 +214,15 @@ public class CardFlipActivity extends ActionBarActivity implements
             // navigate up to the logical parent activity.
             NavUtils.navigateUpTo(this, upIntent);
         }*/
+	}
+	
+	private void exitApplication()
+	{
+		Intent intent = new Intent(this, MainActivity.class);
+	    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+	    intent.putExtra("EXIT", true);
+	    startActivity(intent);
+	    finish();
 	}
 
 	private void flipCard()

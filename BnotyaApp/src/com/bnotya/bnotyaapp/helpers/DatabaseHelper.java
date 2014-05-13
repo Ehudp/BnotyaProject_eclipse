@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import com.bnotya.bnotyaapp.models.Answer;
+import com.bnotya.bnotyaapp.models.Insight;
 import com.bnotya.bnotyaapp.models.Question;
 import android.content.ContentValues;
 import android.content.Context;
@@ -31,6 +32,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
 	private static final String TABLE_QUESTION = "questions";
 	private static final String TABLE_ANSWER = "answers";
 	private static final String TABLE_QUESTION_ANSWER = "questions_answers";
+	private static final String TABLE_INSIGHT = "insights";
 
 	// Common column names
 	private static final String KEY_ID = "id";
@@ -39,32 +41,41 @@ public class DatabaseHelper extends SQLiteOpenHelper
 	// TABLE_QUESTION_ANSWER column names
 	private static final String KEY_QUESTION_ID = "question_id";
 	private static final String KEY_ANSWER_ID = "answer_id";
-	private static final String KEY_ISCORRECT = "iscorrect";
+	private static final String KEY_IS_CORRECT = "is_correct";
+	
+	// TABLE_INSIGHT column names
+	private static final String KEY_IS_FAVORITE = "is_favorite";
+	private static final String KEY_NAME = "name";
 
 	// Table Create Statements
 	// TABLE_QUESTION table create statement
 	private static final String CREATE_TABLE_QUESTION = "CREATE TABLE "
-			+ TABLE_QUESTION + "(" + KEY_ID
-			+ " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_CONTENT
-			+ " TEXT NOT NULL)";
+			+ TABLE_QUESTION + "(" 
+			+ KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " 
+			+ KEY_CONTENT + " TEXT NOT NULL)";
 
 	// TABLE_ANSWER table create statement
 	private static final String CREATE_TABLE_ANSWER = "CREATE TABLE "
-			+ TABLE_ANSWER + "(" + KEY_ID
-			+ " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_CONTENT
-			+ " TEXT NOT NULL)";
+			+ TABLE_ANSWER + "(" 
+			+ KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " 
+			+ KEY_CONTENT + " TEXT NOT NULL)";
 
 	// TABLE_QUESTION_ANSWER table create statement
 	private static final String CREATE_TABLE_QUESTION_ANSWER = "CREATE TABLE "
-			+ TABLE_QUESTION_ANSWER 
-			+ "(" 
+			+ TABLE_QUESTION_ANSWER + "(" 
 			+ KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " 
 			+ KEY_QUESTION_ID + " INTEGER NOT NULL, " 
 			+ KEY_ANSWER_ID + " INTEGER NOT NULL, "
-			+ KEY_ISCORRECT + " BOOLEAN NOT NULL, "
+			+ KEY_IS_CORRECT + " BOOLEAN NOT NULL, "
 			+ "FOREIGN KEY (" + KEY_QUESTION_ID	+ ") REFERENCES " + TABLE_QUESTION + "(" + KEY_ID + "), "
 			+ "FOREIGN KEY (" + KEY_ANSWER_ID + ") REFERENCES " + TABLE_ANSWER + "(" + KEY_ID	+ "));"; 
-			
+	
+	// TABLE_FAVORITE_INSIGHT table create statement
+		private static final String CREATE_TABLE_INSIGHT = "CREATE TABLE "
+			+ TABLE_INSIGHT + "(" 
+			+ KEY_ID + " INTEGER PRIMARY KEY," 
+			+ KEY_IS_FAVORITE + " BOOLEAN NOT NULL, "
+			+ KEY_NAME + " TEXT NOT NULL)";			
 
 	public static DatabaseHelper getInstance(Context context)
 	{
@@ -87,6 +98,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
 		db.execSQL(CREATE_TABLE_QUESTION);
 		db.execSQL(CREATE_TABLE_ANSWER);
 		db.execSQL(CREATE_TABLE_QUESTION_ANSWER);
+		db.execSQL(CREATE_TABLE_INSIGHT);
 	}
 
 	@Override
@@ -95,7 +107,8 @@ public class DatabaseHelper extends SQLiteOpenHelper
 		// on upgrade drop older tables
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_QUESTION_ANSWER);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_QUESTION);
-		db.execSQL("DROP TABLE IF EXISTS " + TABLE_ANSWER);		
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_ANSWER);	
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_INSIGHT);	
 
 		// create new tables
 		onCreate(db);
@@ -179,11 +192,13 @@ public class DatabaseHelper extends SQLiteOpenHelper
 
 		Cursor c = db.rawQuery(selectQuery, null);
 
-		if (c != null) c.moveToFirst();
-
-		Question question = new Question();
-		question.setId(c.getInt(c.getColumnIndex(KEY_ID)));
-		question.setContent(c.getString(c.getColumnIndex(KEY_CONTENT)));
+		Question question = null;
+		if (c != null && c.moveToFirst())
+		{
+			question = new Question();
+			question.setId(c.getInt(c.getColumnIndex(KEY_ID)));
+			question.setContent(c.getString(c.getColumnIndex(KEY_CONTENT)));
+		}		
 
 		return question;
 	}
@@ -202,7 +217,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
 		Cursor c = db.rawQuery(selectQuery, null);
 
 		// looping through all rows and adding to list
-		if (c.moveToFirst())
+		if (c != null && c.moveToFirst())
 		{
 			do
 			{
@@ -320,12 +335,13 @@ public class DatabaseHelper extends SQLiteOpenHelper
 
 		Cursor c = db.rawQuery(selectQuery, null);
 
-		if (c != null) c.moveToFirst();
-
-		Answer answer = new Answer();
-		answer.setId(c.getInt(c.getColumnIndex(KEY_ID)));
-		answer.setContent(c.getString(c.getColumnIndex(KEY_CONTENT)));
-
+		Answer answer = null;
+		if (c != null && c.moveToFirst())
+		{
+			answer = new Answer();
+			answer.setId(c.getInt(c.getColumnIndex(KEY_ID)));
+			answer.setContent(c.getString(c.getColumnIndex(KEY_CONTENT)));
+		}
 		return answer;
 	}
 
@@ -343,7 +359,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
 		Cursor c = db.rawQuery(selectQuery, null);
 
 		// looping through all rows and adding to list
-		if (c.moveToFirst())
+		if (c != null && c.moveToFirst())
 		{
 			do
 			{
@@ -401,7 +417,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
 				+ " WHERE " + KEY_QUESTION_ID + " = " + question_id;
 		Cursor c = db.rawQuery(selectQuery, null);
 		// looping through all rows and adding to list
-		if (c.moveToFirst())
+		if (c != null && c.moveToFirst())
 		{
 			do
 			{
@@ -430,7 +446,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
 		ContentValues values = new ContentValues();
 		values.put(KEY_QUESTION_ID, question_id);
 		values.put(KEY_ANSWER_ID, answer_id);
-		values.put(KEY_ISCORRECT, false);
+		values.put(KEY_IS_CORRECT, false);
 
 		long id = db.insert(TABLE_QUESTION_ANSWER, null, values);
 
@@ -446,7 +462,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
 		SQLiteDatabase db = this.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
-		values.put(KEY_ISCORRECT, isCorrect);
+		values.put(KEY_IS_CORRECT, isCorrect);
 
 		// updating row
 		String whereClause = String.format("%s = ? AND %s = ?", KEY_QUESTION_ID, KEY_ANSWER_ID);
@@ -468,10 +484,10 @@ public class DatabaseHelper extends SQLiteOpenHelper
 				+ TABLE_QUESTION_ANSWER + " AS TQA ON TQA." 
 				+ KEY_ANSWER_ID + "=TA." + KEY_ID
 				+ " WHERE " + KEY_QUESTION_ID + " = " + question_id
-				+ " AND " + KEY_ISCORRECT + " = 1";
+				+ " AND " + KEY_IS_CORRECT + " = 1";
 		Cursor c = db.rawQuery(selectQuery, null);
 		
-		if (c.moveToFirst())
+		if (c != null && c.moveToFirst())
 		{			
 			int correctAnswerId = c.getInt(c.getColumnIndex(KEY_ID));
 			
@@ -504,6 +520,142 @@ public class DatabaseHelper extends SQLiteOpenHelper
 			String.valueOf(answer_id)
 		});
 	}
+	
+	// --------------- "TABLE_INSIGHT" methods ----------------//
+
+	/**
+	 * Add an insight
+	 */
+	public int addInsight(Insight insight)
+	{
+		SQLiteDatabase db = this.getWritableDatabase();
+
+		ContentValues values = new ContentValues();		
+		
+		values.put(KEY_ID, insight.getId());
+		values.put(KEY_IS_FAVORITE, insight.getIsFavorite());
+		values.put(KEY_NAME, insight.getName());
+
+		// insert row
+		db.insert(TABLE_INSIGHT, null, values);			
+		
+		return insight.getId();
+	}
+
+	/**
+	 * Get single insight
+	 */
+	public Insight getInsightById(long id, Context context)
+	{
+		SQLiteDatabase db = this.getReadableDatabase();
+
+		String selectQuery = "SELECT  * FROM " + TABLE_INSIGHT + " WHERE "
+				+ KEY_ID + " = " + id;
+
+		Cursor c = db.rawQuery(selectQuery, null);
+
+		Insight insight = null;
+		if (c != null && c.moveToFirst())
+		{
+			boolean isFavorite = (c.getInt(c.getColumnIndex(KEY_IS_FAVORITE)) == 1);
+			String name = c.getString(c.getColumnIndex(KEY_NAME));
+			
+			insight = new Insight((int)id, isFavorite, name, context.getResources(), context.getPackageName());
+		}
+		
+		return insight;
+	}
+
+	/**
+	 * Get all insights
+	 * */
+	public List<Insight> getAllInsights(Context context)
+	{
+		List<Insight> insights = new ArrayList<Insight>();
+		String selectQuery = "SELECT * FROM " + TABLE_INSIGHT;
+
+		Log.e(LOG, selectQuery);
+
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor c = db.rawQuery(selectQuery, null);
+
+		// looping through all rows and adding to list
+		if (c != null && c.moveToFirst())
+		{
+			do
+			{
+				boolean isFavorite = (c.getInt(c.getColumnIndex(KEY_IS_FAVORITE)) == 1);
+				String name = c.getString(c.getColumnIndex(KEY_NAME));
+				int id = c.getInt(c.getColumnIndex(KEY_ID));
+				Insight insight = new Insight((int)id, isFavorite, name, context.getResources(), context.getPackageName());
+
+				// adding to insights list
+				insights.add(insight);
+			} while (c.moveToNext());
+		}
+		return insights;
+	}
+	
+	/**
+	 * Get favorite insights
+	 * */
+	public List<Insight> getFavoriteInsights(Context context)
+	{
+		List<Insight> insights = new ArrayList<Insight>();
+		String selectQuery = "SELECT * FROM " + TABLE_INSIGHT
+				+ " WHERE " + KEY_IS_FAVORITE + " = 1";
+
+		Log.e(LOG, selectQuery);
+
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor c = db.rawQuery(selectQuery, null);
+
+		// looping through all rows and adding to list
+		if (c != null && c.moveToFirst())
+		{
+			do
+			{						
+				int id = c.getInt(c.getColumnIndex(KEY_ID));
+				String name = c.getString(c.getColumnIndex(KEY_NAME));
+				Insight insight = new Insight((int)id, true, name, context.getResources(), context.getPackageName());
+
+				// adding to insights list
+				insights.add(insight);
+			} while (c.moveToNext());
+		}
+		return insights;
+	}
+
+	/**
+	 * Update an insight
+	 */
+	public int updateInsight(Insight insight)
+	{
+		SQLiteDatabase db = this.getWritableDatabase();
+
+		ContentValues values = new ContentValues();
+		values.put(KEY_IS_FAVORITE, insight.getIsFavorite());		
+
+		// updating row
+		return db.update(TABLE_INSIGHT, values, KEY_ID + " = ?", new String[]
+		{
+			String.valueOf(insight.getId())
+		});
+	}
+
+	/**
+	 * Delete an insight
+	 */
+	public void deleteInsight(long id)
+	{
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.delete(TABLE_INSIGHT, KEY_ID + " = ?", new String[]
+		{
+			String.valueOf(id)
+		});
+	}
+	
+	// --------------- General methods ----------------//
 
 	// closing database
 	public void closeDB()
@@ -513,7 +665,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
 	}
 
 	/**
-	 * Get datetime
+	 * Get date/time
 	 * */
 	private String getDateTime()
 	{

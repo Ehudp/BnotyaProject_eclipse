@@ -123,6 +123,23 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.bnotya.bnotyaapp.MainActivity" />
         </activity>
+        
+        <!-- Insight List activity -->
+        <activity
+            android:name="com.bnotya.bnotyaapp.InsightListActivity"
+            android:label="@string/title_insight"
+            android:parentActivityName="com.bnotya.bnotyaapp.MainActivity"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="com.bnotya.bnotyaapp.InsightListActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.bnotya.bnotyaapp.MainActivity" />
+        </activity>
 
         <!-- Search activity -->
         <activity android:name="com.bnotya.bnotyaapp.SearchResultsActivity" >

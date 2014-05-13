@@ -5,6 +5,7 @@ import com.bnotya.bnotyaapp.helpers.About;
 import com.bnotya.bnotyaapp.helpers.DatabaseHelper;
 import com.bnotya.bnotyaapp.models.Answer;
 import com.bnotya.bnotyaapp.models.Question;
+import com.bnotya.bnotyaapp.services.DataBaseService;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Build;
@@ -21,8 +22,7 @@ import android.widget.Toast;
 
 public class TriviaActivity extends ActionBarActivity implements OnCheckedChangeListener
 {
-	// Database Helper
-	DatabaseHelper _db;
+	
 	
 	TextView _questionView;
 	RadioGroup _answers;
@@ -45,13 +45,7 @@ public class TriviaActivity extends ActionBarActivity implements OnCheckedChange
 		}
 
 		_questionView = (TextView) findViewById(R.id.tvQuestion);
-		_answers = (RadioGroup) findViewById(R.id.rgAnswers);
-
-		_db = DatabaseHelper.getInstance(this);
-		
-		_db.clearDb();
-
-		_db.createDb();
+		_answers = (RadioGroup) findViewById(R.id.rgAnswers);		
 
 		initQuestion();
 	}	
@@ -59,7 +53,7 @@ public class TriviaActivity extends ActionBarActivity implements OnCheckedChange
 	private void initQuestion()
 	{
 		// get all questions
-		List<Question> allQuestions = _db.getAllQuestions();
+		List<Question> allQuestions = DataBaseService.dbHelper.getAllQuestions();
 		// get question
 		Question question = allQuestions.get(0);
 		// set question		
@@ -67,7 +61,7 @@ public class TriviaActivity extends ActionBarActivity implements OnCheckedChange
 		_questionView.setTag(question.getId());
 		
 		// Setup the answers
-		List<Answer> allAnswers = _db.getAllAnswersByQuestion(question
+		List<Answer> allAnswers = DataBaseService.dbHelper.getAllAnswersByQuestion(question
 				.getId());
 		
 		for (Answer answer : allAnswers)
@@ -112,17 +106,26 @@ public class TriviaActivity extends ActionBarActivity implements OnCheckedChange
 				About.showAboutDialog(this);
 				return true;
 			case R.id.action_exit:
-				finish();
+				exitApplication();
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
 		}
 	}
+	
+	private void exitApplication()
+	{
+		Intent intent = new Intent(this, MainActivity.class);
+	    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+	    intent.putExtra("EXIT", true);
+	    startActivity(intent);
+	    finish();
+	}
 
 	@Override
 	public void onCheckedChanged(RadioGroup group, int checkedId)
 	{	
-		boolean result = _db.getIsCorrectAnswer(
+		boolean result = DataBaseService.dbHelper.getIsCorrectAnswer(
 				Long.valueOf(_questionView.getTag().toString()), (long)checkedId);
 		if(result)
 		{
