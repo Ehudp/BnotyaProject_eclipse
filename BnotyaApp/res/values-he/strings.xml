@@ -46,6 +46,7 @@
     <string name="pref_user_name_summary">מלא שם משתמש</string>  
     <string name="pref_default_notification_time">זמן תזכורת יומית</string>  
     <string name="loading">טוען</string>
+    <string name="undo">ביטול</string>
     
     <!-- E-Mail strings -->
     <string name="send_email">שלח מייל</string>
@@ -59,6 +60,6 @@
     <string name="music_volume_preference">musicVolumePreference</string>
     <string name="user_name_preference">prefUsername</string>
     <string name="notification_on_preference">notificationOnPreference</string>
-    <string name="notification_time_preference">notificationTimePreference</string>
+    <string name="notification_time_preference">notificationTimePreference</string> 
     
 </resources>

@@ -8,6 +8,8 @@ import com.bnotya.bnotyaapp.models.Question;
 import com.bnotya.bnotyaapp.services.DataBaseService;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -23,7 +25,8 @@ import android.widget.Toast;
 public class TriviaActivity extends ActionBarActivity implements OnCheckedChangeListener
 {
 	
-	
+	SoundPool _soundPool;
+	int _correctSound = 0;
 	TextView _questionView;
 	RadioGroup _answers;
 
@@ -45,7 +48,9 @@ public class TriviaActivity extends ActionBarActivity implements OnCheckedChange
 		}
 
 		_questionView = (TextView) findViewById(R.id.tvQuestion);
-		_answers = (RadioGroup) findViewById(R.id.rgAnswers);		
+		_answers = (RadioGroup) findViewById(R.id.rgAnswers);	
+		_soundPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
+		_correctSound = _soundPool.load(this, R.raw.correctsound, 1);
 
 		initQuestion();
 	}	
@@ -131,6 +136,8 @@ public class TriviaActivity extends ActionBarActivity implements OnCheckedChange
 		{
 			Toast.makeText(getApplicationContext(),
 					R.string.correct_answer, Toast.LENGTH_SHORT).show();
+			if(_correctSound != 0)
+				_soundPool.play(_correctSound, 1, 1, 0, 0, 1);
 		}
 		else
 		{

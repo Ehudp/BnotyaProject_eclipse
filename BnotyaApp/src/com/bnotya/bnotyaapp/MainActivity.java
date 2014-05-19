@@ -7,34 +7,40 @@ import java.util.List;
 import java.util.Queue;
 import com.bnotya.bnotyaapp.adapters.ExpandableListAdapter;
 import com.bnotya.bnotyaapp.fragments.MainDefaultFragment;
-import com.bnotya.bnotyaapp.fragments.MainMailFragment;
 import com.bnotya.bnotyaapp.fragments.MainTehilotFragment;
 import com.bnotya.bnotyaapp.fragments.MainWomenFragment;
 import com.bnotya.bnotyaapp.fragments.TriviaFragment;
 import com.bnotya.bnotyaapp.fragments.WomenListFragment;
 import com.bnotya.bnotyaapp.helpers.About;
-import com.bnotya.bnotyaapp.helpers.DatabaseHelper;
 import com.bnotya.bnotyaapp.models.NavDrawerItem;
 import com.bnotya.bnotyaapp.services.DataBaseService;
 import android.media.MediaPlayer;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.preference.PreferenceManager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.ActionBar.Tab;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.GestureDetector.OnDoubleTapListener;
+import android.view.GestureDetector.OnGestureListener;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.widget.ExpandableListView;
@@ -42,8 +48,14 @@ import android.widget.ExpandableListView.OnGroupCollapseListener;
 import android.widget.ExpandableListView.OnGroupExpandListener;
 import android.widget.Toast;
 
-public class MainActivity extends ActionBarActivity
+public class MainActivity extends ActionBarActivity implements
+	OnGestureListener, OnDoubleTapListener
 {
+	public enum MainActivityTab {
+		   DEFAULT,
+		   WOMENLIST,
+		   TEHILOT
+		}
 	private ExpandableListView _drawerList;
 	private List<NavDrawerItem> _listDataHeaders;
 	private HashMap<String, List<NavDrawerItem>> _listDataChildren;
@@ -52,25 +64,33 @@ public class MainActivity extends ActionBarActivity
 	private CharSequence _drawerTitle;
 	private CharSequence _title;
 	private boolean _isSearchable;
+	// Tabs
+	public MainActivityTab visibleTab;
+	private GestureDetectorCompat _detector;
+	private ActionBar _actionBar;
+	private ActionBar.TabListener _tabListener;
+	private Tab _defaultTab;
+	private Tab _womenListTab;
+	private Tab _tehilotTab;	
 	// For Menu Overflow in API < 11
 	private Handler handler = new Handler(Looper.getMainLooper());
-	private Queue<Integer> _recentInsights = new LinkedList<Integer>();	
-	
-	public static MediaPlayer music;	
+	private Queue<Integer> _recentInsights = new LinkedList<Integer>();
+
+	public static MediaPlayer music;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
+
 		// If EXIT is True exit application
-		if(getIntent().getBooleanExtra("EXIT", false))
+		if (getIntent().getBooleanExtra("EXIT", false))
 		{
-	        finish();
-	        return; 
-	    }
-		
+			finish();
+			return;
+		}
+
 		_isSearchable = false;
 
 		initDrawerList();
@@ -78,15 +98,134 @@ public class MainActivity extends ActionBarActivity
 		initDrawerLayout(savedInstanceState);
 
 		initMusic();
+
+		new ProcessTask().execute(this);
 		
-		DataBaseService.initDatabaseHelper(this);
+		// Tabs
+		
+		visibleTab = MainActivityTab.DEFAULT;
+		InitTabs();		
+
+		if (savedInstanceState == null)
+		{
+			// If there is no saved instance state, add a fragment to this activity.
+			// If there is saved instance state,
+			// this fragment will have already been added to the activity.			
+			replaceFragment(new MainDefaultFragment(), 0);
+		}
+
+		// Detect touched area
+		_detector = new GestureDetectorCompat(this, this);	
+		_detector.setOnDoubleTapListener(this);	
+	}
+	
+	private void InitTabs()
+	{
+		_actionBar = getSupportActionBar();
+		_actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
+		// Create a tab listener that is called when the user changes tabs.
+		_tabListener = new ActionBar.TabListener()
+		{
+			@Override
+			public void onTabReselected(Tab tab, FragmentTransaction arg1)
+			{
+
+			}
+
+			@Override
+			public void onTabSelected(Tab tab, FragmentTransaction arg1)
+			{
+				if (_actionBar.getSelectedTab() == _defaultTab && visibleTab != MainActivityTab.DEFAULT)
+				{
+					visibleTab = MainActivityTab.DEFAULT;
+					replaceFragment(new MainDefaultFragment(), 0);
+				}
+				else if(_actionBar.getSelectedTab() == _womenListTab && visibleTab != MainActivityTab.WOMENLIST)
+				{
+					visibleTab = MainActivityTab.WOMENLIST;
+					replaceFragment(new WomenListFragment(), 0);
+				}
+				else if(_actionBar.getSelectedTab() == _tehilotTab && visibleTab != MainActivityTab.TEHILOT)					
+				{
+					visibleTab = MainActivityTab.TEHILOT;
+					replaceFragment(new MainTehilotFragment(), 1);
+				}
+			}			
+
+			@Override
+			public void onTabUnselected(Tab tab, FragmentTransaction arg1)
+			{
+
+			}
+		};
+
+		// Add tabs, specifying the tab's text and TabListener
+		_defaultTab = _actionBar.newTab().setText(R.string.card_front)
+				.setTabListener(_tabListener);
+		_womenListTab = _actionBar.newTab().setText(R.string.card_back)
+				.setTabListener(_tabListener);
+		_tehilotTab = _actionBar.newTab().setText(R.string.card_insight)
+				.setTabListener(_tabListener);
+
+		_actionBar.addTab(_defaultTab);
+		_actionBar.addTab(_womenListTab);
+		_actionBar.addTab(_tehilotTab);
+	}
+	
+	private void SelectTab()
+	{
+		if (_actionBar.getSelectedTab() == _defaultTab)
+		{
+			_actionBar.selectTab(_womenListTab);
+			visibleTab = MainActivityTab.WOMENLIST;
+		}
+		else if(_actionBar.getSelectedTab() == _womenListTab)
+		{
+			_actionBar.selectTab(_tehilotTab);
+			visibleTab = MainActivityTab.TEHILOT;
+		}
+		else if(_actionBar.getSelectedTab() == _tehilotTab)
+		{
+			_actionBar.selectTab(_defaultTab);
+			visibleTab = MainActivityTab.DEFAULT;
+		}
+	}
+	
+	private void SelectBackwardsTab()
+	{
+		if (_actionBar.getSelectedTab() == _defaultTab)
+		{
+			_actionBar.selectTab(_tehilotTab);
+			visibleTab = MainActivityTab.TEHILOT;
+		}
+		else if(_actionBar.getSelectedTab() == _womenListTab)
+		{
+			_actionBar.selectTab(_defaultTab);
+			visibleTab = MainActivityTab.DEFAULT;
+		}
+		else if(_actionBar.getSelectedTab() == _tehilotTab)
+		{
+			_actionBar.selectTab(_womenListTab);
+			visibleTab = MainActivityTab.WOMENLIST;
+		}
+	}	
+
+	private class ProcessTask extends AsyncTask<Context, Void, Void>
+	{
+		protected Void doInBackground(Context... contexts)
+		{
+			DataBaseService.initDatabaseHelper(contexts[0]);
+
+			return null;
+		}
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
 		getMenuInflater().inflate(R.menu.main_menu, menu);
-		
+
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -97,10 +236,10 @@ public class MainActivity extends ActionBarActivity
 		// For Menu Overflow in API < 11
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
 		{
-			menu.removeItem(R.id.action_overflow);			
+			menu.removeItem(R.id.action_overflow);
 		}
-		
-		if(_isSearchable)
+
+		if (_isSearchable)
 			menu.findItem(R.id.action_open_search).setVisible(true);
 		else
 			menu.findItem(R.id.action_open_search).setVisible(false);
@@ -122,7 +261,7 @@ public class MainActivity extends ActionBarActivity
 
 		switch (item.getItemId())
 		{
-			// For Menu Overflow in API < 11
+		// For Menu Overflow in API < 11
 			case R.id.action_overflow:
 				openOptionsMenuDeferred();
 				return true;
@@ -142,23 +281,28 @@ public class MainActivity extends ActionBarActivity
 				return super.onOptionsItemSelected(item);
 		}
 	}
-	
+
 	@Override
 	public void onBackPressed()
 	{
 		FragmentManager fragmentManager = getSupportFragmentManager();
-        int stackSize = fragmentManager.getBackStackEntryCount();
-        if (stackSize == 0) 
-        {
-            finish();
-        }
-        else 
-        {
-        	// TODO: create backward navigation
-            /*String fragmentTag = fragmentManager.getBackStackEntryAt(stackSize - 1).getName();
-            fragmentManager.popBackStack(fragmentTag, FragmentManager.POP_BACK_STACK_INCLUSIVE);*/
-        	fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        }
+		int stackSize = fragmentManager.getBackStackEntryCount();
+		if (stackSize == 0)
+		{
+			finish();
+		}
+		else
+		{
+			// TODO: create backward navigation
+			/*
+			 * String fragmentTag =
+			 * fragmentManager.getBackStackEntryAt(stackSize - 1).getName();
+			 * fragmentManager.popBackStack(fragmentTag,
+			 * FragmentManager.POP_BACK_STACK_INCLUSIVE);
+			 */
+			fragmentManager.popBackStack(null,
+					FragmentManager.POP_BACK_STACK_INCLUSIVE);
+		}
 		super.onBackPressed();
 	}
 
@@ -397,7 +541,7 @@ public class MainActivity extends ActionBarActivity
 			{
 				replaceFragment(new MainWomenFragment(), position);
 				break;
-			}			
+			}
 		}
 
 		// update selected item and title, then close the drawer
@@ -495,26 +639,25 @@ public class MainActivity extends ActionBarActivity
 	public void openRandomInsight(View view)
 	{
 		Intent intent = new Intent(this, InsightActivity.class);
-		
-		int numberOfCards = getResources().getInteger(
-				R.integer.number_of_cards) - 1;
-		
+
+		int numberOfCards = getResources()
+				.getInteger(R.integer.number_of_cards) - 1;
+
 		int id = 0;
-		
+
 		do
 		{
 			id = getRandomId(numberOfCards);
-		}while(_recentInsights.contains(id));		
-		
+		} while (_recentInsights.contains(id));
+
 		intent.putExtra("EXTRA_SESSION_ID", id);
 		_recentInsights.add(id);
-		
-		if(_recentInsights.size() > 10)
-			_recentInsights.poll();
-		
+
+		if (_recentInsights.size() > 10) _recentInsights.poll();
+
 		startActivity(intent);
 	}
-	
+
 	private int getRandomId(int max)
 	{
 		// Random from 1 to max
@@ -524,22 +667,21 @@ public class MainActivity extends ActionBarActivity
 	}
 
 	public void openWomenList(View view)
-	{		
-		//replaceFragment(new WomenListFragment(), 0);	
+	{
+		// replaceFragment(new WomenListFragment(), 0);
 		Intent intent = new Intent(this, WomenListActivity.class);
 		startActivity(intent);
 	}
 
 	public void openTriviaPage(View view)
-	{		
-		//replaceFragment(new TriviaFragment(), 0);
+	{
+		// replaceFragment(new TriviaFragment(), 0);
 		Intent intent = new Intent(this, TriviaActivity.class);
 		startActivity(intent);
 	}
-	
+
 	public void openInsightList(View view)
-	{		
-		//replaceFragment(new WomenListFragment(), 0);	
+	{
 		Intent intent = new Intent(this, InsightListActivity.class);
 		startActivity(intent);
 	}
@@ -556,25 +698,33 @@ public class MainActivity extends ActionBarActivity
 
 	public void openMailPage(View view)
 	{
-		replaceFragment(new MainMailFragment(), 3);
+		String[] address =
+		{
+			"a@a.a"
+		}; // TODO: Replace with Bnotya's address
+		Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+		emailIntent.setType("plain/text");
+		emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, address);
+
+		startActivity(Intent.createChooser(emailIntent,
+				getString(R.string.chooser_title)));
 	}
 
 	public void replaceFragment(Fragment fragment, int position)
 	{
 		Bundle args = new Bundle();
-		
+
 		args.putInt(MainDefaultFragment.ARG_VIEW_NUMBER, position);
 		fragment.setArguments(args);
 
 		getSupportFragmentManager().beginTransaction()
 				.replace(R.id.content_frame, fragment)
 				.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-				.addToBackStack(null)
-				.commit();
-		
-		if(fragment instanceof WomenListFragment)		
-			_isSearchable = true;		
-		else		
+				.addToBackStack(null).commit();
+
+		if (fragment instanceof WomenListFragment)
+			_isSearchable = true;
+		else
 			_isSearchable = false;
 		// call onPrepareOptionsMenu
 		supportInvalidateOptionsMenu();
@@ -591,5 +741,118 @@ public class MainActivity extends ActionBarActivity
 			music.start();
 		else
 			music.release();
-	}	
+	}
+	
+	/* Touch Implementation */
+
+	@Override
+	public boolean onTouchEvent(MotionEvent event)
+	{
+		this._detector.onTouchEvent(event);
+		// Be sure to call the superclass implementation
+		return super.onTouchEvent(event);
+	}
+
+	@Override
+	public boolean onDown(MotionEvent event)
+	{
+		/*
+		 * Toast.makeText(getApplicationContext(), "onDown: " +
+		 * event.toString(), Toast.LENGTH_SHORT).show();
+		 */
+		return true;
+	}
+
+	@Override
+	public boolean onFling(MotionEvent event1, MotionEvent event2,
+			float velocityX, float velocityY)
+	{
+		/*
+		 * Toast.makeText(getApplicationContext(), "onFling: " +
+		 * event1.toString()+event2.toString(), Toast.LENGTH_SHORT).show();
+		 */
+		// Check if movement is left or right
+		float x1 = event1.getX();
+		float x2 = event2.getX();
+		
+		if(x1 - x2 > 0)			
+			SelectTab();
+		else			
+			SelectBackwardsTab();
+			
+		return true;
+	}
+
+	@Override
+	public void onLongPress(MotionEvent event)
+	{
+		/*
+		 * Toast.makeText(getApplicationContext(), "onLongPress: " +
+		 * event.toString(), Toast.LENGTH_SHORT).show();
+		 */
+	}
+
+	@Override
+	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
+			float distanceY)
+	{
+		/*
+		 * Toast.makeText(getApplicationContext(), "onScroll: " +
+		 * e1.toString()+e2.toString(), Toast.LENGTH_SHORT).show();
+		 */
+		// SelectTab();
+		return true;
+	}
+
+	@Override
+	public void onShowPress(MotionEvent event)
+	{
+		/*
+		 * Toast.makeText(getApplicationContext(), "onShowPress: " +
+		 * event.toString(), Toast.LENGTH_SHORT).show();
+		 */
+	}
+
+	@Override
+	public boolean onSingleTapUp(MotionEvent event)
+	{
+		/*
+		 * Toast.makeText(getApplicationContext(), "onSingleTapUp: " +
+		 * event.toString(), Toast.LENGTH_SHORT).show();
+		 */
+		return true;
+	}
+	
+	@Override
+	public boolean onDoubleTap(MotionEvent event)
+	{
+		/*
+		 * Toast.makeText(getApplicationContext(), "onDoubleTap: " +
+		 * event.toString(), Toast.LENGTH_SHORT).show();
+		 */
+		SelectTab();
+		return true;
+	}
+
+	@Override
+	public boolean onDoubleTapEvent(MotionEvent event)
+	{
+		/*
+		 * Toast.makeText(getApplicationContext(), "onDoubleTapEvent: " +
+		 * event.toString(), Toast.LENGTH_SHORT).show();
+		 */
+		return true;
+	}
+
+	@Override
+	public boolean onSingleTapConfirmed(MotionEvent event)
+	{
+		/*
+		 * Toast.makeText(getApplicationContext(), "onSingleTapConfirmed: " +
+		 * event.toString(), Toast.LENGTH_SHORT).show();
+		 */
+		return true;
+	}
+
+	/* End of Touch Implementation */	
 }

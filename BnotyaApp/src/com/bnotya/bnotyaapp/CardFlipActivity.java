@@ -94,10 +94,19 @@ public class CardFlipActivity extends ActionBarActivity implements
 			@Override
 			public void onTabSelected(Tab tab, FragmentTransaction arg1)
 			{
-				if (_actionBar.getSelectedTab() == _cardFrontTab && visibleSide != CardPart.FRONT
-					|| _actionBar.getSelectedTab() == _cardBackTab	&& visibleSide != CardPart.BACK
-					|| _actionBar.getSelectedTab() == _cardInsightTab	&& visibleSide != CardPart.INSIGHT)
+				if (_actionBar.getSelectedTab() == _cardFrontTab && visibleSide != CardPart.FRONT)
 				{
+					visibleSide = CardPart.FRONT;
+					flipCard();
+				}
+				else if(_actionBar.getSelectedTab() == _cardBackTab	&& visibleSide != CardPart.BACK)
+				{
+					visibleSide = CardPart.BACK;
+					flipCard();
+				}					
+				else if( _actionBar.getSelectedTab() == _cardInsightTab	&& visibleSide != CardPart.INSIGHT)
+				{
+					visibleSide = CardPart.INSIGHT;
 					flipCard();
 				}
 			}

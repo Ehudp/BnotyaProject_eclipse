@@ -1,6 +1,7 @@
 package com.bnotya.bnotyaapp;
 
 import java.util.List;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -13,24 +14,28 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
+
 import com.bnotya.bnotyaapp.adapters.CustomArrayAdapter;
 import com.bnotya.bnotyaapp.helpers.About;
 import com.bnotya.bnotyaapp.models.Insight;
 import com.bnotya.bnotyaapp.models.ListItem;
 import com.bnotya.bnotyaapp.services.DataBaseService;
+import com.mobeta.android.dslv.DragSortController;
+import com.mobeta.android.dslv.DragSortListView;
 
 public class InsightListActivity extends ActionBarActivity
 {
-	private ListView _listView;
-
+	private DragSortListView _listView;
+	private CustomArrayAdapter _adapter;
+	private Insight _removedInsight;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		initView();
-	}
+	}	
 
 	@Override
 	public void onConfigurationChanged(Configuration newConfig)
@@ -68,12 +73,14 @@ public class InsightListActivity extends ActionBarActivity
 		switch (item.getItemId())
 		{
 			case android.R.id.home:
-				NavUtils.navigateUpTo(this,
-						new Intent(this, MainActivity.class));	
-	            return true;
-			case R.id.action_home:
+				_removedInsight = null;
 				NavUtils.navigateUpTo(this,
 						new Intent(this, MainActivity.class));				
+	            return true;
+			case R.id.action_home:
+				_removedInsight = null;
+				NavUtils.navigateUpTo(this,
+						new Intent(this, MainActivity.class));					
 	            return true;				
 			case R.id.action_settings:
 				startActivity(new Intent(this, Preferences.class));
@@ -85,11 +92,34 @@ public class InsightListActivity extends ActionBarActivity
 				onSearchRequested();
 				return true;
 			case R.id.action_exit:
+				_removedInsight = null;
 				exitApplication();
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
 		}
+	}
+
+	private DragSortListView.RemoveListener onRemove = new DragSortListView.RemoveListener()
+	{
+	    @Override
+	    public void remove(int which)
+	    {	    	
+	    	List<Insight> insights = DataBaseService.dbHelper.getFavoriteInsights(getBaseContext());
+	    	_removedInsight = insights.get(which);
+	    	_removedInsight.setIsFavorite(false);
+	    	DataBaseService.dbHelper.updateInsight(_removedInsight);	    	
+	    }
+	};
+	
+	public void undoInsightRemoval(View view)
+	{
+		if(_removedInsight != null)
+		{
+			_removedInsight.setIsFavorite(true);
+	    	DataBaseService.dbHelper.updateInsight(_removedInsight);
+	    	initListView();
+		}		
 	}
 	
 	private void exitApplication()
@@ -116,37 +146,55 @@ public class InsightListActivity extends ActionBarActivity
 			getSupportActionBar().setHomeButtonEnabled(true);
 		}
 
+		initListView();
+	}
+	
+	private void initListView()
+	{
 		// Get ListView object from xml
-		_listView = (ListView) findViewById(R.id.insightlist);
-		
-		final List<Insight> insights = DataBaseService.dbHelper.getFavoriteInsights(this);
-		ListItem[] listDataHeaders = fillData(R.array.women_list_icons, insights);
+				_listView = (DragSortListView) findViewById(R.id.insightlist);
+				
+				final List<Insight> insights = DataBaseService.dbHelper.getFavoriteInsights(this);
+				ListItem[] listDataHeaders = fillData(R.array.women_list_icons, insights);
 
-		// Define a new Adapter
-		// First parameter - Context
-		// Second parameter - Layout for the row
-		// Third parameter - ID of the TextView to which the data is written
-		// Forth - the Array of data
-		CustomArrayAdapter adapter = new CustomArrayAdapter(this,
-				R.layout.insight_list_item, listDataHeaders);		
+				// Define a new Adapter
+				// First parameter - Context
+				// Second parameter - Layout for the row
+				// Third parameter - ID of the TextView to which the data is written
+				// Forth - the Array of data
+				_adapter = new CustomArrayAdapter(this,
+						R.layout.insight_list_item, listDataHeaders);		
 
-		// Assign adapter to ListView
-		_listView.setAdapter(adapter);
+				// Assign adapter to ListView
+				_listView.setAdapter(_adapter);		
+				_listView.setRemoveListener(onRemove);		
+				
+				DragSortController controller = new DragSortController(_listView);
+			    controller.setDragHandleId(R.id.title);
+			            
+			    controller.setRemoveEnabled(true);
+			    controller.setSortEnabled(false);
+			    controller.setDragInitMode(1);
+			    controller.setRemoveMode(DragSortController.FLING_REMOVE | DragSortController.ON_DRAG);
 
-		// ListView Item Click Listener
-		_listView.setOnItemClickListener(new OnItemClickListener()
-		{
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id)
-			{
-				Intent intent = new Intent(getBaseContext(),
-						InsightActivity.class);
-				intent.putExtra("EXTRA_SESSION_ID", insights.get(position).getId() - 1);
-				intent.putExtra("EXTRA_IS_FROM_LIST", true);
-				startActivity(intent);
-			}
-		});
+			    _listView.setFloatViewManager(controller);
+			    _listView.setOnTouchListener(controller);
+			    _listView.setDragEnabled(true);
+
+				// ListView Item Click Listener
+				_listView.setOnItemClickListener(new OnItemClickListener()
+				{
+					@Override
+					public void onItemClick(AdapterView<?> parent, View view,
+							int position, long id)
+					{
+						Intent intent = new Intent(getBaseContext(),
+								InsightActivity.class);
+						intent.putExtra("EXTRA_SESSION_ID", insights.get(position).getId() - 1);
+						intent.putExtra("EXTRA_IS_FROM_LIST", true);
+						startActivity(intent);
+					}
+				});
 	}
 	
 	private ListItem[] fillData(int iconsID, List<Insight> insights)

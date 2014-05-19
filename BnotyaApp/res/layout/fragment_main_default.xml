@@ -17,49 +17,51 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:text="@string/about_main_menu"
-            android:layout_margin="8dp" />
+            android:text="@string/about_main_menu"            
+	        android:layout_marginLeft="8dp"
+	        android:layout_marginRight="8dp"
+	        android:layout_marginTop="8dp" />
 
         <Button
-            android:id="@+id/btnTehilotMenu"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:id="@+id/btnTehilotMenu"            
             android:layout_below="@id/tvMainText"
             android:onClick="openTehilotPage"
-            android:text="@string/open_tehilot"
-            android:layout_margin="8dp" />
+            android:text="@string/open_tehilot" 
+	        android:background="@drawable/blue_button_selector" 
+        	style="@style/ButtonText" />
 
         <Button
-            android:id="@+id/btnWomenMenu"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:id="@+id/btnWomenMenu"            
             android:layout_below="@id/btnTehilotMenu"
             android:onClick="openWomenPage"
             android:text="@string/open_women_menu"
-            android:layout_margin="8dp" />
+	        android:background="@drawable/blue_button_selector" 
+        	style="@style/ButtonText"  />
 
         <ImageButton
             android:id="@+id/btnEMail"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginLeft="16dp"  
-            android:layout_marginBottom="8dp" 
+            android:layout_alignParentBottom="true" 
+            android:layout_marginLeft="18dp"  
+            android:layout_marginBottom="10dp"           
             android:contentDescription="@string/description_card"
-            android:scaleType="fitXY"
+            android:scaleType="centerCrop"
             android:src="@drawable/ic_launcher"
-            android:onClick="openMailPage" />
+            android:onClick="openMailPage"
+            android:background="@drawable/blue_button_selector" />
 
         <ImageButton
             android:id="@+id/btnFacebook"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_alignParentBottom="true"
-            android:layout_marginLeft="16dp"  
-            android:layout_marginBottom="8dp"           
+            android:layout_marginLeft="8dp"  
+            android:layout_marginBottom="10dp"           
             android:layout_toRightOf="@id/btnEMail"
             android:contentDescription="@string/description_card"
-            android:scaleType="fitXY"
-            android:src="@drawable/ic_launcher" />    
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_launcher"
+            android:background="@drawable/blue_button_selector" />    
 
 </RelativeLayout>
