@@ -1,8 +1,5 @@
 package com.bnotya.bnotyaapp;
 
-import com.bnotya.bnotyaapp.helpers.About;
-import com.bnotya.bnotyaapp.models.Insight;
-import com.bnotya.bnotyaapp.services.DataBaseService;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -13,6 +10,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import com.bnotya.bnotyaapp.helpers.About;
+import com.bnotya.bnotyaapp.models.Insight;
+import com.bnotya.bnotyaapp.services.DataBaseService;
 
 public class InsightActivity extends ActionBarActivity implements OnClickListener
 {
@@ -58,7 +58,7 @@ public class InsightActivity extends ActionBarActivity implements OnClickListene
 		switch (item.getItemId())
 		{
 			case android.R.id.home:
-				navigateToParent();
+				NavUtils.navigateUpTo(this, new Intent(this, InsightListActivity.class));
 				return true;
 			case R.id.action_home:
 				NavUtils.navigateUpTo(this, new Intent(this, MainActivity.class));
@@ -74,18 +74,6 @@ public class InsightActivity extends ActionBarActivity implements OnClickListene
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
-		}
-	}
-	
-	private void navigateToParent()
-	{
-		if(getIntent().getBooleanExtra("EXTRA_IS_FROM_LIST", false))
-		{
-			NavUtils.navigateUpTo(this, new Intent(this, InsightListActivity.class));
-		}
-		else
-		{		
-			NavUtils.navigateUpTo(this, new Intent(this, MainActivity.class));
 		}
 	}
 	

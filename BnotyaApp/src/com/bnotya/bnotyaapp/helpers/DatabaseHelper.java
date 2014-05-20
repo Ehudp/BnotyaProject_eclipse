@@ -1,19 +1,20 @@
 package com.bnotya.bnotyaapp.helpers;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import com.bnotya.bnotyaapp.models.Answer;
-import com.bnotya.bnotyaapp.models.Insight;
-import com.bnotya.bnotyaapp.models.Question;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import com.bnotya.bnotyaapp.models.Answer;
+import com.bnotya.bnotyaapp.models.Insight;
+import com.bnotya.bnotyaapp.models.Question;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 public class DatabaseHelper extends SQLiteOpenHelper
 {

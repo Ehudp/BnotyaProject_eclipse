@@ -1,15 +1,12 @@
 package com.bnotya.bnotyaapp;
 
-import com.bnotya.bnotyaapp.fragments.CardFragment;
-import com.bnotya.bnotyaapp.helpers.About;
-import com.bnotya.bnotyaapp.models.Card;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.TaskStackBuilder;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NavUtils;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBar.Tab;
@@ -20,6 +17,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import com.bnotya.bnotyaapp.fragments.CardFragment;
+import com.bnotya.bnotyaapp.helpers.About;
+import com.bnotya.bnotyaapp.models.Card;
 
 public class CardFlipActivity extends ActionBarActivity implements
 		OnGestureListener, OnDoubleTapListener

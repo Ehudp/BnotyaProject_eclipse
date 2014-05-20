@@ -1,8 +1,8 @@
 package com.bnotya.bnotyaapp.models;
 
-import com.bnotya.bnotyaapp.R;
 import android.content.Intent;
 import android.content.res.Resources;
+import com.bnotya.bnotyaapp.R;
 
 public class Insight
 {

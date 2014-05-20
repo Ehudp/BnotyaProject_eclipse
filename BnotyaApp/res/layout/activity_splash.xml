@@ -9,7 +9,8 @@
          android:layout_height="wrap_content"
          style="@android:style/Widget.ProgressBar.Large"
          android:layout_gravity="center"
-         android:layout_marginTop="100dp" />     
+         android:layout_marginTop="100dp" 
+         android:background="@drawable/progress_background"/>     
     
    </LinearLayout> 
 

@@ -38,11 +38,23 @@
         dslv:use_default_controller="true" />
     
     <Button
+        android:id="@+id/btnUndo"
         android:layout_alignParentBottom="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="undoInsightRemoval"
             android:text="@string/undo"            
+	        android:layout_margin="8dp"
+	        android:background="@drawable/blue_button_selector" 
+        	style="@style/ButtonText"  />
+    
+    <Button
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@id/btnUndo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="openRandomInsight"
+            android:text="@string/open_random_insight"            
 	        android:layout_margin="8dp"
 	        android:background="@drawable/blue_button_selector" 
         	style="@style/ButtonText"  />

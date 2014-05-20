@@ -1,6 +1,5 @@
 package com.bnotya.bnotyaapp.fragments;
 
-import java.util.List;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -8,13 +7,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.RadioGroup.OnCheckedChangeListener;
 import com.bnotya.bnotyaapp.R;
 import com.bnotya.bnotyaapp.helpers.DatabaseHelper;
 import com.bnotya.bnotyaapp.models.Answer;
 import com.bnotya.bnotyaapp.models.Question;
+
+import java.util.List;
 
 public class TriviaFragment extends Fragment implements OnCheckedChangeListener
 {

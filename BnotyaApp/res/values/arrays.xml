@@ -18,13 +18,11 @@
 
     <!-- Navigation drawer -->
     <string-array name="views_array">
-        <item>Default</item>        
+        <item>Home</item>        
         <item>Tehilot</item>
         <item>Women</item>          
     </string-array>
     <string-array name="women_views_array">        
-        <item>Show Random Insight</item>
-        <item>Open Women List</item>
         <item>Open Trivia Page</item> 
         <item>Open Insight List</item>              
     </string-array>

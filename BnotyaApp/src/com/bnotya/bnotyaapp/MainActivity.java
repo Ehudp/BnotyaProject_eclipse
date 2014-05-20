@@ -1,61 +1,50 @@
 package com.bnotya.bnotyaapp;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-import com.bnotya.bnotyaapp.adapters.ExpandableListAdapter;
-import com.bnotya.bnotyaapp.fragments.MainDefaultFragment;
-import com.bnotya.bnotyaapp.fragments.MainTehilotFragment;
-import com.bnotya.bnotyaapp.fragments.MainWomenFragment;
-import com.bnotya.bnotyaapp.fragments.TriviaFragment;
-import com.bnotya.bnotyaapp.fragments.WomenListFragment;
-import com.bnotya.bnotyaapp.helpers.About;
-import com.bnotya.bnotyaapp.models.NavDrawerItem;
-import com.bnotya.bnotyaapp.services.DataBaseService;
-import android.media.MediaPlayer;
-import android.os.AsyncTask;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.preference.PreferenceManager;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar.Tab;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.GestureDetector.OnDoubleTapListener;
-import android.view.GestureDetector.OnGestureListener;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
+import android.media.MediaPlayer;
+import android.os.*;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBar.Tab;
+import android.support.v7.app.ActionBarActivity;
+import android.view.GestureDetector.OnDoubleTapListener;
+import android.view.GestureDetector.OnGestureListener;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnGroupCollapseListener;
 import android.widget.ExpandableListView.OnGroupExpandListener;
 import android.widget.Toast;
+import com.bnotya.bnotyaapp.adapters.ExpandableListAdapter;
+import com.bnotya.bnotyaapp.fragments.MainDefaultFragment;
+import com.bnotya.bnotyaapp.fragments.MainTehilotFragment;
+import com.bnotya.bnotyaapp.fragments.WomenListFragment;
+import com.bnotya.bnotyaapp.helpers.About;
+import com.bnotya.bnotyaapp.models.NavDrawerItem;
+import com.bnotya.bnotyaapp.services.DataBaseService;
+import java.util.*;
 
 public class MainActivity extends ActionBarActivity implements
-	OnGestureListener, OnDoubleTapListener
+		OnGestureListener, OnDoubleTapListener
 {
-	public enum MainActivityTab {
-		   DEFAULT,
-		   WOMENLIST,
-		   TEHILOT
-		}
+	public enum MainActivityTab
+	{
+		DEFAULT, WOMENLIST, TEHILOT
+	}
+
 	private ExpandableListView _drawerList;
 	private List<NavDrawerItem> _listDataHeaders;
 	private HashMap<String, List<NavDrawerItem>> _listDataChildren;
@@ -63,7 +52,6 @@ public class MainActivity extends ActionBarActivity implements
 	private ActionBarDrawerToggle _drawerToggle;
 	private CharSequence _drawerTitle;
 	private CharSequence _title;
-	private boolean _isSearchable;
 	// Tabs
 	public MainActivityTab visibleTab;
 	private GestureDetectorCompat _detector;
@@ -71,10 +59,9 @@ public class MainActivity extends ActionBarActivity implements
 	private ActionBar.TabListener _tabListener;
 	private Tab _defaultTab;
 	private Tab _womenListTab;
-	private Tab _tehilotTab;	
+	private Tab _tehilotTab;
 	// For Menu Overflow in API < 11
 	private Handler handler = new Handler(Looper.getMainLooper());
-	private Queue<Integer> _recentInsights = new LinkedList<Integer>();
 
 	public static MediaPlayer music;
 
@@ -91,8 +78,6 @@ public class MainActivity extends ActionBarActivity implements
 			return;
 		}
 
-		_isSearchable = false;
-
 		initDrawerList();
 		_title = _drawerTitle = getTitle();
 		initDrawerLayout(savedInstanceState);
@@ -100,25 +85,26 @@ public class MainActivity extends ActionBarActivity implements
 		initMusic();
 
 		new ProcessTask().execute(this);
-		
+
 		// Tabs
-		
+
 		visibleTab = MainActivityTab.DEFAULT;
-		InitTabs();		
+		InitTabs();
 
 		if (savedInstanceState == null)
 		{
-			// If there is no saved instance state, add a fragment to this activity.
+			// If there is no saved instance state, add a fragment to this
+			// activity.
 			// If there is saved instance state,
-			// this fragment will have already been added to the activity.			
+			// this fragment will have already been added to the activity.
 			replaceFragment(new MainDefaultFragment(), 0);
 		}
 
 		// Detect touched area
-		_detector = new GestureDetectorCompat(this, this);	
-		_detector.setOnDoubleTapListener(this);	
+		_detector = new GestureDetectorCompat(this, this);
+		_detector.setOnDoubleTapListener(this);
 	}
-	
+
 	private void InitTabs()
 	{
 		_actionBar = getSupportActionBar();
@@ -136,22 +122,25 @@ public class MainActivity extends ActionBarActivity implements
 			@Override
 			public void onTabSelected(Tab tab, FragmentTransaction arg1)
 			{
-				if (_actionBar.getSelectedTab() == _defaultTab && visibleTab != MainActivityTab.DEFAULT)
+				if (_actionBar.getSelectedTab() == _defaultTab
+						&& visibleTab != MainActivityTab.DEFAULT)
 				{
 					visibleTab = MainActivityTab.DEFAULT;
 					replaceFragment(new MainDefaultFragment(), 0);
 				}
-				else if(_actionBar.getSelectedTab() == _womenListTab && visibleTab != MainActivityTab.WOMENLIST)
+				else if (_actionBar.getSelectedTab() == _womenListTab
+						&& visibleTab != MainActivityTab.WOMENLIST)
 				{
 					visibleTab = MainActivityTab.WOMENLIST;
 					replaceFragment(new WomenListFragment(), 0);
 				}
-				else if(_actionBar.getSelectedTab() == _tehilotTab && visibleTab != MainActivityTab.TEHILOT)					
+				else if (_actionBar.getSelectedTab() == _tehilotTab
+						&& visibleTab != MainActivityTab.TEHILOT)
 				{
 					visibleTab = MainActivityTab.TEHILOT;
 					replaceFragment(new MainTehilotFragment(), 1);
 				}
-			}			
+			}
 
 			@Override
 			public void onTabUnselected(Tab tab, FragmentTransaction arg1)
@@ -161,18 +150,21 @@ public class MainActivity extends ActionBarActivity implements
 		};
 
 		// Add tabs, specifying the tab's text and TabListener
-		_defaultTab = _actionBar.newTab().setText(R.string.card_front)
+		_defaultTab = _actionBar.newTab()
+				.setText(getResources().getStringArray(R.array.views_array)[0])
 				.setTabListener(_tabListener);
-		_womenListTab = _actionBar.newTab().setText(R.string.card_back)
+		_womenListTab = _actionBar.newTab()
+				.setText(getResources().getStringArray(R.array.views_array)[2])
 				.setTabListener(_tabListener);
-		_tehilotTab = _actionBar.newTab().setText(R.string.card_insight)
+		_tehilotTab = _actionBar.newTab()
+				.setText(getResources().getStringArray(R.array.views_array)[1])
 				.setTabListener(_tabListener);
 
 		_actionBar.addTab(_defaultTab);
 		_actionBar.addTab(_womenListTab);
 		_actionBar.addTab(_tehilotTab);
 	}
-	
+
 	private void SelectTab()
 	{
 		if (_actionBar.getSelectedTab() == _defaultTab)
@@ -180,18 +172,18 @@ public class MainActivity extends ActionBarActivity implements
 			_actionBar.selectTab(_womenListTab);
 			visibleTab = MainActivityTab.WOMENLIST;
 		}
-		else if(_actionBar.getSelectedTab() == _womenListTab)
+		else if (_actionBar.getSelectedTab() == _womenListTab)
 		{
 			_actionBar.selectTab(_tehilotTab);
 			visibleTab = MainActivityTab.TEHILOT;
 		}
-		else if(_actionBar.getSelectedTab() == _tehilotTab)
+		else if (_actionBar.getSelectedTab() == _tehilotTab)
 		{
 			_actionBar.selectTab(_defaultTab);
 			visibleTab = MainActivityTab.DEFAULT;
 		}
 	}
-	
+
 	private void SelectBackwardsTab()
 	{
 		if (_actionBar.getSelectedTab() == _defaultTab)
@@ -199,17 +191,17 @@ public class MainActivity extends ActionBarActivity implements
 			_actionBar.selectTab(_tehilotTab);
 			visibleTab = MainActivityTab.TEHILOT;
 		}
-		else if(_actionBar.getSelectedTab() == _womenListTab)
+		else if (_actionBar.getSelectedTab() == _womenListTab)
 		{
 			_actionBar.selectTab(_defaultTab);
 			visibleTab = MainActivityTab.DEFAULT;
 		}
-		else if(_actionBar.getSelectedTab() == _tehilotTab)
+		else if (_actionBar.getSelectedTab() == _tehilotTab)
 		{
 			_actionBar.selectTab(_womenListTab);
 			visibleTab = MainActivityTab.WOMENLIST;
 		}
-	}	
+	}
 
 	private class ProcessTask extends AsyncTask<Context, Void, Void>
 	{
@@ -239,11 +231,6 @@ public class MainActivity extends ActionBarActivity implements
 			menu.removeItem(R.id.action_overflow);
 		}
 
-		if (_isSearchable)
-			menu.findItem(R.id.action_open_search).setVisible(true);
-		else
-			menu.findItem(R.id.action_open_search).setVisible(false);
-
 		// If the nav drawer is open, hide action items
 		boolean drawerOpen = _drawerLayout.isDrawerOpen(_drawerList);
 		menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
@@ -271,39 +258,12 @@ public class MainActivity extends ActionBarActivity implements
 			case R.id.action_about:
 				About.showAboutDialog(this);
 				return true;
-			case R.id.action_open_search:
-				onSearchRequested();
-				return true;
 			case R.id.action_exit:
 				finish();
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
 		}
-	}
-
-	@Override
-	public void onBackPressed()
-	{
-		FragmentManager fragmentManager = getSupportFragmentManager();
-		int stackSize = fragmentManager.getBackStackEntryCount();
-		if (stackSize == 0)
-		{
-			finish();
-		}
-		else
-		{
-			// TODO: create backward navigation
-			/*
-			 * String fragmentTag =
-			 * fragmentManager.getBackStackEntryAt(stackSize - 1).getName();
-			 * fragmentManager.popBackStack(fragmentTag,
-			 * FragmentManager.POP_BACK_STACK_INCLUSIVE);
-			 */
-			fragmentManager.popBackStack(null,
-					FragmentManager.POP_BACK_STACK_INCLUSIVE);
-		}
-		super.onBackPressed();
 	}
 
 	// For Menu Overflow in API < 11
@@ -530,16 +490,21 @@ public class MainActivity extends ActionBarActivity implements
 			case 0:
 			{
 				replaceFragment(new MainDefaultFragment(), position);
+				if (_actionBar != null)
+					_actionBar.selectTab(_defaultTab);
+				visibleTab = MainActivityTab.DEFAULT;
 				break;
 			}
 			case 1:
 			{
 				replaceFragment(new MainTehilotFragment(), position);
+				if (_actionBar != null)
+					_actionBar.selectTab(_tehilotTab);
+				visibleTab = MainActivityTab.TEHILOT;
 				break;
 			}
 			case 2:
 			{
-				replaceFragment(new MainWomenFragment(), position);
 				break;
 			}
 		}
@@ -570,20 +535,10 @@ public class MainActivity extends ActionBarActivity implements
 				{
 					case 0:
 					{
-						openRandomInsight(null);
-						break;
-					}
-					case 1:
-					{
-						openWomenList(null);
-						break;
-					}
-					case 2:
-					{
 						openTriviaPage(null);
 						break;
 					}
-					case 3:
+					case 1:
 					{
 						openInsightList(null);
 						break;
@@ -636,43 +591,6 @@ public class MainActivity extends ActionBarActivity implements
 		_drawerToggle.onConfigurationChanged(newConfig);
 	}
 
-	public void openRandomInsight(View view)
-	{
-		Intent intent = new Intent(this, InsightActivity.class);
-
-		int numberOfCards = getResources()
-				.getInteger(R.integer.number_of_cards) - 1;
-
-		int id = 0;
-
-		do
-		{
-			id = getRandomId(numberOfCards);
-		} while (_recentInsights.contains(id));
-
-		intent.putExtra("EXTRA_SESSION_ID", id);
-		_recentInsights.add(id);
-
-		if (_recentInsights.size() > 10) _recentInsights.poll();
-
-		startActivity(intent);
-	}
-
-	private int getRandomId(int max)
-	{
-		// Random from 1 to max
-		int result = 0;
-		result += (Math.random() * max);
-		return result;
-	}
-
-	public void openWomenList(View view)
-	{
-		// replaceFragment(new WomenListFragment(), 0);
-		Intent intent = new Intent(this, WomenListActivity.class);
-		startActivity(intent);
-	}
-
 	public void openTriviaPage(View view)
 	{
 		// replaceFragment(new TriviaFragment(), 0);
@@ -684,16 +602,6 @@ public class MainActivity extends ActionBarActivity implements
 	{
 		Intent intent = new Intent(this, InsightListActivity.class);
 		startActivity(intent);
-	}
-
-	public void openTehilotPage(View view)
-	{
-		replaceFragment(new MainTehilotFragment(), 1);
-	}
-
-	public void openWomenPage(View view)
-	{
-		replaceFragment(new MainWomenFragment(), 2);
 	}
 
 	public void openMailPage(View view)
@@ -722,10 +630,6 @@ public class MainActivity extends ActionBarActivity implements
 				.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
 				.addToBackStack(null).commit();
 
-		if (fragment instanceof WomenListFragment)
-			_isSearchable = true;
-		else
-			_isSearchable = false;
 		// call onPrepareOptionsMenu
 		supportInvalidateOptionsMenu();
 	}
@@ -742,7 +646,7 @@ public class MainActivity extends ActionBarActivity implements
 		else
 			music.release();
 	}
-	
+
 	/* Touch Implementation */
 
 	@Override
@@ -756,10 +660,6 @@ public class MainActivity extends ActionBarActivity implements
 	@Override
 	public boolean onDown(MotionEvent event)
 	{
-		/*
-		 * Toast.makeText(getApplicationContext(), "onDown: " +
-		 * event.toString(), Toast.LENGTH_SHORT).show();
-		 */
 		return true;
 	}
 
@@ -767,69 +667,46 @@ public class MainActivity extends ActionBarActivity implements
 	public boolean onFling(MotionEvent event1, MotionEvent event2,
 			float velocityX, float velocityY)
 	{
-		/*
-		 * Toast.makeText(getApplicationContext(), "onFling: " +
-		 * event1.toString()+event2.toString(), Toast.LENGTH_SHORT).show();
-		 */
 		// Check if movement is left or right
 		float x1 = event1.getX();
 		float x2 = event2.getX();
-		
-		if(x1 - x2 > 0)			
+
+		if (x1 - x2 > 0)
 			SelectTab();
-		else			
+		else
 			SelectBackwardsTab();
-			
+
 		return true;
 	}
 
 	@Override
 	public void onLongPress(MotionEvent event)
 	{
-		/*
-		 * Toast.makeText(getApplicationContext(), "onLongPress: " +
-		 * event.toString(), Toast.LENGTH_SHORT).show();
-		 */
+
 	}
 
 	@Override
 	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
 			float distanceY)
 	{
-		/*
-		 * Toast.makeText(getApplicationContext(), "onScroll: " +
-		 * e1.toString()+e2.toString(), Toast.LENGTH_SHORT).show();
-		 */
-		// SelectTab();
 		return true;
 	}
 
 	@Override
 	public void onShowPress(MotionEvent event)
 	{
-		/*
-		 * Toast.makeText(getApplicationContext(), "onShowPress: " +
-		 * event.toString(), Toast.LENGTH_SHORT).show();
-		 */
+
 	}
 
 	@Override
 	public boolean onSingleTapUp(MotionEvent event)
 	{
-		/*
-		 * Toast.makeText(getApplicationContext(), "onSingleTapUp: " +
-		 * event.toString(), Toast.LENGTH_SHORT).show();
-		 */
 		return true;
 	}
-	
+
 	@Override
 	public boolean onDoubleTap(MotionEvent event)
 	{
-		/*
-		 * Toast.makeText(getApplicationContext(), "onDoubleTap: " +
-		 * event.toString(), Toast.LENGTH_SHORT).show();
-		 */
 		SelectTab();
 		return true;
 	}
@@ -837,22 +714,14 @@ public class MainActivity extends ActionBarActivity implements
 	@Override
 	public boolean onDoubleTapEvent(MotionEvent event)
 	{
-		/*
-		 * Toast.makeText(getApplicationContext(), "onDoubleTapEvent: " +
-		 * event.toString(), Toast.LENGTH_SHORT).show();
-		 */
 		return true;
 	}
 
 	@Override
 	public boolean onSingleTapConfirmed(MotionEvent event)
 	{
-		/*
-		 * Toast.makeText(getApplicationContext(), "onSingleTapConfirmed: " +
-		 * event.toString(), Toast.LENGTH_SHORT).show();
-		 */
 		return true;
 	}
 
-	/* End of Touch Implementation */	
+	/* End of Touch Implementation */
 }

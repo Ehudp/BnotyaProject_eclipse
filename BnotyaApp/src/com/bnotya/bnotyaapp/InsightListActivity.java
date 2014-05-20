@@ -1,7 +1,5 @@
 package com.bnotya.bnotyaapp;
 
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -15,14 +13,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-
 import com.bnotya.bnotyaapp.adapters.CustomArrayAdapter;
 import com.bnotya.bnotyaapp.helpers.About;
 import com.bnotya.bnotyaapp.models.Insight;
 import com.bnotya.bnotyaapp.models.ListItem;
 import com.bnotya.bnotyaapp.services.DataBaseService;
+import com.bnotya.bnotyaapp.services.RecentInsightsContainer;
 import com.mobeta.android.dslv.DragSortController;
 import com.mobeta.android.dslv.DragSortListView;
+import java.util.ArrayList;
+import java.util.List;
 
 public class InsightListActivity extends ActionBarActivity
 {
@@ -48,21 +48,8 @@ public class InsightListActivity extends ActionBarActivity
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.search_menu, menu);
+		getMenuInflater().inflate(R.menu.page_menu, menu);	
 		
-		// TODO: fix this
-		/*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) 
-		{
-			// Associate searchable configuration with the SearchView
-	        SearchManager searchManager =
-	                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-	        SearchView searchView =
-	                (SearchView) menu.findItem(R.id.action_open_search).getActionView();
-	        searchView.setSearchableInfo(
-	                searchManager.getSearchableInfo(getComponentName()));
-	        searchView.setIconifiedByDefault(false);
-	    }*/
-
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -87,10 +74,7 @@ public class InsightListActivity extends ActionBarActivity
 				return true;
 			case R.id.action_about:
 				About.showAboutDialog(this);
-				return true;
-			case R.id.action_open_search:
-				onSearchRequested();
-				return true;
+				return true;			
 			case R.id.action_exit:
 				_removedInsight = null;
 				exitApplication();
@@ -120,6 +104,29 @@ public class InsightListActivity extends ActionBarActivity
 	    	DataBaseService.dbHelper.updateInsight(_removedInsight);
 	    	initListView();
 		}		
+	}
+	
+	public void openRandomInsight(View view)
+	{
+		Intent intent = new Intent(this, InsightActivity.class);
+
+		int numberOfCards = getResources()
+				.getInteger(R.integer.number_of_cards) - 1;
+
+		int id = 0;
+
+		do
+		{
+			id = RecentInsightsContainer.getRandomId(numberOfCards);
+		} while (RecentInsightsContainer.recentInsights.contains(id));
+
+		intent.putExtra("EXTRA_SESSION_ID", id);
+		RecentInsightsContainer.recentInsights.add(id);
+
+		if (RecentInsightsContainer.recentInsights.size() > 10) 
+			RecentInsightsContainer.recentInsights.poll();
+
+		startActivity(intent);
 	}
 	
 	private void exitApplication()
@@ -155,13 +162,9 @@ public class InsightListActivity extends ActionBarActivity
 				_listView = (DragSortListView) findViewById(R.id.insightlist);
 				
 				final List<Insight> insights = DataBaseService.dbHelper.getFavoriteInsights(this);
-				ListItem[] listDataHeaders = fillData(R.array.women_list_icons, insights);
+				List<ListItem> listDataHeaders = fillData(R.array.women_list_icons, insights);
 
-				// Define a new Adapter
-				// First parameter - Context
-				// Second parameter - Layout for the row
-				// Third parameter - ID of the TextView to which the data is written
-				// Forth - the Array of data
+				// Define a new Adapter				
 				_adapter = new CustomArrayAdapter(this,
 						R.layout.insight_list_item, listDataHeaders);		
 
@@ -197,19 +200,19 @@ public class InsightListActivity extends ActionBarActivity
 				});
 	}
 	
-	private ListItem[] fillData(int iconsID, List<Insight> insights)
+	private List<ListItem> fillData(int iconsID, List<Insight> insights)
 	{	
 		// set insight names as titles						
 		int size = insights.size();
 		// Load item values		
 		TypedArray icons = getResources().obtainTypedArray(iconsID);		
-		ListItem[] result = new ListItem[size];
+		List<ListItem> result = new ArrayList<ListItem>();
 
 		// Adding items to array
 		for (int i = 0; i < size; i++)
 		{
-			result[i] = new ListItem(insights.get(i).getName(), 
-					icons.getResourceId(i, -1));
+			result.add(new ListItem(insights.get(i).getName(), 
+					icons.getResourceId(i, -1)));
 		}
 
 		// Recycle the typed array

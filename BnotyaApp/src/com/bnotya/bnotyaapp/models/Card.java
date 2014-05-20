@@ -2,7 +2,6 @@ package com.bnotya.bnotyaapp.models;
 
 import android.content.Intent;
 import android.content.res.Resources;
-import com.bnotya.bnotyaapp.R;
 
 public class Card
 {

@@ -20,23 +20,7 @@
             android:text="@string/about_main_menu"            
 	        android:layout_marginLeft="8dp"
 	        android:layout_marginRight="8dp"
-	        android:layout_marginTop="8dp" />
-
-        <Button
-            android:id="@+id/btnTehilotMenu"            
-            android:layout_below="@id/tvMainText"
-            android:onClick="openTehilotPage"
-            android:text="@string/open_tehilot" 
-	        android:background="@drawable/blue_button_selector" 
-        	style="@style/ButtonText" />
-
-        <Button
-            android:id="@+id/btnWomenMenu"            
-            android:layout_below="@id/btnTehilotMenu"
-            android:onClick="openWomenPage"
-            android:text="@string/open_women_menu"
-	        android:background="@drawable/blue_button_selector" 
-        	style="@style/ButtonText"  />
+	        android:layout_marginTop="8dp" /> 
 
         <ImageButton
             android:id="@+id/btnEMail"

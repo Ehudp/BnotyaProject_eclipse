@@ -1,10 +1,5 @@
 package com.bnotya.bnotyaapp.services;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import com.bnotya.bnotyaapp.CardFlipActivity;
-import com.bnotya.bnotyaapp.InsightActivity;
-import com.bnotya.bnotyaapp.MainActivity;
 import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -15,7 +10,12 @@ import android.content.Intent;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
+import com.bnotya.bnotyaapp.InsightActivity;
+import com.bnotya.bnotyaapp.MainActivity;
 import com.bnotya.bnotyaapp.R;
+
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 public class AlarmReceiver extends BroadcastReceiver
 {

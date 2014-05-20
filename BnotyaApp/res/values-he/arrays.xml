@@ -18,15 +18,13 @@
 
     <!-- Navigation drawer -->
     <string-array name="views_array">
-        <item>ברירת מחדל</item>        
+        <item>בית</item>        
         <item>תהילות</item>
         <item>נשים בתנ"\ך</item>                             
     </string-array>
     <string-array name="women_views_array">        
-        <item>תובנה אקראית</item>
-        <item>קלפי נשים בתנ"\ך</item>
         <item>טריויה</item> 
-        <item>תובנות מועדפות</item>          
+        <item>תובנות</item>          
     </string-array>
     <!-- Nav Drawer List Item Icons -->    
     <array name="nav_drawer_icons">

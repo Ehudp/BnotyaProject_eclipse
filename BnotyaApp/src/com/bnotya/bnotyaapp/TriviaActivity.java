@@ -1,11 +1,5 @@
 package com.bnotya.bnotyaapp;
 
-import java.util.List;
-import com.bnotya.bnotyaapp.helpers.About;
-import com.bnotya.bnotyaapp.helpers.DatabaseHelper;
-import com.bnotya.bnotyaapp.models.Answer;
-import com.bnotya.bnotyaapp.models.Question;
-import com.bnotya.bnotyaapp.services.DataBaseService;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.media.AudioManager;
@@ -21,6 +15,12 @@ import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.bnotya.bnotyaapp.helpers.About;
+import com.bnotya.bnotyaapp.models.Answer;
+import com.bnotya.bnotyaapp.models.Question;
+import com.bnotya.bnotyaapp.services.DataBaseService;
+
+import java.util.List;
 
 public class TriviaActivity extends ActionBarActivity implements OnCheckedChangeListener
 {

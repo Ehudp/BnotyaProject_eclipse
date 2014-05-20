@@ -1,7 +1,5 @@
 package com.bnotya.bnotyaapp.adapters;
 
-import java.util.HashMap;
-import java.util.List;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
@@ -12,6 +10,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.bnotya.bnotyaapp.R;
 import com.bnotya.bnotyaapp.models.NavDrawerItem;
+
+import java.util.HashMap;
+import java.util.List;
 
 public class ExpandableListAdapter extends BaseExpandableListAdapter
 {

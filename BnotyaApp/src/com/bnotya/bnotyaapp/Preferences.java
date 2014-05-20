@@ -1,27 +1,20 @@
 package com.bnotya.bnotyaapp;
 
-import com.bnotya.bnotyaapp.controls.SeekBarPreference;
-import com.bnotya.bnotyaapp.controls.TimePreference;
-import com.bnotya.bnotyaapp.helpers.About;
-import com.bnotya.bnotyaapp.services.NotificationService;
-import android.accounts.Account;
-import android.accounts.AccountManager;
-import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.media.AudioManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
-import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import com.bnotya.bnotyaapp.controls.SeekBarPreference;
+import com.bnotya.bnotyaapp.controls.TimePreference;
+import com.bnotya.bnotyaapp.helpers.About;
+import com.bnotya.bnotyaapp.services.NotificationService;
 
 public class Preferences extends PreferenceActivity implements
 		OnSharedPreferenceChangeListener
