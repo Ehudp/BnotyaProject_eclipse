@@ -18,7 +18,7 @@ public class Insight
 		id += intent.getIntExtra("EXTRA_SESSION_ID", 0);
 
 		_insightId = resources.getIdentifier(
-				String.format("card%s_%s", id, id), "drawable", packageName);
+				String.format("card%s_%s_%s", id, id, id), "drawable", packageName);
 
 		_id = id;
 		
@@ -31,7 +31,7 @@ public class Insight
 	public Insight(int id, boolean isFavorite, String name, Resources resources, String packageName)
 	{
 		_insightId = resources.getIdentifier(
-				String.format("card%s_%s", id, id), "drawable", packageName);
+				String.format("card%s_%s_%s", id, id, id), "drawable", packageName);
 
 		_id = id;
 		

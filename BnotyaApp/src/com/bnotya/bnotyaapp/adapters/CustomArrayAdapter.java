@@ -2,7 +2,6 @@ package com.bnotya.bnotyaapp.adapters;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +20,7 @@ public class CustomArrayAdapter extends ArrayAdapter<ListItem> implements
 	Context _context;
 	int _layoutResourceId;
 	List<ListItem> _data;
+	List<ListItem> _itemsSource;
 	private CustomFilter _filter;
 
 	public CustomArrayAdapter(Context context, int layoutResourceId,
@@ -30,6 +30,7 @@ public class CustomArrayAdapter extends ArrayAdapter<ListItem> implements
 		_layoutResourceId = layoutResourceId;
 		_context = context;
 		_data = data;
+		_itemsSource = data;
 	}
 
 	@Override
@@ -71,11 +72,6 @@ public class CustomArrayAdapter extends ArrayAdapter<ListItem> implements
 	{
 	    return _data.size();
 	}
-	
-	public void setData(List<ListItem> data)
-	{
-		_data = data;
-	}
 
 	@Override
 	public Filter getFilter()
@@ -95,14 +91,14 @@ public class CustomArrayAdapter extends ArrayAdapter<ListItem> implements
 			if (constraint == null || constraint.length() == 0)
 			{
 				// No filter implemented we return all the list
-				results.values = _data;
-				results.count = _data.size();
+				results.values = _itemsSource;
+				results.count = _itemsSource.size();
 			}
 			else
 			{
 				// We perform filtering operation
 				List<ListItem> itemList = new ArrayList<ListItem>();
-				for (ListItem p : _data)
+				for (ListItem p : _itemsSource)
 				{
 					if (p.getTitle().toUpperCase()
 							.contains(constraint.toString().toUpperCase()))

@@ -52,7 +52,7 @@ public class MainActivity extends ActionBarActivity implements
 	private ActionBarDrawerToggle _drawerToggle;
 	private CharSequence _drawerTitle;
 	private CharSequence _title;
-	// Tabs
+	/* Tabs */
 	public MainActivityTab visibleTab;
 	private GestureDetectorCompat _detector;
 	private ActionBar _actionBar;
@@ -60,11 +60,12 @@ public class MainActivity extends ActionBarActivity implements
 	private Tab _defaultTab;
 	private Tab _womenListTab;
 	private Tab _tehilotTab;
-	// For Menu Overflow in API < 11
+	/* For Menu Overflow in API < 11 */ 
 	private Handler handler = new Handler(Looper.getMainLooper());
 
 	public static MediaPlayer music;
 
+	@SuppressLint("NewApi") 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -82,12 +83,19 @@ public class MainActivity extends ActionBarActivity implements
 		_title = _drawerTitle = getTitle();
 		initDrawerLayout(savedInstanceState);
 
-		initMusic();
+		// To run multiple background threads
+		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+		{
+			new InitMusicTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);			
+			new InitDatabaseTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, this);
+		}
+		else
+		{
+			new InitMusicTask().execute();			
+			new InitDatabaseTask().execute(this);
+		}		
 
-		new ProcessTask().execute(this);
-
-		// Tabs
-
+		/* Tabs */
 		visibleTab = MainActivityTab.DEFAULT;
 		InitTabs();
 
@@ -201,17 +209,7 @@ public class MainActivity extends ActionBarActivity implements
 			_actionBar.selectTab(_womenListTab);
 			visibleTab = MainActivityTab.WOMENLIST;
 		}
-	}
-
-	private class ProcessTask extends AsyncTask<Context, Void, Void>
-	{
-		protected Void doInBackground(Context... contexts)
-		{
-			DataBaseService.initDatabaseHelper(contexts[0]);
-
-			return null;
-		}
-	}
+	}	
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
@@ -248,7 +246,7 @@ public class MainActivity extends ActionBarActivity implements
 
 		switch (item.getItemId())
 		{
-		// For Menu Overflow in API < 11
+			// For Menu Overflow in API < 11
 			case R.id.action_overflow:
 				openOptionsMenuDeferred();
 				return true;
@@ -470,7 +468,6 @@ public class MainActivity extends ActionBarActivity implements
 		TypedArray navMenuIcons = getResources().obtainTypedArray(iconsID);
 
 		// Adding nav drawer items to array
-
 		for (int i = 0; i < navMenuTitles.length; i++)
 		{
 			result.add(new NavDrawerItem(navMenuTitles[i], navMenuIcons
@@ -645,7 +642,7 @@ public class MainActivity extends ActionBarActivity implements
 			music.start();
 		else
 			music.release();
-	}
+	}	
 
 	/* Touch Implementation */
 
@@ -724,4 +721,26 @@ public class MainActivity extends ActionBarActivity implements
 	}
 
 	/* End of Touch Implementation */
+	
+	/* Tasks */
+	
+	private class InitDatabaseTask extends AsyncTask<Context, Void, Void>
+	{
+		protected Void doInBackground(Context... contexts)
+		{
+			DataBaseService.initDatabaseHelper(contexts[0]);
+
+			return null;
+		}
+	}
+	
+	private class InitMusicTask extends AsyncTask<Void, Void, Void>
+	{
+		protected Void doInBackground(Void...voids)
+		{
+			initMusic();
+
+			return null;
+		}
+	}
 }

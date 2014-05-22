@@ -71,31 +71,13 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.bnotya.bnotyaapp.MainActivity" />
-        </activity>
-
-        <!-- Women List activity -->
-        <activity
-            android:name="com.bnotya.bnotyaapp.WomenListActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="@string/app_name"
-            android:parentActivityName="com.bnotya.bnotyaapp.MainActivity" >
-            <intent-filter>
-                <action android:name="com.bnotya.bnotyaapp.WomenListActivity" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>            
-
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.bnotya.bnotyaapp.MainActivity" />            
-
-        </activity>
+        </activity>        
 
         <!-- Card Flip activity -->
         <activity
             android:name="com.bnotya.bnotyaapp.CardFlipActivity"
             android:label="@string/title_card_flip"
-            android:parentActivityName="com.bnotya.bnotyaapp.WomenListActivity"
+            android:parentActivityName="com.bnotya.bnotyaapp.MainActivity"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="com.bnotya.bnotyaapp.CardFlipActivity" />
@@ -105,7 +87,7 @@
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.bnotya.bnotyaapp.WomenListActivity" />
+                android:value="com.bnotya.bnotyaapp.MainActivity" />
         </activity>
 
         <!-- Insight activity -->

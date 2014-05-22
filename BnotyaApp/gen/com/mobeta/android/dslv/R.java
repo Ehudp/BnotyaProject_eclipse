@@ -56,10 +56,10 @@ public final class R {
 		public static final int bg_handle_section1_selector = 0x7f02005a;
 		public static final int bg_handle_section2 = 0x7f02005b;
 		public static final int bg_handle_section2_selector = 0x7f02005c;
-		public static final int delete_x = 0x7f020079;
-		public static final int drag = 0x7f02007a;
-		public static final int dslv_launcher = 0x7f02007c;
-		public static final int section_div = 0x7f020088;
+		public static final int delete_x = 0x7f020085;
+		public static final int drag = 0x7f020086;
+		public static final int dslv_launcher = 0x7f020088;
+		public static final int section_div = 0x7f020094;
 	}
 	public static final class id {
 		public static final int activity_desc = 0x7f0a005a;

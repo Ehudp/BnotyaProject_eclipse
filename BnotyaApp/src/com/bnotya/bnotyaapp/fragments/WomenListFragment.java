@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import android.content.Intent;
 import android.content.res.TypedArray;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -40,7 +41,9 @@ public class WomenListFragment extends Fragment
 				false);
 
 		getActivity().setTitle(R.string.women_list_title);
-		initWomenList(rootView);
+		
+		//initWomenList(rootView);
+		new WomenFillTask().execute(rootView);		
 		initSearch(rootView);
 
 		return rootView;
@@ -52,7 +55,7 @@ public class WomenListFragment extends Fragment
 		_listView = (ListView) rootView.findViewById(R.id.womenlist);
 
 		List<ListItem> listDataHeaders = fillData(R.array.women_names_array,
-				R.array.women_list_icons);
+				R.array.women_list_icons);		
 
 		// Define a new Adapter		
 		_adapter = new CustomArrayAdapter(getActivity(),
@@ -93,9 +96,29 @@ public class WomenListFragment extends Fragment
 		}
 
 		// Recycle the typed array
-		icons.recycle();
+		new ArrayRecycleTask().execute(icons);		
 
 		return result;
+	}
+	
+	private class ArrayRecycleTask extends AsyncTask<TypedArray, Void, Void>
+	{
+		protected Void doInBackground(TypedArray... arrays)
+		{
+			arrays[0].recycle();
+
+			return null;
+		}
+	}
+	
+	private class WomenFillTask extends AsyncTask<View, Void, Void>
+	{
+		protected Void doInBackground(View... views)
+		{
+			initWomenList(views[0]);
+
+			return null;
+		}
 	}
 
 	private void initSearch(View rootView)
@@ -107,9 +130,7 @@ public class WomenListFragment extends Fragment
 			@Override
 			public void onTextChanged(CharSequence cs, int arg1, int arg2,
 					int arg3)
-			{
-				_adapter.setData(fillData(R.array.women_names_array,
-						R.array.women_list_icons));
+			{				
 				// When user changed the Text
 				_adapter.getFilter().filter(cs.toString());
 			}

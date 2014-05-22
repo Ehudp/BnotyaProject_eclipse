@@ -55,6 +55,9 @@ public class CardFlipActivity extends ActionBarActivity implements
 			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 			getSupportActionBar().setHomeButtonEnabled(true);
 		}
+		
+		// Setup card
+		card = new Card(getIntent(), getResources(), getPackageName());	
 
 		visibleSide = CardPart.FRONT;
 		InitTabs();		
@@ -71,10 +74,7 @@ public class CardFlipActivity extends ActionBarActivity implements
 
 		// Detect touched area
 		_detector = new GestureDetectorCompat(this, this);
-		_detector.setOnDoubleTapListener(this);		
-		
-		// Setup card
-		card = new Card(getIntent(), getResources(), getPackageName());	
+		_detector.setOnDoubleTapListener(this);	
 	}	
 
 	private void InitTabs()

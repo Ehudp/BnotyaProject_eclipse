@@ -22,7 +22,7 @@ public class Card
 				String.format("card%s_%s", cardId, cardId), "drawable",
 				packageName);
 		_insightId = resources.getIdentifier(
-				String.format("card%s_%s", cardId, cardId), "drawable",
+				String.format("card%s_%s_%s", cardId, cardId, cardId), "drawable",
 				packageName);
 		
 		_id = cardId;
