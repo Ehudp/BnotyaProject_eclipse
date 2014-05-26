@@ -51,24 +51,24 @@ public final class R {
 		public static final int section_div_height = 0x7f090001;
 	}
 	public static final class drawable {
-		public static final int bg_handle = 0x7f020058;
-		public static final int bg_handle_section1 = 0x7f020059;
-		public static final int bg_handle_section1_selector = 0x7f02005a;
-		public static final int bg_handle_section2 = 0x7f02005b;
-		public static final int bg_handle_section2_selector = 0x7f02005c;
-		public static final int delete_x = 0x7f020085;
-		public static final int drag = 0x7f020086;
-		public static final int dslv_launcher = 0x7f020088;
-		public static final int section_div = 0x7f020094;
+		public static final int bg_handle = 0x7f02005b;
+		public static final int bg_handle_section1 = 0x7f02005c;
+		public static final int bg_handle_section1_selector = 0x7f02005d;
+		public static final int bg_handle_section2 = 0x7f02005e;
+		public static final int bg_handle_section2_selector = 0x7f02005f;
+		public static final int delete_x = 0x7f020089;
+		public static final int drag = 0x7f02008b;
+		public static final int dslv_launcher = 0x7f02008d;
+		public static final int section_div = 0x7f0200a8;
 	}
 	public static final class id {
-		public static final int activity_desc = 0x7f0a005a;
-		public static final int activity_title = 0x7f0a0059;
-		public static final int add_footer = 0x7f0a006b;
-		public static final int add_header = 0x7f0a006a;
-		public static final int artist_albums_textview = 0x7f0a0058;
-		public static final int artist_name_textview = 0x7f0a0057;
-		public static final int bg_handle = 0x7f0a0049;
+		public static final int activity_desc = 0x7f0a005b;
+		public static final int activity_title = 0x7f0a005a;
+		public static final int add_footer = 0x7f0a006d;
+		public static final int add_header = 0x7f0a006c;
+		public static final int artist_albums_textview = 0x7f0a0059;
+		public static final int artist_name_textview = 0x7f0a0058;
+		public static final int bg_handle = 0x7f0a004a;
 		public static final int clickRemove = 0x7f0a0000;
 		public static final int click_remove = 0x7f0a0006;
 		public static final int drag_handle = 0x7f0a0005;
@@ -76,34 +76,34 @@ public final class R {
 		public static final int onDown = 0x7f0a0002;
 		public static final int onLongPress = 0x7f0a0004;
 		public static final int onMove = 0x7f0a0003;
-		public static final int section_div = 0x7f0a005b;
-		public static final int select_drag_init_mode = 0x7f0a0068;
-		public static final int select_enables = 0x7f0a0069;
-		public static final int select_remove_mode = 0x7f0a0067;
-		public static final int test_bed = 0x7f0a005c;
-		public static final int text = 0x7f0a0052;
+		public static final int section_div = 0x7f0a005c;
+		public static final int select_drag_init_mode = 0x7f0a006a;
+		public static final int select_enables = 0x7f0a006b;
+		public static final int select_remove_mode = 0x7f0a0069;
+		public static final int test_bed = 0x7f0a005d;
+		public static final int text = 0x7f0a0053;
 	}
 	public static final class layout {
-		public static final int bg_handle_main = 0x7f03001a;
-		public static final int checkable_main = 0x7f03001b;
-		public static final int cursor_main = 0x7f03001c;
-		public static final int dslv_fragment_main = 0x7f03001f;
-		public static final int header_footer = 0x7f030023;
-		public static final int hetero_main = 0x7f030024;
-		public static final int jazz_artist_list_item = 0x7f030028;
-		public static final int launcher = 0x7f030029;
-		public static final int launcher_item = 0x7f03002a;
-		public static final int list_item_bg_handle = 0x7f03002b;
-		public static final int list_item_checkable = 0x7f03002c;
-		public static final int list_item_click_remove = 0x7f03002d;
-		public static final int list_item_handle_left = 0x7f03002e;
-		public static final int list_item_handle_right = 0x7f03002f;
-		public static final int list_item_no_handle = 0x7f030030;
-		public static final int list_item_radio = 0x7f030031;
-		public static final int section_div = 0x7f030032;
-		public static final int sections_main = 0x7f030033;
-		public static final int test_bed_main = 0x7f030035;
-		public static final int warp_main = 0x7f030038;
+		public static final int bg_handle_main = 0x7f03001b;
+		public static final int checkable_main = 0x7f03001c;
+		public static final int cursor_main = 0x7f03001d;
+		public static final int dslv_fragment_main = 0x7f030020;
+		public static final int header_footer = 0x7f030024;
+		public static final int hetero_main = 0x7f030025;
+		public static final int jazz_artist_list_item = 0x7f030029;
+		public static final int launcher = 0x7f03002a;
+		public static final int launcher_item = 0x7f03002b;
+		public static final int list_item_bg_handle = 0x7f03002c;
+		public static final int list_item_checkable = 0x7f03002d;
+		public static final int list_item_click_remove = 0x7f03002e;
+		public static final int list_item_handle_left = 0x7f03002f;
+		public static final int list_item_handle_right = 0x7f030030;
+		public static final int list_item_no_handle = 0x7f030031;
+		public static final int list_item_radio = 0x7f030032;
+		public static final int section_div = 0x7f030033;
+		public static final int sections_main = 0x7f030034;
+		public static final int test_bed_main = 0x7f030036;
+		public static final int warp_main = 0x7f030039;
 	}
 	public static final class menu {
 		public static final int mode_menu = 0x7f100001;

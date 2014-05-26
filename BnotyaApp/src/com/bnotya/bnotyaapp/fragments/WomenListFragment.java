@@ -42,8 +42,7 @@ public class WomenListFragment extends Fragment
 
 		getActivity().setTitle(R.string.women_list_title);
 		
-		//initWomenList(rootView);
-		new WomenFillTask().execute(rootView);		
+		initWomenList(rootView);			
 		initSearch(rootView);
 
 		return rootView;
@@ -106,16 +105,6 @@ public class WomenListFragment extends Fragment
 		protected Void doInBackground(TypedArray... arrays)
 		{
 			arrays[0].recycle();
-
-			return null;
-		}
-	}
-	
-	private class WomenFillTask extends AsyncTask<View, Void, Void>
-	{
-		protected Void doInBackground(View... views)
-		{
-			initWomenList(views[0]);
 
 			return null;
 		}

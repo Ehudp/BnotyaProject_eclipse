@@ -14,6 +14,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBar.Tab;
@@ -29,6 +30,7 @@ import android.widget.ExpandableListView.OnGroupCollapseListener;
 import android.widget.ExpandableListView.OnGroupExpandListener;
 import android.widget.Toast;
 import com.bnotya.bnotyaapp.adapters.ExpandableListAdapter;
+import com.bnotya.bnotyaapp.controls.PageActionProvider;
 import com.bnotya.bnotyaapp.fragments.MainDefaultFragment;
 import com.bnotya.bnotyaapp.fragments.MainTehilotFragment;
 import com.bnotya.bnotyaapp.fragments.WomenListFragment;
@@ -215,8 +217,27 @@ public class MainActivity extends ActionBarActivity implements
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
 		getMenuInflater().inflate(R.menu.main_menu, menu);
+		
+		// Set up PageActionProvider's intent
+	    MenuItem mailItem = menu.findItem(R.id.action_mail);
+	    PageActionProvider actionProvider = (PageActionProvider)
+	            MenuItemCompat.getActionProvider(mailItem);
+	    actionProvider.setIntent(getMailIntent());
+	    actionProvider.setButtonSource(R.drawable.ic_action_mail);
 
 		return super.onCreateOptionsMenu(menu);
+	}
+	
+	private Intent getMailIntent() 
+	{
+		String[] address =
+			{
+				"a@a.a"
+			}; // TODO: Replace with Bnotya's address
+		Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+		emailIntent.setType("plain/text");
+		emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, address);
+	    return emailIntent;
 	}
 
 	/* Called whenever we call invalidateOptionsMenu() */
@@ -587,21 +608,35 @@ public class MainActivity extends ActionBarActivity implements
 		// Pass any configuration change to the drawer toggles
 		_drawerToggle.onConfigurationChanged(newConfig);
 	}
-
+	
 	public void openTriviaPage(View view)
 	{
-		// replaceFragment(new TriviaFragment(), 0);
-		Intent intent = new Intent(this, TriviaActivity.class);
+		new OpenTriviaPageTask().execute();		
+	}
+
+	private void openTriviaPage()
+	{		
+		Intent intent = new Intent(getBaseContext(), TriviaActivity.class);
 		startActivity(intent);
 	}
 
 	public void openInsightList(View view)
 	{
-		Intent intent = new Intent(this, InsightListActivity.class);
+		new OpenInsightListTask().execute();		
+	}
+	
+	public void openInsightList()
+	{
+		Intent intent = new Intent(getBaseContext(), InsightListActivity.class);
 		startActivity(intent);
 	}
 
 	public void openMailPage(View view)
+	{
+		new OpenMailPageTask().execute();		
+	}
+
+	public void openMailPage()
 	{
 		String[] address =
 		{
@@ -729,7 +764,6 @@ public class MainActivity extends ActionBarActivity implements
 		protected Void doInBackground(Context... contexts)
 		{
 			DataBaseService.initDatabaseHelper(contexts[0]);
-
 			return null;
 		}
 	}
@@ -739,7 +773,33 @@ public class MainActivity extends ActionBarActivity implements
 		protected Void doInBackground(Void...voids)
 		{
 			initMusic();
-
+			return null;
+		}
+	}
+	
+	private class OpenTriviaPageTask extends AsyncTask<Void, Void, Void>
+	{
+		protected Void doInBackground(Void... voids)
+		{
+			openTriviaPage();
+			return null;
+		}
+	}
+	
+	private class OpenInsightListTask extends AsyncTask<Void, Void, Void>
+	{
+		protected Void doInBackground(Void... voids)
+		{
+			openInsightList();
+			return null;
+		}
+	}
+	
+	private class OpenMailPageTask extends AsyncTask<Void, Void, Void>
+	{
+		protected Void doInBackground(Void... voids)
+		{
+			openMailPage();
 			return null;
 		}
 	}
